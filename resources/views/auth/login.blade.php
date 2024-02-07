@@ -13,7 +13,7 @@
     <link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
 </head>
 
-<body style="background-color: #03386c;">
+<body style="background-color: #d3d3d3;">
     <div class="container">
         <div class="row justify-content-center mt-5">
             <div class="col-sm-12 text-center">

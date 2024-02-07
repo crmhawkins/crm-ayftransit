@@ -17,7 +17,7 @@
     <div class="container">
         <div class="row justify-content-center mt-5">
             <div class="col-sm-12 text-center">
-                <img src="{{ asset('images/logo_ayf.png') }}" style="width: 15% !important;">
+                <img src="{{ asset('images/logo_ayf.png') }}" style="width: 50% !important;">
             </div>
         </div>
         <div class="row justify-content-center">
@@ -82,7 +82,7 @@
                                 <div class="row mb-0 justify-content-center">
                                     <div class="col-sm-11">
                                         <button type="submit" class="btn w-100"
-                                            style="background-color: #d7d8d9; color: white;">
+                                            style="background-color: #1d60a3; color: white;">
                                             {{ __('Iniciar sesión') }}
                                         </button>
                                     </div>

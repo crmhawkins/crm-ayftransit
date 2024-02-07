@@ -302,7 +302,7 @@ Route::group(['middleware' => 'is.admin', 'prefix' => 'admin'], function () {
      Route::get('caja', [CajaController::class, 'index'])->name('caja.index');
      Route::get('caja-create-ingreso', [CajaController::class, 'createIngreso'])->name('caja.create-ingreso');
      Route::get('caja-create-gasto', [CajaController::class, 'createGasto'])->name('caja.create-gasto');
-     Route::get('caja-edit/{id}', [CajaController::class, 'edit'])->name('categoria-evento.edit');
+     Route::get('caja-edit/{id}', [CajaController::class, 'edit'])->name('caja-evento.edit');
 
      Route::get('/service/jwt', [MapKitController::class, 'getJwt']);
 

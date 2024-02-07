@@ -119,7 +119,7 @@ class XmlTools {
   /**
    * Prettify
    * @param  string $input Input string
-   * @return string        Multi-line resposne
+   * @return string        Multi-line response
    */
   private static function prettify($input) {
     return chunk_split($input, 76, "\n");
@@ -146,7 +146,7 @@ class XmlTools {
   public static function getCert($pem, $pretty=true) {
     $pem = str_replace("-----BEGIN CERTIFICATE-----", "", $pem);
     $pem = str_replace("-----END CERTIFICATE-----", "", $pem);
-    $pem = str_replace("\n", "", str_replace("\r", "", $pem));
+    $pem = str_replace(["\r", "\n"], ['', ''], $pem);
     if ($pretty) $pem = self::prettify($pem);
     return $pem;
   }

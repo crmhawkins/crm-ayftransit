@@ -84,7 +84,7 @@
     <div class="container">
         <div style="text-align: right !important">
             <div class="row" style="text-align: right !important">
-                <div class="label"><b>EDUCACIÓN, OCIO Y TIEMPO LIBRE LA FABRICA S.L.</b></b></div>
+                <div class="label"><b>EDUCACIÓN, OCIO Y TIEMPO LIBRE Ayftransit S.L.</b></b></div>
             </div>
             <div class="row" style="text-align: right !important">
                 <div class="value">B-11949658</div>

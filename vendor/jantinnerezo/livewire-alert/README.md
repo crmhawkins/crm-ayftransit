@@ -11,8 +11,11 @@
 This package provides a simple alert utility for your livewire components. Currently using [SweetAlert2](https://sweetalert2.github.io/) under-the-hood.
 You can now use SweetAlert2 without writing any custom Javascript. Looking forward to integrate other Javascript alert libraries, feel free to contribute or suggest any libraries.
 
-## Demo
+## Interactive Demo
 Check the interactive demo here:  https://livewire-alert.jantinnerezo.com
+
+## Contribute to interactive demo 
+Do you have any ideas in mind that you can add to the interactive demo? Fork and submit a PR here: https://github.com/jantinnerezo/livewire-alert-demo
 
 ## Installation
 
@@ -58,7 +61,7 @@ This package is meant to use with Livewire components. Make sure you are using i
 
 - PHP 7.2 or higher
 
-- Laravel 7 or 8
+- Laravel 7, 8, 9 and 10
 
 - Livewire
 

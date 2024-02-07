@@ -508,7 +508,7 @@
                                 <h6>Identidad del responsable de tratamiento:.</h6>
                             </div>
                             <div class="col-sm-12 mt-3">
-                                <p><b>EDUCACIÓN, OCIO Y TIEMPO LIBRE LA FABRICA S.L.</b></p>
+                                <p><b>EDUCACIÓN, OCIO Y TIEMPO LIBRE Ayftransit S.L.</b></p>
                                 <p>B-11949658.</p>
                                 <p>Avd. Alcalde Cantos Ropero, 51 Pol. Ind. "Jerez 2000" Nave 14.</p>
                                 <p>11408 Jerez de la Frontera ( Cádiz)</p>
@@ -573,7 +573,7 @@
 
                             </div>
                             <div class="col-sm-5 mt-2">
-                                <img style="text-align: center !important" src="{{ asset('assets/images/firma_fabrica.png') }}" height="200px" width="400px">
+                                <img style="text-align: center !important" src="{{ asset('assets/images/logo_ayf.png') }}" height="200px" width="400px">
                             </div>
                             <div class="col-sm-1 mt-2">&nbsp;</div>
                         </div>

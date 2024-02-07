@@ -6,11 +6,11 @@
     <div class="topbar-left" style="margin-bottom: -145px !important;">
         <a href="{{route('home')}}" class="logo">
             <span class="logo-light">
-                <img class="img-fluid p-4" src="{{ asset('assets/images/logo_la_fabrica.png') }}" alt="Logo La Fabrica">
-                {{-- <i class="mdi mdi-camera-control"></i> La Fabrica --}}
+                <img class="img-fluid p-4" src="{{ asset('assets/images/logo_ayf.png') }}" alt="Logo Ayftransit">
+                {{-- <i class="mdi mdi-camera-control"></i> Ayftransit --}}
             </span>
             <span class="logo-sm">
-                <img class="img-fluid p-1" src="{{ asset('assets/images/logo_la_fabrica.png') }}" alt="Logo La Fabrica">
+                <img class="img-fluid p-1" src="{{ asset('assets/images/logo_ayf.png') }}" alt="Logo Ayftransit">
             </span>
         </a>
     </div>
@@ -20,14 +20,14 @@
             <!-- language-->
             {{-- <li class="dropdown notification-list list-inline-item d-none d-md-inline-block">
                         <a class="nav-link dropdown-toggle arrow-none waves-effect" data-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
-                            <img src="https://crm.fabricandoeventosjerez.com/assets/images/flags/us_flag.jpg" class="mr-2" height="12" alt="" /> English <span class="mdi mdi-chevron-down"></span>
+                            <img src="https://crm.ayftransitspain.com/assets/images/flags/us_flag.jpg" class="mr-2" height="12" alt="" /> English <span class="mdi mdi-chevron-down"></span>
                         </a>
                         <div class="dropdown-menu dropdown-menu-right dropdown-menu-animated language-switch">
-                            <a class="dropdown-item" href="#"><img src="https://crm.fabricandoeventosjerez.com/assets/images/flags/french_flag.jpg" alt="" height="16" /><span> French </span></a>
-                            <a class="dropdown-item" href="#"><img src="https://crm.fabricandoeventosjerez.com/assets/images/flags/spain_flag.jpg" alt="" height="16" /><span> Spanish </span></a>
-                            <a class="dropdown-item" href="#"><img src="https://crm.fabricandoeventosjerez.com/assets/images/flags/russia_flag.jpg" alt="" height="16" /><span> Russian </span></a>
-                            <a class="dropdown-item" href="#"><img src="https://crm.fabricandoeventosjerez.com/assets/images/flags/germany_flag.jpg" alt="" height="16" /><span> German </span></a>
-                            <a class="dropdown-item" href="#"><img src="https://crm.fabricandoeventosjerez.com/assets/images/flags/italy_flag.jpg" alt="" height="16" /><span> Italian </span></a>
+                            <a class="dropdown-item" href="#"><img src="https://crm.ayftransitspain.com/assets/images/flags/french_flag.jpg" alt="" height="16" /><span> French </span></a>
+                            <a class="dropdown-item" href="#"><img src="https://crm.ayftransitspain.com/assets/images/flags/spain_flag.jpg" alt="" height="16" /><span> Spanish </span></a>
+                            <a class="dropdown-item" href="#"><img src="https://crm.ayftransitspain.com/assets/images/flags/russia_flag.jpg" alt="" height="16" /><span> Russian </span></a>
+                            <a class="dropdown-item" href="#"><img src="https://crm.ayftransitspain.com/assets/images/flags/germany_flag.jpg" alt="" height="16" /><span> German </span></a>
+                            <a class="dropdown-item" href="#"><img src="https://crm.ayftransitspain.com/assets/images/flags/italy_flag.jpg" alt="" height="16" /><span> Italian </span></a>
                         </div>
                     </li> --}}
 
@@ -110,7 +110,7 @@
                 <div class="dropdown notification-list nav-pro-img">
                     <a class="dropdown-toggle nav-link arrow-none nav-user" data-toggle="dropdown" href="#"
                         role="button" aria-haspopup="false" aria-expanded="false">
-                        <img src="https://crm.fabricandoeventosjerez.com/assets/images/users/user-4.jpg" alt="user"
+                        <img src="https://crm.ayftransitspain.com/assets/images/users/user-4.jpg" alt="user"
                             class="rounded-circle">
                     </a>
                     <div class="dropdown-menu dropdown-menu-right profile-dropdown ">

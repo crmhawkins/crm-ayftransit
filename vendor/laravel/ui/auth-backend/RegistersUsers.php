@@ -18,8 +18,7 @@ trait RegistersUsers
      */
     public function showRegistrationForm()
     {
-        $alertas = [];
-        return view('auth.register', compact('alertas'));
+        return view('auth.register');
     }
 
     /**
@@ -41,8 +40,8 @@ trait RegistersUsers
         }
 
         return $request->wantsJson()
-            ? new JsonResponse([], 201)
-            : redirect($this->redirectPath());
+                    ? new JsonResponse([], 201)
+                    : redirect($this->redirectPath());
     }
 
     /**

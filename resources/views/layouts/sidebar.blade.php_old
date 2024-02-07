@@ -24,7 +24,7 @@
             <img src="/assets/{{ $empresa->photo }}" alt="Logo" title="" class="img-fluid"
                 style="max-width: 200px; padding: 0 1.2rem;"></a>
         @else
-        <img src="{{ asset('images/logo.png') }}" style="max-width: 80%;" class="img-rounded mx-auto d-block img-fluid" alt="Logo">
+        <img src="{{ asset('images/logo_ayf.png') }}" style="max-width: 80%;" class="img-rounded mx-auto d-block img-fluid" alt="Logo">
 
         @endif
 

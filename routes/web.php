@@ -29,6 +29,7 @@ use App\Http\Controllers\DepartamentosUserController;
 use App\Http\Controllers\TipoGastoController;
 use App\Http\Controllers\CategoriaEventoController;
 use App\Http\Controllers\TipoEventoController;
+use App\Http\Controllers\ProveedoresController;
 
 
 use App\Http\Controllers\ServicioController;

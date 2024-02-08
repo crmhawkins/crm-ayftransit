@@ -29,13 +29,6 @@ class ProveedoresController extends Controller
         return view('proveedor.create');
 
     }
-    public function createFromBudget()
-    {
-        //
-        return view('proveedor.create-from-budget');
-
-    }
-
 
     /**
      * Store a newly created resource in storage.

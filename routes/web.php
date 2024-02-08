@@ -268,6 +268,11 @@ Route::group(['middleware' => 'is.admin', 'prefix' => 'admin'], function () {
      Route::get('/clientes-create-from-budget', [ClienteController::class, 'createFromBudget'])->name('clientes.create-from-budget');
      Route::get('/clientes-edit/{id}', [ClienteController::class, 'edit'])->name('clientes.edit');
 
+     // Proveedores
+     Route::get('/proveedores', [ProveedoresController::class, 'index'])->name('proveedores.index');
+     Route::get('/proveedores-create', [ProveedoresController::class, 'create'])->name('proveedores.create');
+     Route::get('/proveedores-edit/{id}', [ProveedoresController::class, 'edit'])->name('proveedores.edit');
+
      // Clientes
      Route::get('/contratos', [ContratoController::class, 'index'])->name('contratos.index');
      Route::get('/contratos-create', [ContratoController::class, 'create'])->name('contratos.create');

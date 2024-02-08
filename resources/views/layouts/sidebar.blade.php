@@ -21,6 +21,14 @@
                     </ul>
                 </li>
                 <li>
+                    <a href="javascript:void(0);" class="waves-effect"><i class="fas fa-user-tie"></i><span> Proveedores <span class="float-right menu-arrow"><i class="mdi mdi-chevron-right"></i></span> </span></a>
+                    <ul class="submenu">
+                        <li><a href="/admin/proveedores">Ver Todos</a></li>
+                        <li><a href="/admin/proveedores-create">Crear proveedor</a></li>
+                        {{-- <li><a href="email-compose.html">Email Compose</a></li> --}}
+                    </ul>
+                </li>
+                <li>
                     <a href="javascript:void(0);" class="waves-effect"><i class="fas fa-hand-holding-usd"></i><span> Presupuestos <span class="float-right menu-arrow"><i class="mdi mdi-chevron-right"></i></span> </span></a>
                     <ul class="submenu">
                         <li><a href="/admin/presupuestos">Ver Todos</a></li>

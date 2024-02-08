@@ -3,13 +3,13 @@
     <div class="page-title-box">
         <div class="row align-items-center">
             <div class="col-sm-6">
-                <h4 class="page-title">CREAR CLIENTE</h4>
+                <h4 class="page-title">EDITAR PROVEEDOR <span style="text-transform: uppercase">{{$nombre}}</span></h4>
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-right">
                     <li class="breadcrumb-item"><a href="javascript:void(0);">Dashboard</a></li>
-                    <li class="breadcrumb-item"><a href="javascript:void(0);">Clientes</a></li>
-                    <li class="breadcrumb-item active">Crear cliente</li>
+                    <li class="breadcrumb-item"><a href="javascript:void(0);">Proveedores</a></li>
+                    <li class="breadcrumb-item active">Editar Proveedor {{$nombre}}</li>
                 </ol>
             </div>
         </div> <!-- end row -->
@@ -20,7 +20,7 @@
         <div class="col-md-12">
             <div class="card m-b-30">
                 <div class="card-body">
-                    <form wire:submit.prevent="submit">
+                    <form wire:submit.prevent="update">
                         <div class="form-group row">
                             <div class="col-sm-6">
                                 <label for="nombre" class="col-form-label">Nombre</label>
@@ -47,7 +47,8 @@
                         </div>
                         <div class="row">
                             <div class="col-12">
-                                <button type="submit" class="btn btn-success">Guardar Cliente</button>
+                                <button class="w-100 btn btn-success mb-2" type="submit">Actualizar Proveedor</button>
+                                <button class="w-100 btn btn-danger mb-2" type="button" id="alertaEliminar">Eliminar Proveedor</button>
                             </div>
                         </div>
                     </form>
@@ -56,3 +57,21 @@
         </div>
     </div>
 </div>
+
+@section('scripts')
+<script>
+$("#alertaEliminar").on("click", () => {
+            Swal.fire({
+                title: '¿Estás seguro?',
+                text: 'Pulsa el botón de confirmar para eliminar los datos del Proveedor. Esto es irreversible.',
+                icon: 'error',
+                showConfirmButton: true,
+                showCancelButton: true
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.livewire.emit('confirmDelete');
+                }
+            });
+        });
+</script>
+@endsection

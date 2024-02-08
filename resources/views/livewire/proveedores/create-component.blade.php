@@ -3,13 +3,13 @@
     <div class="page-title-box">
         <div class="row align-items-center">
             <div class="col-sm-6">
-                <h4 class="page-title">CREAR CLIENTE</h4>
+                <h4 class="page-title">CREAR PROVEEDOR</h4>
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-right">
                     <li class="breadcrumb-item"><a href="javascript:void(0);">Dashboard</a></li>
-                    <li class="breadcrumb-item"><a href="javascript:void(0);">Clientes</a></li>
-                    <li class="breadcrumb-item active">Crear cliente</li>
+                    <li class="breadcrumb-item"><a href="javascript:void(0);">Proveedores</a></li>
+                    <li class="breadcrumb-item active">Crear Proveedor</li>
                 </ol>
             </div>
         </div> <!-- end row -->
@@ -47,7 +47,7 @@
                         </div>
                         <div class="row">
                             <div class="col-12">
-                                <button type="submit" class="btn btn-success">Guardar Cliente</button>
+                                <button type="submit" class="btn btn-success">Guardar Proveedor</button>
                             </div>
                         </div>
                     </form>

@@ -24,10 +24,6 @@
                     <div class="mini-stat-icon float-right">
                         <i class="mdi mdi-cash bg-primary text-white"></i>
                     </div>
-                    <div>
-                        <h5 class="font-16">Ingresos semanales (caja)</h5>
-                    </div>
-                    <h3 class="mt-4">{{$ingresos_caja}}€</h3>
                     <div class="progress mt-4" style="height: 4px;">
                         <div class="progress-bar bg-primary" role="progressbar" style="width: 100%"  aria-valuenow="{{'0'}}"
                             aria-valuemin="0" aria-valuemax="100"></div>
@@ -43,10 +39,6 @@
                     <div class="mini-stat-icon float-right">
                         <i class="mdi mdi-cash-register bg-success text-white"></i>
                     </div>
-                    <div>
-                        <h5 class="font-16">Gastos semanales (caja)</h5>
-                    </div>
-                    <h3 class="mt-4">  {{$gastos_caja}} €</h3>
                     <div class="progress mt-4" style="height: 4px;">
                         <div class="progress-bar bg-success" role="progressbar" style="width: 88%" aria-valuenow="88"
                             aria-valuemin="0" aria-valuemax="100"></div>
@@ -62,10 +54,6 @@
                     <div class="mini-stat-icon float-right">
                         <i class="mdi mdi-bank-remove bg-warning text-white"></i>
                     </div>
-                    <div>
-                        <h5 class="font-16">Resultados semanales (caja)</h5>
-                    </div>
-                    <h3 class="mt-4">{{$resultados_caja}} €</h3>
                     <div class="progress mt-4" style="height: 4px;">
                         <div class="progress-bar bg-warning" role="progressbar" style="width: 68%" aria-valuenow="68"
                             aria-valuemin="0" aria-valuemax="100"></div>

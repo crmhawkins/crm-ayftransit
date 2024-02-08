@@ -13,47 +13,6 @@
                     </a>
                 </li>
                 <li>
-                    <a href="/admin/calendario" class="waves-effect"><i class="icon-calendar"></i><span> Calendario </span></a>
-                </li>
-                <li>
-                    <a href="/admin/agenda" class="waves-effect"><i class="fas fa-book"></i><span> Agenda </span></a>
-                </li>
-                <li>
-                    <a href="javascript:void(0);" class="waves-effect"><i class="fas fa-chart-bar"></i><span> Cuadrante <span class="float-right menu-arrow"><i class="mdi mdi-chevron-right"></i></span> </span></a>
-                    <ul class="submenu">
-                        <li><a href="/admin/cuadrante-semanas">Cuadrante Semanal</a></li>
-                        <li><a href="/admin/cuadrante-mensual">Cuadrante Mensual</a></li>
-                        {{-- <li><a href="email-compose.html">Email Compose</a></li> --}}
-                    </ul>
-                </li>
-                <li class="menu-title">Administracion</li>
-                <li>
-                    <a href="javascript:void(0);" class="waves-effect"><i class="fa fa-box"></i><span> Caja Diaria <span class="float-right menu-arrow"><i class="mdi mdi-chevron-right"></i></span> </span></a>
-                    <ul class="submenu">
-                        <li><a href="/admin/caja">Ver Movimientos</a></li>
-                        <li><a href="/admin/caja-create-gasto">Añadir movimiento de gasto</a></li>
-                        <li><a href="/admin/caja-create-ingreso">Añadir movimiento de ingreso</a></li>
-                    </ul>
-                </li>
-                <li>
-                    <a href="javascript:void(0);" class="waves-effect"><i class="fas fa-bank"></i><span> Gastos <span class="float-right menu-arrow"><i class="mdi mdi-chevron-right"></i></span> </span></a>
-                    <ul class="submenu">
-                        <li><a href="/admin/gastos">Ver Todos</a></li>
-                        <li><a href="/admin/gastos-create">Añadir Gasto</a></li>
-                        {{-- <li><a href="email-compose.html">Email Compose</a></li> --}}
-                    </ul>
-                </li>
-                <li>
-                    <a href="javascript:void(0);" class="waves-effect"><i class="fa fa-box"></i><span> Tipos Gasto <span class="float-right menu-arrow"><i class="mdi mdi-chevron-right"></i></span> </span></a>
-                    <ul class="submenu">
-                        <li><a href="/admin/tipo-gasto">Ver Todos</a></li>
-                        <li><a href="/admin/tipo-gasto-create">Crear Tipo de Gasto</a></li>
-                        {{-- <li><a href="email-compose.html">Email Compose</a></li> --}}
-                    </ul>
-                </li>
-
-                <li class="menu-title">Eventos</li>
-                <li>
                     <a href="javascript:void(0);" class="waves-effect"><i class="fas fa-user-tie"></i><span> Clientes <span class="float-right menu-arrow"><i class="mdi mdi-chevron-right"></i></span> </span></a>
                     <ul class="submenu">
                         <li><a href="/admin/clientes">Ver Todos</a></li>

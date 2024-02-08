@@ -6,11 +6,11 @@
     <div class="topbar-left" style="margin-bottom: -145px !important;">
         <a href="{{route('home')}}" class="logo">
             <span class="logo-light">
-                <img class="img-fluid p-4" src="{{ asset('assets/images/logo_ayf_r.png') }}" alt="Logo Ayftransit">
+                <img class="img-fluid p-4" src="{{ asset('assets/images/logo_ayf_r.png') }}" style="width: 50% !important;" alt="Logo Ayftransit">
                 {{-- <i class="mdi mdi-camera-control"></i> Ayftransit --}}
             </span>
             <span class="logo-sm">
-                <img class="img-fluid p-1" src="{{ asset('assets/images/logo_ayf_r.png') }}" alt="Logo Ayftransit">
+                <img class="img-fluid p-1" src="{{ asset('assets/images/logo_ayf_r.png') }}" style="width: 50% !important;" alt="Logo Ayftransit">
             </span>
         </a>
     </div>

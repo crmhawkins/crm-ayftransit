@@ -812,7 +812,7 @@ dt {
 }
 
 .topbar .topbar-left {
-  background-color: #30419b;
+  background-color: #ffffff;
   float: left;
   text-align: center;
   height: 162px;
@@ -1044,7 +1044,7 @@ dt {
 }
 
 #sidebar-menu > ul > li > a:hover, #sidebar-menu > ul > li > a:focus, #sidebar-menu > ul > li > a:active {
-  color: #ffffff;
+  color: #4359d3;
   text-decoration: none;
 }
 

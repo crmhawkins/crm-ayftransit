@@ -28,73 +28,9 @@
                         {{-- <li><a href="email-compose.html">Email Compose</a></li> --}}
                     </ul>
                 </li>
-                <li>
-                    <a href="/admin/contratos" class="waves-effect"><i class="far fa-file"></i><span> Contratos </span></a>
-                </li>
-                <li>
-                    <a href="/admin/eventos" class="waves-effect"><i class="ti-agenda"></i><span> Eventos </span></a>
-                </li>
-                <li>
-                    <a href="javascript:void(0);" class="waves-effect"><i class="fa fa-box"></i><span> Categorías Contrato <span class="float-right menu-arrow"><i class="mdi mdi-chevron-right"></i></span> </span></a>
-                    <ul class="submenu">
-                        <li><a href="/admin/categoria-contrato">Ver Todos</a></li>
-                        <li><a href="/admin/categoria-contrato-create">Crear Categorias de Contrato</a></li>
-                        {{-- <li><a href="email-compose.html">Email Compose</a></li> --}}
-                    </ul>
-                </li>
-                <li>
-                    <a href="javascript:void(0);" class="waves-effect"><i class="fa fa-box"></i><span> Tipos Evento <span class="float-right menu-arrow"><i class="mdi mdi-chevron-right"></i></span> </span></a>
-                    <ul class="submenu">
-                        <li><a href="/admin/tipo-evento">Ver Todos</a></li>
-                        <li><a href="/admin/tipo-evento-create">Crear Tipos de Evento</a></li>
-                        {{-- <li><a href="email-compose.html">Email Compose</a></li> --}}
-                    </ul>
-                </li>
-                <li class="menu-title">Servicios</li>
-                <li>
-                    <a href="javascript:void(0);" class="waves-effect"><i class="ti-tag"></i><span> Servicios Categoria <span class="float-right menu-arrow"><i class="mdi mdi-chevron-right"></i></span> </span></a>
-                    <ul class="submenu">
-                        <li><a href="/admin/servicios-categorias">Ver Todos</a></li>
-                        <li><a href="/admin/servicios-categorias-create">Crear Servicios Categoria </a></li>
-                        {{-- <li><a href="email-compose.html">Email Compose</a></li> --}}
-                    </ul>
-                </li>
-                <li>
-                    <a href="javascript:void(0);" class="waves-effect"><i class="ti-settings"></i><span> Servicios <span class="float-right menu-arrow"><i class="mdi mdi-chevron-right"></i></span> </span></a>
-                    <ul class="submenu">
-                        <li><a href="/admin/servicios">Ver Todos</a></li>
-                        <li><a href="/admin/servicios-create">Crear Servicio</a></li>
-                        {{-- <li><a href="email-compose.html">Email Compose</a></li> --}}
-                    </ul>
-                </li>
-                <li>
-                    <a href="javascript:void(0);" class="waves-effect"><i class="fas fa-box"></i><span> Articulos <span class="float-right menu-arrow"><i class="mdi mdi-chevron-right"></i></span> </span></a>
-                    <ul class="submenu">
-                        <li><a href="/admin/articulos">Ver Todos</a></li>
-                        <li><a href="/admin/articulo-create">Crear Articulo</a></li>
-                        {{-- <li><a href="email-compose.html">Email Compose</a></li> --}}
-                    </ul>
-                </li>
-                <li>
-                    <a href="javascript:void(0);" class="waves-effect"><i class="ti-package"></i><span> Servicio Packs <span class="float-right menu-arrow"><i class="mdi mdi-chevron-right"></i></span> </span></a>
-                    <ul class="submenu">
-                        <li><a href="/admin/servicios-packs">Ver Todos</a></li>
-                        <li><a href="/admin/servicios-packs-create">Crear Servicio Packs </a></li>
-                        {{-- <li><a href="email-compose.html">Email Compose</a></li> --}}
-                    </ul>
-                </li>
-                <li>
-                    <a href="javascript:void(0);" class="waves-effect"><i class="fas fa-user-friends"></i><span> Monitores <span class="float-right menu-arrow"><i class="mdi mdi-chevron-right"></i></span> </span></a>
-                    <ul class="submenu">
-                        <li><a href="/admin/monitores">Ver Todos</a></li>
-                        <li><a href="/admin/monitores-create">Crear Monitor</a></li>
-                        {{-- <li><a href="email-compose.html">Email Compose</a></li> --}}
-                    </ul>
-                </li>
-
                 <li class="menu-title">Departamentos</li>
 
-<li>
+                <li>
                     <a href="javascript:void(0);" class="waves-effect"><i class="icon-case-2"></i><span> Departamentos <span class="float-right menu-arrow"><i class="mdi mdi-chevron-right"></i></span> </span></a>
                     <ul class="submenu">
                         <li><a href="/admin/departamentos">Ver Todos</a></li>

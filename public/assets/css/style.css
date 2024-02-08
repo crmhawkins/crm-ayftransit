@@ -1011,7 +1011,7 @@ dt {
 .side-menu {
   width: 240px;
   z-index: 10;
-  background: #30419b;
+  background: #858ebd;
   bottom: 0;
   margin-top: 0;
   padding-bottom: 30px;
@@ -1020,7 +1020,7 @@ dt {
 }
 
 .side-menu .waves-effect .waves-ripple {
-  background-color: rgba(48, 65, 155, 0.4);
+  background-color: rgba(101, 111, 161, 0.4);
 }
 
 #sidebar-menu {
@@ -1065,7 +1065,7 @@ dt {
 
 #sidebar-menu > ul > li > a.mm-active {
   color: #ffffff !important;
-  background-color: #3345a5;
+  background-color: #858ebd;
 }
 
 #sidebar-menu .menu-title {
@@ -1079,7 +1079,7 @@ dt {
 
 #sidebar-menu .submenu li.mm-active > a {
   color: #ffffff;
-  background-color: #30419b;
+  background-color: #858ebd;
 }
 
 #sidebar-menu .submenu li a {
@@ -1095,7 +1095,7 @@ dt {
 }
 
 #sidebar-menu .submenu li a:hover {
-  background-color: #30419b;
+  background-color: #858ebd;
   color: rgba(255, 255, 255, 0.8);
 }
 
@@ -1170,7 +1170,7 @@ dt {
   position: relative;
   width: 260px;
   color: #ffffff;
-  background-color: #2d3d91;
+  background-color: #858ebd;
   z-index: 1;
 }
 

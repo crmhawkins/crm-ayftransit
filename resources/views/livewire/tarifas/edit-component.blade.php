@@ -2,13 +2,13 @@
     <div class="page-title-box">
         <div class="row align-items-center">
             <div class="col-sm-6">
-                <h4 class="page-title">CREAR TARIFA</h4>
+                <h4 class="page-title">EDITAR TARIFA</h4>
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-right">
                     <li class="breadcrumb-item"><a href="javascript:void(0);">Dashboard</a></li>
                     <li class="breadcrumb-item"><a href="javascript:void(0);">Tarifas</a></li>
-                    <li class="breadcrumb-item active">Crear Tarifa</li>
+                    <li class="breadcrumb-item active">Editar Tarifa</li>
                 </ol>
             </div>
         </div> <!-- end row -->
@@ -196,7 +196,8 @@
                     <h5>Acciones</h5>
                     <div class="row">
                         <div class="col-12">
-                            <button class="w-100 btn btn-success mb-2" id="alertaGuardar">Guardar Tarifa</button>
+                            <button class="w-100 btn btn-success mb-2" type="button" id="alertaGuardar">Guardar Tarifa</button>
+                            <button class="w-100 btn btn-danger mb-2" type="button" id="alertaEliminar">Eliminar Tarifa</button>
                         </div>
                     </div>
                 </div>
@@ -209,7 +210,7 @@
     $("#alertaGuardar").on("click", () => {
         Swal.fire({
             title: '¿Estás seguro?',
-            text: 'Pulsa el botón de confirmar para guardar el Proveedor.',
+            text: 'Pulsa el botón de confirmar actualizar la tarifa.',
             icon: 'warning',
             showConfirmButton: true,
             showCancelButton: true
@@ -220,6 +221,23 @@
         });
     });
 </script>
+
+<script>
+$("#alertaEliminar").on("click", () => {
+            Swal.fire({
+                title: '¿Estás seguro?',
+                text: 'Pulsa el botón para eliminar la tarifa. Esto es irreversible.',
+                icon: 'error',
+                showConfirmButton: true,
+                showCancelButton: true
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.livewire.emit('confirmDelete');
+                }
+            });
+        });
+</script>
+
 @endsection
 
 

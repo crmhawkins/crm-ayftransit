@@ -57,7 +57,7 @@ class CreateComponent extends Component
             ]);
 
             // Limpieza de campos después de la inserción
-            $this->reset(['nombre', 'direccion', 'telefono', 'email','gastos_llegada','contacto']);
+            $this->reset(['nombre', 'direccion', 'telefono', 'email','gastos_llegada_20','gastos_llegada_40','gastos_llegada_h4','gastos_llegada_grupage','contacto']);
         } else {
             $this->alert('error', '¡No se ha podido registrar el proveedor!', [
                 'position' => 'center',

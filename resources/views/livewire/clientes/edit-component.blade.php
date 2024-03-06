@@ -17,7 +17,7 @@
     <!-- end page-title -->
 
     <div class="row">
-        <div class="col-md-12">
+        <div class="col-md-9">
             <div class="card m-b-30">
                 <div class="card-body">
                     <form wire:submit.prevent="update">
@@ -69,13 +69,20 @@
                                 @error('email') <span class="text-danger">{{ $message }}</span> @enderror
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col-12">
-                                <button class="w-100 btn btn-success mb-2" type="submit">Actualizar Cliente</button>
-                                <button class="w-100 btn btn-danger mb-2" type="button" id="alertaEliminar">Eliminar Cliente</button>
-                            </div>
-                        </div>
                     </form>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card m-b-30">
+                <div class="card-body">
+                    <h5>Acciones</h5>
+                    <div class="row">
+                        <div class="col-12">
+                            <button class="w-100 btn btn-success mb-2" type="button" wire:click="update">Actualizar Cliente</button>
+                            <button class="w-100 btn btn-danger mb-2" type="button" id="alertaEliminar">Eliminar Cliente</button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

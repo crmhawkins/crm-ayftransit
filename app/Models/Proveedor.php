@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 class Proveedor extends Model
 {
     protected $table ='proveedores';
-    protected $fillable = ['nombre', 'direccion', 'telefono', 'email','gastos_llegada','contacto'];
+    protected $fillable = ['nombre', 'direccion', 'telefono', 'email','gastos_llegada_20','gastos_llegada_40','gastos_llegada_h4','gastos_llegada_grupage','contacto'];
 
     public function operaciones()
     {

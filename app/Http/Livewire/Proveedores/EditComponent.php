@@ -62,7 +62,10 @@ class EditComponent extends Component
         $Proveedorupdated = $Proveedor->update([
             'nombre' => $this->nombre,
             'contacto' => $this->contacto,
-            'gastos_llegada' => $this->gastos_llegada,
+            'gastos_llegada_20' => $this->gastos_llegada_20,
+            'gastos_llegada_40' => $this->gastos_llegada_40,
+            'gastos_llegada_h4' => $this->gastos_llegada_h4,
+            'gastos_llegada_grupage' => $this->gastos_llegada_grupage,
             'direccion' => $this->direccion,
             'telefono' => $this->telefono,
             'email' => $this->email,

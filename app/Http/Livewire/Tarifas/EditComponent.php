@@ -64,7 +64,8 @@ class EditComponent extends Component
         return [
             'confirmed',
             'alertaGuardar',
-            'update'
+            'update',
+            'confirmDelete'
         ];
     }
 
@@ -154,6 +155,21 @@ class EditComponent extends Component
             return redirect()->route('tarifas.index-terrestre');
 
         }
+    }
+
+    public function confirmDelete()
+    {
+        $tarifa = Tarifa::find($this->identificador);
+        $tarifa->cargosExtra()->delete();
+
+        $tarifa->delete();
+        $this->alert('success', 'Tarifa eliminada correctamente.', [
+            'position' => 'center',
+            'timer' => 3000,
+            'toast' => false,
+            'showConfirmButton' => false,
+        ]);
+        return redirect()->route('tarifas.index-maritimo');
     }
 }
 

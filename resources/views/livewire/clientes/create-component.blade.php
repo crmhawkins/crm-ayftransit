@@ -17,20 +17,32 @@
     <!-- end page-title -->
 
     <div class="row">
-        <div class="col-md-12">
+        <div class="col-md-9">
             <div class="card m-b-30">
                 <div class="card-body">
                     <form wire:submit.prevent="submit">
                         <div class="form-group row">
                             <div class="col-sm-6">
-                                <label for="nombre" class="col-form-label">Nombre</label>
-                                <input type="text" wire:model="nombre" class="form-control" id="nombre" placeholder="Nombre">
-                                @error('nombre') <span class="text-danger">{{ $message }}</span> @enderror
+                                <label for="empresa" class="col-form-label">Empresa</label>
+                                <input type="text" wire:model="empresa" class="form-control" id="empresa" placeholder="Nombre de Empresa">
+                                @error('empresa') <span class="text-danger">{{ $message }}</span> @enderror
                             </div>
                             <div class="col-sm-6">
-                                <label for="email1" class="col-form-label">Email</label>
-                                <input type="email" wire:model="email" class="form-control" id="email1" placeholder="Email">
-                                @error('email') <span class="text-danger">{{ $message }}</span> @enderror
+                                <label for="nombre" class="col-form-label">Nombre de contacto</label>
+                                <input type="text" wire:model="nombre" class="form-control" id="nombre" placeholder="Nombre de contacto">
+                                @error('nombre') <span class="text-danger">{{ $message }}</span> @enderror
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-sm-6">
+                                <label for="cif" class="col-form-label">CIF/DNI</label>
+                                <input type="text" wire:model="cif" class="form-control" id="cif" placeholder="CIF/DNI">
+                                @error('cif') <span class="text-danger">{{ $message }}</span> @enderror
+                            </div>
+                            <div class="col-sm-6">
+                                <label for="direccion" class="col-form-label">Dirección</label>
+                                <input type="text" wire:model="direccion" class="form-control" id="direccion" placeholder="Dirección">
+                                @error('direccion') <span class="text-danger">{{ $message }}</span> @enderror
                             </div>
                         </div>
                         <div class="form-group row">
@@ -40,19 +52,56 @@
                                 @error('telefono') <span class="text-danger">{{ $message }}</span> @enderror
                             </div>
                             <div class="col-sm-6">
-                                <label for="direccion" class="col-form-label">Dirección</label>
-                                <input type="text" wire:model="direccion" class="form-control" id="direccion" placeholder="Dirección">
-                                @error('direccion') <span class="text-danger">{{ $message }}</span> @enderror
+                                <label for="email" class="col-form-label">Email</label>
+                                <input type="text" wire:model="email" class="form-control" id="email" placeholder="Email">
+                                @error('email') <span class="text-danger">{{ $message }}</span> @enderror
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col-12">
-                                <button type="submit" class="btn btn-success">Guardar Cliente</button>
+                        <div class="form-group row">
+                            <div class="col-sm-6">
+                                <label for="seguro" class="col-form-label">Seguro</label>
+                                <input type="text" wire:model="seguro" class="form-control" id="seguro" placeholder="Seguro">
+                                @error('seguro') <span class="text-danger">{{ $message }}</span> @enderror
+                            </div>
+                            <div class="col-sm-6">
+                                <label for="pago" class="col-form-label">Metodo de pago</label>
+                                <input type="text" wire:model="pago" class="form-control" id="pago" placeholder="Pago">
+                                @error('email') <span class="text-danger">{{ $message }}</span> @enderror
                             </div>
                         </div>
                     </form>
                 </div>
             </div>
         </div>
+        <div class="col-md-3">
+            <div class="card m-b-30">
+                <div class="card-body">
+                    <h5>Acciones</h5>
+                    <div class="row">
+                        <div class="col-12">
+                            <button class="w-100 btn btn-success mb-2" id="alertaGuardar">Guardar
+                                Cliente</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
+@section('scripts')
+<script>
+    $("#alertaGuardar").on("click", () => {
+        Swal.fire({
+            title: '¿Estás seguro?',
+            text: 'Pulsa el botón de confirmar para guardar el cliente.',
+            icon: 'warning',
+            showConfirmButton: true,
+            showCancelButton: true
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.livewire.emit('submit');
+            }
+        });
+    });
+</script>
+@endsection

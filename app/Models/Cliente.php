@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Cliente extends Model
 {
-    protected $fillable = ['nombre', 'direccion', 'telefono', 'email'];
+    protected $fillable = ['nombre', 'direccion', 'telefono', 'email','empresa','pago','seguro','cif'];
 
     public function operaciones()
     {

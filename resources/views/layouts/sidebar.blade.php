@@ -17,15 +17,30 @@
                     <ul class="submenu">
                         <li><a href="/admin/clientes">Ver Todos</a></li>
                         <li><a href="/admin/clientes-create">Crear Cliente</a></li>
-                        {{-- <li><a href="email-compose.html">Email Compose</a></li> --}}
                     </ul>
                 </li>
+
                 <li>
                     <a href="javascript:void(0);" class="waves-effect"><i class="fas fa-user-tie"></i><span> Proveedores <span class="float-right menu-arrow"><i class="mdi mdi-chevron-right"></i></span> </span></a>
                     <ul class="submenu">
                         <li><a href="/admin/proveedores">Ver Todos</a></li>
                         <li><a href="/admin/proveedores-create">Crear proveedor</a></li>
-                        {{-- <li><a href="email-compose.html">Email Compose</a></li> --}}
+                    </ul>
+                </li>
+                <li>
+                    <a href="javascript:void(0);" class="waves-effect"><i class="fa-solid fa-money-bill"></i><span> Tarifas <span class="float-right menu-arrow"><i class="mdi mdi-chevron-right"></i></span> </span></a>
+                    <ul class="submenu">
+                        <li><a href="/admin/tarifas-create">Crear Tarifa</a></li>
+                        <li><a href="/admin/tarifas-marinas"><i class="fa-solid fa-ship"></i><span> Ver Maritimas</i></a></li>
+                        <li><a href="/admin/tarifas-terrestres"><i class="fa-solid fa-truck"></i><span> Ver Terrestres</i></a></li>
+                        <li><a href="/admin/tarifas-aereas"><i class="fa-solid fa-plane"></i><span> Ver Aereas</i></a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="javascript:void(0);" class="waves-effect"><i class="fa-solid fa-anchor"></i><span> Puertos <span class="float-right menu-arrow"><i class="mdi mdi-chevron-right"></i></span> </span></a>
+                    <ul class="submenu">
+                        <li><a href="/admin/puertos">Ver Todos</a></li>
+                        <li><a href="/admin/puertos-create">Crear puerto</a></li>
                     </ul>
                 </li>
                 <li>

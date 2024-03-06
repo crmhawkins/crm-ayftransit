@@ -3,8 +3,8 @@
 namespace App\Http\Livewire\Presupuestos;
 
 use App\Models\Cliente;
+use App\Models\Proveedor;
 use App\Models\Contrato;
-use App\Models\TipoEvento;
 use App\Models\CategoriaEvento;
 use App\Models\Evento;
 use App\Models\ServicioEvento;
@@ -57,7 +57,7 @@ class CreateComponent extends Component
     public $categorias_evento;
 
 
-    public $id_evento = 0; // 0 por defecto por si no se selecciona ninguna
+    public $id_proveedor = 0; // 0 por defecto por si no se selecciona ninguna
     public $id_cliente = 0; // 0 por defecto por si no se selecciona ninguna
     public $observaciones = "";
 
@@ -238,19 +238,10 @@ class CreateComponent extends Component
     {
         $this->num_arti = 0;
         $this->clientes = Cliente::all(); // datos que se envian al select2
-        $this->monitores = Monitor::all();
-        $this->servicios = Servicio::all();
-        $this->articulos = Articulos::all();
-        $this->tipos_evento = TipoEvento::all();
-        $this->categorias_evento = CategoriaEvento::all();
-        $this->gestor_id = Auth::id();
-        $this->categoria_evento_id = 4;
+        $this->proveedores = Proveedor::all();
         $this->year = 0;
         $year = Carbon::now()->addYears($this->year)->format('Y');
-        $numero = Presupuesto::where('nPresupuesto', 'LIKE', "%{$year}%")->count();
-        $this->nPresupuesto = str_pad($numero + 1, 4, "0", STR_PAD_LEFT) . '/';
         $this->packs = ServicioPack::all();
-        $this->gasoilPrecio = Settings::where('id', 1)->first()->precio_gasoil_km;
         $this->fechaEmision = date("Y-m-d", time());
         $this->nombreGestor = Auth::user()->name . " " . Auth::user()->surname;
         $this->servicioEventoList = array();

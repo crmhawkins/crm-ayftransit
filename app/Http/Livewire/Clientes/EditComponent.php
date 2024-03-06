@@ -16,6 +16,10 @@ class EditComponent extends Component
     public $direccion;
     public $telefono;
     public $email;
+    public $empresa;
+    public $cif;
+    public $seguro;
+    public $pago;
 
     public function mount($identificador)
     {
@@ -26,6 +30,10 @@ class EditComponent extends Component
         $this->direccion = $cliente->direccion ?? '';
         $this->telefono = $cliente->telefono ?? '';
         $this->email = $cliente->email;
+        $this->empresa = $cliente->empresa;
+        $this->cif = $cliente->cif;
+        $this->seguro = $cliente->seguro;
+        $this->pago = $cliente->pago;
     }
 
     public function render()
@@ -36,10 +44,14 @@ class EditComponent extends Component
     public function update()
     {
         $validatedData = $this->validate([
+            'empresa'=> 'required',
+            'cif'=> 'required',
+            'seguro'=> 'nullable',
+            'pago'=> 'nullable',
             'nombre' => 'required',
             'direccion' => 'nullable',
             'telefono' => 'nullable',
-            'email' => 'required|email|unique:clientes,email,' . $this->identificador,
+            'email' => 'required|email|unique:clientes,email,'. $this->identificador,
         ]);
 
         $cliente = Cliente::find($this->identificador);
@@ -49,6 +61,10 @@ class EditComponent extends Component
             'direccion' => $this->direccion,
             'telefono' => $this->telefono,
             'email' => $this->email,
+            'empresa'=> $this->empresa,
+            'cif'=> $this->cif,
+            'seguro'=> $this->seguro,
+            'pago'=> $this->pago,
         ]);
 
         event(new \App\Events\LogEvent(Auth::user(), 9, $cliente->id));
@@ -59,6 +75,7 @@ class EditComponent extends Component
                 'timer' => 3000,
                 'toast' => false,
                 'showConfirmButton' => true,
+                'onConfirmed' => 'confirmed',
                 'confirmButtonText' => 'Ok',
             ]);
 

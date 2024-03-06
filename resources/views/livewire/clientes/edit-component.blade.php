@@ -23,14 +23,26 @@
                     <form wire:submit.prevent="update">
                         <div class="form-group row">
                             <div class="col-sm-6">
-                                <label for="nombre" class="col-form-label">Nombre</label>
-                                <input type="text" wire:model="nombre" class="form-control" id="nombre" placeholder="Nombre">
-                                @error('nombre') <span class="text-danger">{{ $message }}</span> @enderror
+                                <label for="empresa" class="col-form-label">Empresa</label>
+                                <input type="text" wire:model="empresa" class="form-control" id="empresa" placeholder="Nombre de Empresa">
+                                @error('empresa') <span class="text-danger">{{ $message }}</span> @enderror
                             </div>
                             <div class="col-sm-6">
-                                <label for="email1" class="col-form-label">Email</label>
-                                <input type="email" wire:model="email" class="form-control" id="email1" placeholder="Email">
-                                @error('email') <span class="text-danger">{{ $message }}</span> @enderror
+                                <label for="nombre" class="col-form-label">Nombre de contacto</label>
+                                <input type="text" wire:model="nombre" class="form-control" id="nombre" placeholder="Nombre de contacto">
+                                @error('nombre') <span class="text-danger">{{ $message }}</span> @enderror
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-sm-6">
+                                <label for="cif" class="col-form-label">CIF/DNI</label>
+                                <input type="text" wire:model="cif" class="form-control" id="cif" placeholder="CIF/DNI">
+                                @error('cif') <span class="text-danger">{{ $message }}</span> @enderror
+                            </div>
+                            <div class="col-sm-6">
+                                <label for="direccion" class="col-form-label">Dirección</label>
+                                <input type="text" wire:model="direccion" class="form-control" id="direccion" placeholder="Dirección">
+                                @error('direccion') <span class="text-danger">{{ $message }}</span> @enderror
                             </div>
                         </div>
                         <div class="form-group row">
@@ -40,9 +52,21 @@
                                 @error('telefono') <span class="text-danger">{{ $message }}</span> @enderror
                             </div>
                             <div class="col-sm-6">
-                                <label for="direccion" class="col-form-label">Dirección</label>
-                                <input type="text" wire:model="direccion" class="form-control" id="direccion" placeholder="Dirección">
-                                @error('direccion') <span class="text-danger">{{ $message }}</span> @enderror
+                                <label for="email" class="col-form-label">Email</label>
+                                <input type="text" wire:model="email" class="form-control" id="email" placeholder="Email">
+                                @error('email') <span class="text-danger">{{ $message }}</span> @enderror
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-sm-6">
+                                <label for="seguro" class="col-form-label">Seguro</label>
+                                <input type="text" wire:model="seguro" class="form-control" id="seguro" placeholder="Seguro">
+                                @error('seguro') <span class="text-danger">{{ $message }}</span> @enderror
+                            </div>
+                            <div class="col-sm-6">
+                                <label for="pago" class="col-form-label">Metodo de pago</label>
+                                <input type="text" wire:model="pago" class="form-control" id="pago" placeholder="Pago">
+                                @error('email') <span class="text-danger">{{ $message }}</span> @enderror
                             </div>
                         </div>
                         <div class="row">

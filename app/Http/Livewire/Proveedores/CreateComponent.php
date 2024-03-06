@@ -15,6 +15,11 @@ class CreateComponent extends Component
     public $direccion;
     public $telefono;
     public $email;
+    public $contacto;
+    public $gastos_llegada_20;
+    public $gastos_llegada_40;
+    public $gastos_llegada_h4;
+    public $gastos_llegada_grupage;
 
     public function render()
     {
@@ -25,9 +30,14 @@ class CreateComponent extends Component
     {
         $validatedData = $this->validate([
             'nombre' => 'required',
+            'contacto' => 'nullable',
+            'gastos_llegada_20' => 'nullable',
+            'gastos_llegada_40' => 'nullable',
+            'gastos_llegada_h4' => 'nullable',
+            'gastos_llegada_grupage' => 'nullable',
             'direccion' => 'nullable',
             'telefono' => 'nullable',
-            'email' => 'required|email|unique:Proveedor,email',
+            'email' => 'nullable|email|unique:proveedores,email',
         ]);
 
         $Proveedor = Proveedor::create($validatedData);
@@ -47,7 +57,7 @@ class CreateComponent extends Component
             ]);
 
             // Limpieza de campos después de la inserción
-            $this->reset(['nombre', 'direccion', 'telefono', 'email']);
+            $this->reset(['nombre', 'direccion', 'telefono', 'email','gastos_llegada','contacto']);
         } else {
             $this->alert('error', '¡No se ha podido registrar el proveedor!', [
                 'position' => 'center',
@@ -62,6 +72,8 @@ class CreateComponent extends Component
     {
         return [
             'confirmed',
+            'alertaGuardar',
+            'submit'
         ];
     }
 

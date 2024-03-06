@@ -13,6 +13,11 @@ class EditComponent extends Component
 
     public $identificador;
     public $nombre;
+    public $contacto;
+    public $gastos_llegada_20;
+    public $gastos_llegada_40;
+    public $gastos_llegada_h4;
+    public $gastos_llegada_grupage;
     public $direccion;
     public $telefono;
     public $email;
@@ -23,6 +28,11 @@ class EditComponent extends Component
 
         $this->identificador = $Proveedor->id;
         $this->nombre = $Proveedor->nombre;
+        $this->contacto = $Proveedor->contacto;
+        $this->gastos_llegada_20 = $Proveedor->gastos_llegada_20;
+        $this->gastos_llegada_40 = $Proveedor->gastos_llegada_40;
+        $this->gastos_llegada_h4 = $Proveedor->gastos_llegada_h4;
+        $this->gastos_llegada_grupage = $Proveedor->gastos_llegada_grupage;
         $this->direccion = $Proveedor->direccion ?? '';
         $this->telefono = $Proveedor->telefono ?? '';
         $this->email = $Proveedor->email;
@@ -37,15 +47,22 @@ class EditComponent extends Component
     {
         $validatedData = $this->validate([
             'nombre' => 'required',
+            'contacto' => 'nullable',
+            'gastos_llegada_20' => 'nullable',
+            'gastos_llegada_40' => 'nullable',
+            'gastos_llegada_h4' => 'nullable',
+            'gastos_llegada_grupage' => 'nullable',
             'direccion' => 'nullable',
             'telefono' => 'nullable',
-            'email' => 'required|email|unique:Proveedor,email,' . $this->identificador,
+            'email' => 'nullable|email|unique:proveedores,email,' . $this->identificador,
         ]);
 
         $Proveedor = Proveedor::find($this->identificador);
 
-        $Proveedor = $Proveedor->update([
+        $Proveedorupdated = $Proveedor->update([
             'nombre' => $this->nombre,
+            'contacto' => $this->contacto,
+            'gastos_llegada' => $this->gastos_llegada,
             'direccion' => $this->direccion,
             'telefono' => $this->telefono,
             'email' => $this->email,
@@ -53,16 +70,17 @@ class EditComponent extends Component
 
         event(new \App\Events\LogEvent(Auth::user(), 9, $Proveedor->id));
 
-        if ($Proveedor) {
+        if ($Proveedorupdated) {
             $this->alert('success', 'Proveedor actualizado correctamente!', [
                 'position' => 'center',
                 'timer' => 3000,
                 'toast' => false,
+                'onConfirmed' => 'confirmed',
                 'showConfirmButton' => true,
                 'confirmButtonText' => 'Ok',
             ]);
 
-            $this->emitTo('Proveedor.index-component', 'refresh');
+            $this->emitTo('proveedores.index-component', 'refresh');
             // Considera redirigir o cerrar el modal de edición según tu flujo de usuario
         } else {
             $this->alert('error', '¡No se ha podido actualizar la información del Proveedor!', [
@@ -86,7 +104,8 @@ class EditComponent extends Component
     public function confirmed()
     {
         // Implementa lo que sucederá cuando se confirme una acción (ej. redirección)
-        return redirect()->route('Proveedor.index');
+        return redirect()->route('proveedores.index');
+
     }
 
     // Implementa la lógica para la confirmación de eliminación si es necesario
@@ -101,6 +120,6 @@ class EditComponent extends Component
             'toast' => false,
             'showConfirmButton' => false,
         ]);
-        return redirect()->route('Proveedor.index');
+        return redirect()->route('proveedores.index');
     }
 }

@@ -30,7 +30,8 @@ use App\Http\Controllers\TipoGastoController;
 use App\Http\Controllers\CategoriaEventoController;
 use App\Http\Controllers\TipoEventoController;
 use App\Http\Controllers\ProveedoresController;
-
+use App\Http\Controllers\PuertoController;
+use App\Http\Controllers\TarifasController;
 
 use App\Http\Controllers\ServicioController;
 use App\Http\Controllers\ServicioCategoriaController;
@@ -172,13 +173,7 @@ Route::group(['middleware' => 'is.admin', 'prefix' => 'admin'], function () {
     Route::get('iva/create', [IvaController::class, 'create'])->name('iva.create');
     Route::get('iva/edit/{id}', [IvaController::class, 'edit'])->name('iva.edit');
 
-    // Clients
-    Route::get('clients', [ClientController::class, 'index'])->name('client.index');
-    Route::get('clients-create', [ClientController::class, 'create'])->name('client.create');
-    Route::post('clients-store', [ClientController::class, 'store'])->name('client.store');
-    Route::get('clients-edit', [ClientController::class, 'edit'])->name('client.edit');
-    Route::post('clients-updated', [ClientController::class, 'updated'])->name('client.updated');
-    Route::delete('clients-delete', [ClientController::class, 'delete'])->name('client.delete');
+
 
     // Clients
     Route::get('clients-emails', [ClientsEmailController::class, 'index'])->name('clientEmail.index');
@@ -228,10 +223,7 @@ Route::group(['middleware' => 'is.admin', 'prefix' => 'admin'], function () {
     Route::get('agenda', [AgendaController::class, 'index'])->name('agenda.index');
 
 
-    // Settings
-    Route::get('clients', [ClientsController::class, 'index'])->name('clients.index');
-    Route::get('clients/create', [ClientsController::class, 'create'])->name('clients.create');
-    Route::get('clients/edit/{id}', [ClientsController::class, 'edit'])->name('clients.edit');
+
 
     // Eventos
     Route::get('/eventos', [EventoController::class, 'index'])->name('eventos.index');
@@ -268,6 +260,20 @@ Route::group(['middleware' => 'is.admin', 'prefix' => 'admin'], function () {
      Route::get('/clientes-create', [ClienteController::class, 'create'])->name('clientes.create');
      Route::get('/clientes-create-from-budget', [ClienteController::class, 'createFromBudget'])->name('clientes.create-from-budget');
      Route::get('/clientes-edit/{id}', [ClienteController::class, 'edit'])->name('clientes.edit');
+
+      // Puertos
+      Route::get('/puertos', [PuertoController::class, 'index'])->name('puertos.index');
+      Route::get('/puertos-create', [PuertoController::class, 'create'])->name('puertos.create');
+      Route::get('/puertos-create-from-budget', [PuertoController::class, 'createFromBudget'])->name('puertos.create-from-budget');
+      Route::get('/puertos-edit/{id}', [PuertoController::class, 'edit'])->name('puertos.edit');
+
+        // Tarifas
+        Route::get('/tarifas-marinas', [TarifasController::class, 'indexMaritima'])->name('tarifas.index-maritimo');
+        Route::get('/tarifas-terrestres', [TarifasController::class, 'indexTerrestre'])->name('tarifas.index-terrestre');
+        Route::get('/tarifas-aereas', [TarifasController::class, 'indexAerea'])->name('tarifas.index-aereo');
+        Route::get('/tarifas-create', [TarifasController::class, 'create'])->name('tarifas.create');
+        Route::get('/tarifas-create-from-budget', [TarifasController::class, 'createFromBudget'])->name('tarifas.create-from-budget');
+        Route::get('/tarifas-edit/{id}', [TarifasController::class, 'edit'])->name('tarifas.edit');
 
      // Proveedores
      Route::get('/proveedores', [ProveedoresController::class, 'index'])->name('proveedores.index');

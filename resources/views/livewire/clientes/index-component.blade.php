@@ -27,8 +27,8 @@
                         <table id="datatable-buttons" class="table table-striped table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                             <thead>
                                 <tr>
-                                    <th scope="col">Nombre</th>
-                                    <th scope="col">Dirección</th>
+                                    <th scope="col">Empresa</th>
+                                    <th scope="col">Contacto</th>
                                     <th scope="col">Teléfono</th>
                                     <th scope="col">Email</th>
                                     <th scope="col">Acciones</th>
@@ -37,12 +37,12 @@
                             <tbody>
                                 @foreach ($clientes as $cliente)
                                     <tr>
+                                        <td>{{ $cliente->empresa }}</td>
                                         <td>{{ $cliente->nombre }}</td>
-                                        <td>{{ $cliente->direccion }}</td>
                                         <td>{{ $cliente->telefono }}</td>
                                         <td>{{ $cliente->email }}</td>
-                                        <td> 
-                                            <a href="{{ route('clientes.edit', $cliente->id) }}" class="btn btn-primary">Ver/Editar</a> 
+                                        <td>
+                                            <a href="{{ route('clientes.edit', $cliente->id) }}" class="btn btn-primary">Ver/Editar</a>
                                         </td>
                                     </tr>
                                 @endforeach
@@ -55,9 +55,9 @@
                 </div>
             </div>
         </div> <!-- end col -->
-    </div> <!-- end row -->    
+    </div> <!-- end row -->
 </div>
-    
+
 
     @section('scripts')
 
@@ -79,9 +79,9 @@
     <!-- Responsive examples -->
     <script src="../plugins/datatables/dataTables.responsive.min.js"></script>
     <script src="../plugins/datatables/responsive.bootstrap4.min.js"></script>
-    <script src="../assets/pages/datatables.init.js"></script>   
+    <script src="../assets/pages/datatables.init.js"></script>
 
-    {{-- 
+    {{--
 
         <script src="https://cdn.datatables.net/responsive/2.4.0/js/dataTables.responsive.min.js"></script>
         <script src="https://cdn.datatables.net/1.13.2/js/jquery.dataTables.min.js"></script>

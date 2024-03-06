@@ -12,6 +12,10 @@ class CreateComponent extends Component
     use LivewireAlert;
 
     public $nombre;
+    public $empresa;
+    public $cif;
+    public $seguro;
+    public $pago;
     public $direccion;
     public $telefono;
     public $email;
@@ -24,10 +28,21 @@ class CreateComponent extends Component
     public function submit()
     {
         $validatedData = $this->validate([
-            'nombre' => 'required',
+            'empresa'=> 'required',
+            'cif'=> 'required',
+            'seguro'=> 'nullable',
+            'pago'=> 'nullable',
+            'nombre' => 'nullable',
             'direccion' => 'nullable',
-            'telefono' => 'nullable',
+            'telefono' => 'required',
             'email' => 'required|email|unique:clientes,email',
+        ],
+        // Mensajes de error
+        [
+            'empresa.required'=> 'El nombre de la empresa es obligatorio.',
+            'cif.required'=> 'El CIF/DNI es obligatorio.',
+            'email.required' => 'El email es obligatorio.',
+            'telefono.required' => 'El telefono es obligatorio.',
         ]);
 
         $cliente = Cliente::create($validatedData);
@@ -47,7 +62,7 @@ class CreateComponent extends Component
             ]);
 
             // Limpieza de campos después de la inserción
-            $this->reset(['nombre', 'direccion', 'telefono', 'email']);
+            $this->reset(['nombre', 'direccion', 'telefono', 'email','empresa','pago','seguro','cif']);
         } else {
             $this->alert('error', '¡No se ha podido registrar el cliente!', [
                 'position' => 'center',
@@ -62,6 +77,7 @@ class CreateComponent extends Component
     {
         return [
             'confirmed',
+            'submit'
         ];
     }
 

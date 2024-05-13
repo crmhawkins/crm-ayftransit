@@ -13,12 +13,9 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('puertos', function (Blueprint $table) {
-            $table->id();
-            $table->string('Nombre');
-            $table->string('Pais');
-            $table->timestamps();
-            $table->softDeletes();
+        Schema::table('tarifas_presupuestos', function (Blueprint $table) {
+            $table->integer("tarifa_id")->nullable();
+            $table->date("validez")->nullable();
         });
     }
 
@@ -29,6 +26,10 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('puertos');
+        Schema::table('tarifas_presupuestos', function (Blueprint $table) {
+            $table->dropColumn("tarifa_id");
+            $table->dropColumn("validez");
+
+        });
     }
 };

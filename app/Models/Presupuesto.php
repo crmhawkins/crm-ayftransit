@@ -5,45 +5,31 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Presupuesto extends Model
 {
     use HasFactory;
-
+    use SoftDeletes;
     protected $table = "presupuestos";
 
     protected $fillable = [
-        'id_evento',
         'id_cliente',
-        'precioFinal',
-        'precioBase',
-        'descuento',
-        'adelanto',
+        'estado',
         'fechaEmision',
-        'fechaVencimiento',
-        "nPresupuesto",
-        'seguros_sociales',
-        'pago_pendiente',
-        'materiales',
-        "estado",
-        'categoria_evento_id',
-        'gasoilDistancia',
-        'gestor_id',
-        'created_at',
-        'updated_at',
-        'deleted_at',
-
+        'tipo_imp_exp',
+        'tipo_cont_grup',
+        'tipo_mar_area_terr',
+        'id_proveedorterrestre',
+        'destino',
+        'precio_terrestre',
+        'gastos_llegada_20',
+        'gastos_llegada_40',
+        'gastos_llegada_h4',
+        'gastos_llegada_grupage'
     ];
 
-    // public function programas()
-    // {
-    //     return $this->hasMany('app\Models\Programa');
-    // }
 
-    public function contrato(): HasOne
-    {
-        return $this->hasOne(Contrato::class, "id", "id_presupuesto");
-    }
     /**
      * Mutaciones de fecha.
      *
@@ -53,15 +39,16 @@ class Presupuesto extends Model
         'created_at', 'updated_at', 'deleted_at',
     ];
 
-    public function servicios()
+    public function cargosExtra()
     {
-        return $this->belongsToMany(Servicio::class, 'servicio_presupuesto', 'presupuesto_id', 'servicio_id')
-        ->withPivot('numero_monitores', 'precio_final', 'tiempo', 'tiempo_montaje', 'tiempo_desmontaje', 'hora_montaje', 'hora_inicio', 'hora_finalizacion', 'id_monitores', 'sueldo_monitores', 'gasto_gasoil', 'pago_pendiente', 'articulo_seleccionado','num_art_indef');
+        return $this->hasMany(CargosExtra::class);
     }
-
-    public function packs()
+    public function notas()
     {
-        return $this->belongsToMany(ServicioPack::class, 'pack_presupuesto', 'presupuesto_id', 'pack_id')
-        ->withPivot('numero_monitores', 'precio_final', 'tiempos', 'tiempos_montaje', 'tiempos_desmontaje', 'horas_montaje','horas_inicio', 'horas_finalizacion', 'id_monitores', 'sueldos_monitores', 'gastos_gasoil', 'pagos_pendientes', 'articulos_seleccionados');
+        return $this->hasMany(Notas::class);
+    }
+    public function Tarifas()
+    {
+        return $this->hasMany(TarifasPresupuestos::class);
     }
 }

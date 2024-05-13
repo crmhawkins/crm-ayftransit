@@ -16,7 +16,7 @@
         "laravel/ui": "^4.0",
         "lcobucci/jwt": "^5.0",
         "livewire/livewire": "^2.10",
-        "maatwebsite/excel": "*",
+        "maatwebsite/excel": "^3.1",
         "mediconesystems/livewire-datatables": "*"
     },
     "require-dev": {

@@ -1,7 +1,6 @@
-
 @extends('layouts.app')
 
-@section('title', 'Ver Proveedores')
+@section('title', 'Subida de  Tarifas')
 
 @section('head')
     @vite(['resources/sass/productos.scss'])
@@ -10,6 +9,7 @@
 
 @section('content-principal')
 <div>
-    @livewire('proveedores.index-component')
+    @livewire('tarifas.subida-component')
 </div>
 @endsection
+

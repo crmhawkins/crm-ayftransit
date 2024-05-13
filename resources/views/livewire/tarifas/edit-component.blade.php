@@ -22,7 +22,7 @@
                     <form wire:submit.prevent="submit">
                         <div class="form-group row">
                             <div class="col-sm-4">
-                                <label>Tipo de Tarifa: {{$tipo_mar_area_terr}}</label>
+                                <label>Tipo de Tarifa:</label>
                                 <div class="d-flex align-items-center mt-2">
                                     <div class="form-check mr-3">
                                         <input class="form-check-input" type="radio" wire:model="tipo_mar_area_terr" value="{{1}}" id="maritima">
@@ -95,11 +95,11 @@
                             @endif
                         </div>
                         <div class="form-group row">
-                            <div class="col-sm-6">
-                                <label for="nombre" class="col-form-label">Proveedor</label>
+                            <div class="col-sm-4">
+                                <label for="nombre" class="col-form-label">Proveedor/Naviera</label>
                                 <select class="form-control" name="proveedor_id" id="proveedor_id"
                                 wire:model="proveedor_id">
-                                <option value="0">-- ELIGE UN PROVEEDOR --</option>
+                                <option value="0">-- ELIGE UN NAVIERA --</option>
                                 @foreach ($Proveedores as $proveedor)
                                             <option value="{{ $proveedor->id }}">
                                                 {{ $proveedor->nombre }}
@@ -107,7 +107,12 @@
                                         @endforeach
                             </select>
                             </div>
-                            <div class="col-sm-6">
+                            <div class="col-sm-4">
+                                <label for="efectividad" class="col-form-label">Efectiva desde:</label>
+                                <input type="date" wire:model="efectividad" class="form-control" id="efectividad" placeholder="Fecha de inicio de tarifa">
+                                @error('efectividad') <span class="text-danger">{{ $message }}</span> @enderror
+                            </div>
+                            <div class="col-sm-4">
                                 <label for="validez" class="col-form-label">Válido hasta:</label>
                                 <input type="date" wire:model="validez" class="form-control" id="validez" placeholder="Fecha de fin de tarifa">
                                 @error('validez') <span class="text-danger">{{ $message }}</span> @enderror
@@ -172,20 +177,6 @@
                                 </div>
                             @endif
                         @endif
-                        @foreach ($cargo as $index => $cargoExtra)
-                            <div class="form-group row">
-                                <div class="col-sm-4">
-                                    <input type="text" class="form-control" wire:model="cargo.{{ $index }}.concepto" placeholder="Concepto">
-                                </div>
-                                <div class="col-sm-4">
-                                    <input type="number" class="form-control" wire:model="cargo.{{ $index }}.valor" placeholder="Valor">
-                                </div>
-                                <div class="col-4">
-                                    <button class="btn btn-danger" wire:click.prevent="eliminarCargoExtra({{ $index }})">Eliminar</button>
-                                </div>
-                            </div>
-                        @endforeach
-                        <button class="btn btn-primary" wire:click.prevent="agregarCargoExtra">Agregar Cargo Extra</button>
                     </form>
                 </div>
             </div>

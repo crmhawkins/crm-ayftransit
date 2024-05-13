@@ -20,10 +20,7 @@ class SettingsComponent extends Component
 
     public function mount()
     {
-        $this->setting = Settings::where('id', 1)->first();
 
-        $this->precio_gasoil_km = Settings::where('id', 1)->first()->precio_gasoil_km;
-        $this->saldo_inicial = Settings::where('id', 1)->first()->saldo_inicial;
 
     }
 

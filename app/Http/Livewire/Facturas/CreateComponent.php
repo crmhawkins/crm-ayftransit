@@ -24,10 +24,7 @@ class CreateComponent extends Component
     public $descripcion;
     public $estado = "Pendiente";
     public $metodo_pago = "No Pagado";
-
-
     public $presupuestos;
-
     public $estadoPresupuesto = 0;
     public $presupuestoSeleccionado;
     public $alumnoDePresupuestoSeleccionado;

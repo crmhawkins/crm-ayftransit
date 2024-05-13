@@ -25,8 +25,9 @@ class CreateComponent extends Component
     public $proveedor_id;
     public $dias;
     public $cargo= [];
-    public $validez;
     public $Proveedores;
+    public $validez;
+    public $efectividad;
     public $Puertos;
 
     public function render()
@@ -44,17 +45,9 @@ class CreateComponent extends Component
         return [
             'confirmed',
             'alertaGuardar',
-            'submit'
+            'submit',
+            'confirmed'
         ];
-    }
-    public function agregarCargoExtra()
-    {
-        $this->cargo[] = ['concepto' => '', 'valor' => ''];
-    }
-    public function eliminarCargoExtra($index)
-    {
-        unset($this->cargo[$index]);
-        $this->cargo = array_values($this->cargo); // Reindexa el arreglo después de eliminar un elemento
     }
     public function submit()
     {
@@ -90,16 +83,10 @@ class CreateComponent extends Component
             'tipo_cont_grup' => $this->tipo_cont_grup,
             'dias' => $this->dias,
             'validez' => $this->validez,
+            'efectividad' => $this->efectividad,
         ]);
 
-        $tarifa->cargosExtra()->delete();
 
-        foreach ($this->cargo as $cargoExtra) {
-            $tarifa->cargosExtra()->create([
-                'concepto' => $cargoExtra['concepto'],
-                'valor' => $cargoExtra['valor'],
-            ]);
-        }
 
         if ($tarifa) {
             $this->alert('success', 'Tarifa registrada correctamente!', [
@@ -107,7 +94,7 @@ class CreateComponent extends Component
                 'timer' => 3000,
                 'toast' => false,
                 'showConfirmButton' => true,
-                'onConfirmed' => '',
+                'onConfirmed' => 'confirmed',
                 'confirmButtonText' => 'Ok',
                 'timerProgressBar' => true,
             ]);
@@ -135,6 +122,19 @@ class CreateComponent extends Component
                 'timer' => 3000,
                 'toast' => false,
             ]);
+        }
+
+    }
+    public function confirmed()
+    {
+        switch($this->tipo_mar_area_terr){
+        case 1:
+            return redirect()->route('tarifas.index-maritimo');
+        case 2:
+            return redirect()->route('tarifas.index-aereo');
+        case 3:
+            return redirect()->route('tarifas.index-terrestre');
+
         }
     }
 }

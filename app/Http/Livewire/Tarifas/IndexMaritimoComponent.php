@@ -9,6 +9,7 @@ use App\Models\Puerto;
 
 
 
+
 class IndexMaritimoComponent extends Component
 {
 
@@ -23,9 +24,9 @@ class IndexMaritimoComponent extends Component
     }
     public function getProveedor($id)
     {
-        $nombreProvedor = Proveedor::find($id)->nombre;
+        $nombreProvedor = Proveedor::find($id);
         if (isset($nombreProvedor)){
-            return $nombreProvedor ;
+            return $nombreProvedor->nombre ;
         }else{
             return "Proveedor no definido" ;
         }
@@ -33,9 +34,9 @@ class IndexMaritimoComponent extends Component
 
     public function getPuerto($id)
     {
-        $nombrePuerto = Puerto::find($id)->Nombre;
+        $nombrePuerto = Puerto::find($id);
         if (isset($nombrePuerto)){
-            return $nombrePuerto ;
+            return $nombrePuerto->Nombre ;
         }else{
             return "Puerto no definido" ;
         }

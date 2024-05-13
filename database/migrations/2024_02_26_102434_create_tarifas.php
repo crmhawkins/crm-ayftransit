@@ -30,6 +30,7 @@ return new class extends Migration
             $table->string('dias')->nullable();
             $table->date('validez')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

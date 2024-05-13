@@ -26,7 +26,7 @@ class Tarifa extends Model
         'dias',
         'cargo',
         'validez',
-
+        'efectividad'
     ];
 
     /**
@@ -37,8 +37,18 @@ class Tarifa extends Model
     protected $dates = [
         'created_at', 'updated_at', 'deleted_at',
     ];
-    public function cargosExtra()
-{
-    return $this->hasMany(CargosExtra::class);
-}
+    public function origen()
+    {
+        return $this->belongsTo(Puerto::class, 'origen_id');
+    }
+
+    public function destino()
+    {
+        return $this->belongsTo(Puerto::class, 'destino_id');
+    }
+
+    public function proveedor()
+    {
+        return $this->belongsTo(Proveedor::class,'proveedor_id');
+    }
 }

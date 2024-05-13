@@ -30,7 +30,8 @@
                 <li>
                     <a href="javascript:void(0);" class="waves-effect"><i class="fa-solid fa-money-bill"></i><span> Tarifas <span class="float-right menu-arrow"><i class="mdi mdi-chevron-right"></i></span> </span></a>
                     <ul class="submenu">
-                        <li><a href="/admin/tarifas-create">Crear Tarifa</a></li>
+                        <li><a href="/admin/tarifas-create">Crear Tarifa Inidvidual</a></li>
+                        <li><a href="/admin/tarifas-subida">Crear Tarifas</a></li>
                         <li><a href="/admin/tarifas-marinas"><i class="fa-solid fa-ship"></i><span> Ver Maritimas</i></a></li>
                         <li><a href="/admin/tarifas-terrestres"><i class="fa-solid fa-truck"></i><span> Ver Terrestres</i></a></li>
                         <li><a href="/admin/tarifas-aereas"><i class="fa-solid fa-plane"></i><span> Ver Aereas</i></a></li>
@@ -51,6 +52,9 @@
                         {{-- <li><a href="email-compose.html">Email Compose</a></li> --}}
                     </ul>
                 </li>
+                <li>
+                    <a href="/admin/settings" class="waves-effect"><i class="fas fa-gear"></i><span> Profit </span></a>
+                </li>
                 <li class="menu-title">Departamentos</li>
 
                 <li>
@@ -69,9 +73,7 @@
                         {{-- <li><a href="email-compose.html">Email Compose</a></li> --}}
                     </ul>
                 </li>
-                <li>
-                    <a href="/admin/settings" class="waves-effect"><i class="fas fa-gear"></i><span> Opciones </span></a>
-                </li>
+
 
 
 

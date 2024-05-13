@@ -15,6 +15,7 @@ return new class extends Migration
             $table->decimal('valor', 8, 2);
             $table->string('puerto')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

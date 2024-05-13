@@ -29,6 +29,7 @@ class EditComponent extends Component
     public $dias;
     public $cargo= [];
     public $validez;
+    public $efectividad;
     public $Proveedores;
     public $Puertos;
 
@@ -52,7 +53,7 @@ class EditComponent extends Component
         $this->proveedor_id = $tarifa->proveedor_id;
         $this->dias = $tarifa->dias;
         $this->validez = $tarifa->validez;
-        $this->cargo = $tarifa->cargosExtra->toArray();
+        $this->efectividad = $tarifa->efectividad;
     }
     public function render()
     {
@@ -69,15 +70,6 @@ class EditComponent extends Component
         ];
     }
 
-    public function agregarCargoExtra()
-    {
-        $this->cargo[] = ['concepto' => '', 'valor' => ''];
-    }
-    public function eliminarCargoExtra($index)
-    {
-        unset($this->cargo[$index]);
-        $this->cargo = array_values($this->cargo); // Reindexa el arreglo después de eliminar un elemento
-    }
 
     public function update()
     {
@@ -114,16 +106,9 @@ class EditComponent extends Component
             'cargo' => $this->cargo,
             'tipo_cont_grup' => $this->tipo_cont_grup,
             'validez' => $this->validez,
+            'efectividad' => $this->efectividad,
         ]);
 
-        $tarifa->cargosExtra()->delete();
-
-        foreach ($this->cargo as $cargoExtra) {
-            $tarifa->cargosExtra()->create([
-                'concepto' => $cargoExtra['concepto'],
-                'valor' => $cargoExtra['valor'],
-            ]);
-        }
 
         if ($puertoTarifa) {
             $this->alert('success', 'Tarifa actualizada correctamente!', [

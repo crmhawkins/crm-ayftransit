@@ -24,4 +24,14 @@ class Puerto extends Model
     protected $dates = [
         'created_at', 'updated_at', 'deleted_at',
     ];
+
+    public function tarifasComoOrigen()
+    {
+        return $this->hasMany(Tarifa::class, 'origen_id');
+    }
+
+    public function tarifasComoDestino()
+    {
+        return $this->hasMany(Tarifa::class, 'destino_id');
+    }
 }

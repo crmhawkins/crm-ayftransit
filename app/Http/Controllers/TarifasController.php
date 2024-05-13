@@ -43,6 +43,11 @@ class TarifasController extends Controller
         return view('tarifa.create');
 
     }
+    public function subida()
+    {
+        return view('tarifa.subida');
+
+    }
     public function createFromBudget()
     {
         //

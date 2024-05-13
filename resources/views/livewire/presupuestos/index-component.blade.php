@@ -28,10 +28,6 @@
                                 <th scope="col">Número</th>
                                 <th scope="col">Fecha emisión</th>
                                 <th scope="col">Cliente</th>
-                                <th scope="col">Evento</th>
-                                <th scope="col">Precio Base</th>
-                                <th scope="col">Descuento</th>
-                                <th scope="col">Precio</th>
                                 <th scope="col">Estado</th>
                                 <th scope="col">Acciones</th>
                             </tr>
@@ -43,10 +39,6 @@
                                 <td>{{ $presup->id }}</td>
                                 <td>{{ $presup->fechaEmision }}</td>
                                 <td>{{ $this->getClienteNombre($presup->id_cliente) }}</td>
-                                <td>{{ $this->getEventoNombre($eventos->find($presup->id_evento)->eventoNombre) }}</td>
-                                <td>{{ $presup->precioBase }} €</td>
-                                <td>{{ $presup->descuento }} €</td>
-                                <td>{{ $presup->precioFinal }} €</td>
                                 <td>@if($presup->estado == "Aceptado")
                                     <span class="badge badge-success">Aceptado</span>
                                     @elseif($presup->estado == "Pendiente")

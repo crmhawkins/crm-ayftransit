@@ -5,10 +5,10 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class CargosExtra extends Model
+class TarifasPresupuestos extends Model
 {
     use HasFactory;
-    protected $table = "cargosextras";
+    protected $table = "tarifas_presupuestos";
     /**
      * Los atributos que son asignables en masa.
      *
@@ -16,12 +16,16 @@ class CargosExtra extends Model
      */
     protected $fillable = [
         'presupuesto_id',
-        'concepto',
-        'valor20',
-        'valor20',
-        'valor40',
-        'valorHQ',
-        'Unidad',
+        'id_proveedor',
+        'origen_id',
+        'destino_id',
+        'precio_grupage',
+        'precio_contenedor_20',
+        'precio_contenedor_40',
+        'precio_contenedor_h4',
+        'dias',
+        'tarifa_id',
+        'validez',
     ];
     /**
      * Obtiene la tarifa a la que pertenece el cargo extra.

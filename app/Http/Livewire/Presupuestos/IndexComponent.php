@@ -21,8 +21,6 @@ class IndexComponent extends Component
     {
         $this->presupuestos = Presupuesto::all();
         $this->clientes = Cliente::all();
-        $this->eventos = Evento::all();
-        $this->tipos_eventos = TipoEvento::all();
     }
 
     public function getClienteNombre($id){
@@ -31,16 +29,14 @@ class IndexComponent extends Component
             return "Presupuesto sin cliente";
         }
         $cliente = $this->clientes->find($id);
-
-        $nombre = $cliente->nombre;
-        $apellido = $cliente->apellido;
-
-        return "$nombre $apellido";
+        if(isset($cliente)){
+            $nombre = $cliente->nombre;
+            return $nombre;
+        }else{
+            return'Cliente no encontrado';
+        }
     }
-    public function getEventoNombre($id){
-        $evento = $this->tipos_eventos->find($id);
-        return $evento->nombre;
-    }
+
 
     public function render()
     {

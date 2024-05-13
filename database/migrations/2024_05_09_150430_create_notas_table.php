@@ -13,14 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('cargosextras', function (Blueprint $table) {
+        Schema::create('notas', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('presupuesto_id')->constrained()->onDelete('cascade');
-            $table->string('concepto')->nullable();
-            $table->decimal('valor20', 8, 2)->nullable();
-            $table->decimal('valor40', 8, 2)->nullable();
-            $table->decimal('valorHQ', 8, 2)->nullable();
-            $table->string('Unidad')->nullable();
+            $table->string("presupuesto_id")->nullable();
+            $table->string("titulo")->nullable();
+            $table->string("descripcion")->nullable();
             $table->timestamps();
             $table->softDeletes();
         });
@@ -33,6 +30,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('cargosextras');
+        Schema::dropIfExists('notas');
     }
 };

@@ -41,8 +41,8 @@
                                         <td>{{ $Proveedor->direccion }}</td>
                                         <td>{{ $Proveedor->telefono }}</td>
                                         <td>{{ $Proveedor->email }}</td>
-                                        <td> 
-                                            <a href="{{ route('proveedores.edit', $Proveedor->id) }}" class="btn btn-primary">Ver/Editar</a> 
+                                        <td>
+                                            <a href="{{ route('proveedores.edit', $Proveedor->id) }}" class="btn btn-primary">Ver/Editar</a>
                                         </td>
                                     </tr>
                                 @endforeach
@@ -55,9 +55,9 @@
                 </div>
             </div>
         </div> <!-- end col -->
-    </div> <!-- end row -->    
+    </div> <!-- end row -->
 </div>
-    
+
 
     @section('scripts')
 
@@ -79,9 +79,9 @@
     <!-- Responsive examples -->
     <script src="../plugins/datatables/dataTables.responsive.min.js"></script>
     <script src="../plugins/datatables/responsive.bootstrap4.min.js"></script>
-    <script src="../assets/pages/datatables.init.js"></script>   
+    <script src="../assets/pages/datatables.init.js"></script>
 
-    {{-- 
+    {{--
 
         <script src="https://cdn.datatables.net/responsive/2.4.0/js/dataTables.responsive.min.js"></script>
         <script src="https://cdn.datatables.net/1.13.2/js/jquery.dataTables.min.js"></script>

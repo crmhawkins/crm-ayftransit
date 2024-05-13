@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('seguro')->nullable();
             $table->string('pago')->nullable();
             $table->string('origenes')->nullable();
+            $table->softDeletes();
         });
     }
 

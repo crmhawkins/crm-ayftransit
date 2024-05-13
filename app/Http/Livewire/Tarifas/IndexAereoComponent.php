@@ -20,9 +20,9 @@ class IndexAereoComponent extends Component
 
     public function getProveedor($id)
     {
-        $nombreProvedor = Proveedor::find($id)->nombre;
+        $nombreProvedor = Proveedor::find($id);
         if (isset($nombreProvedor)){
-            return $nombreProvedor ;
+            return $nombreProvedor->nombre ;
         }else{
             return "Proveedor no definido" ;
         }

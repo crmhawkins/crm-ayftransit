@@ -19,6 +19,7 @@ return new class extends Migration
             $table->double('gastos_llegada_40',20,2)->nullable();
             $table->double('gastos_llegada_h4',20,2)->nullable();
             $table->double('gastos_llegada_grupage',20,2)->nullable();
+            $table->softDeletes();
         });
     }
 

@@ -271,6 +271,7 @@ Route::group(['middleware' => 'is.admin', 'prefix' => 'admin'], function () {
         Route::get('/tarifas-marinas', [TarifasController::class, 'indexMaritima'])->name('tarifas.index-maritimo');
         Route::get('/tarifas-terrestres', [TarifasController::class, 'indexTerrestre'])->name('tarifas.index-terrestre');
         Route::get('/tarifas-aereas', [TarifasController::class, 'indexAerea'])->name('tarifas.index-aereo');
+        Route::get('/tarifas-subida', [TarifasController::class, 'subida'])->name('tarifas.subida');
         Route::get('/tarifas-create', [TarifasController::class, 'create'])->name('tarifas.create');
         Route::get('/tarifas-create-from-budget', [TarifasController::class, 'createFromBudget'])->name('tarifas.create-from-budget');
         Route::get('/tarifas-edit/{id}', [TarifasController::class, 'edit'])->name('tarifas.edit');

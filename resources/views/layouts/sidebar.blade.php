@@ -52,9 +52,9 @@
                         {{-- <li><a href="email-compose.html">Email Compose</a></li> --}}
                     </ul>
                 </li>
-                <li>
+                {{-- <li>
                     <a href="/admin/settings" class="waves-effect"><i class="fas fa-gear"></i><span> Profit </span></a>
-                </li>
+                </li> --}}
                 <li class="menu-title">Departamentos</li>
 
                 <li>

@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire\Presupuestos;
 
+use App\Mail\PresupuestoMailable;
 use App\Models\Cliente;
 use App\Models\Proveedor;
 use App\Models\Puerto;
@@ -11,6 +12,7 @@ use Barryvdh\DomPDF\Facade\Pdf;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
 use Livewire\Component;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 class EditComponent extends Component
 {
@@ -34,6 +36,8 @@ class EditComponent extends Component
     public $tarifasSeleccionadas =[];
     public $cargo=[];
     public $notas=[];
+    public $servicios=[];
+    public $generales=[];
     public $id_proveedor;
     public $origen_id;
     public $destino_id;
@@ -57,7 +61,6 @@ class EditComponent extends Component
         $presupuesto = Presupuesto::find($this->identificador);
         $this->clientes = Cliente::all();
         $this->puertos = Puerto::all();
-        $this->fechaEmision = Carbon::now()->format('Y-m-d');
         $this->proveedoresterrestres = Proveedor::whereHas('tarifas', function($query) {
             $query->where('tipo_mar_area_terr', 3);
         })->get();
@@ -82,6 +85,8 @@ class EditComponent extends Component
         $this->tarifasSeleccionadas = $presupuesto->Tarifas()->get()->toArray();
         $this->cargo = $presupuesto->cargosExtra()->get()->toArray();
         $this->notas = $presupuesto->notas()->get()->toArray();
+        $this->servicios = $presupuesto->servicios()->get()->toArray();
+        $this->generales = $presupuesto->generales()->get()->toArray();
         $this->TarifasProveedores = [];
         if(isset($this->id_proveedorterrestre)){
             $this->cambioProveedor();
@@ -122,7 +127,24 @@ class EditComponent extends Component
         unset($this->notas[$index]);
         $this->notas = array_values($this->notas); // Reindexa el arreglo después de eliminar un elemento
     }
-
+    public function agregarServicio()
+    {
+        $this->servicios[] = ['titulo' => '', 'descripcion' => ''];
+    }
+    public function eliminarServicio($index)
+    {
+        unset($this->servicios[$index]);
+        $this->servicios = array_values($this->servicios); // Reindexa el arreglo después de eliminar un elemento
+    }
+    public function agregarGenerales()
+    {
+        $this->generales[] = ['titulo' => '', 'descripcion' => ''];
+    }
+    public function eliminarGenerales($index)
+    {
+        unset($this->generales[$index]);
+        $this->generales = array_values($this->generales); // Reindexa el arreglo después de eliminar un elemento
+    }
     public function agregarTarifa()
     {
         $tarifa = Tarifa::find($this->tarifa_id);
@@ -243,6 +265,20 @@ class EditComponent extends Component
             ]);
         }
 
+        $presupuesto->servicios()->delete();
+        foreach ($this->servicios as $servicio) {
+            $presupuesto->servicios()->create([
+                'titulo' => $servicio['titulo'],
+                'descripcion' => $servicio['descripcion'],
+            ]);
+        }
+        $presupuesto->generales()->delete();
+        foreach ($this->generales as $general) {
+            $presupuesto->generales()->create([
+                'titulo' => $general['titulo'],
+                'descripcion' => $general['descripcion'],
+            ]);
+        }
         $presupuesto->notas()->delete();
         foreach ($this->notas as $nota) {
             $presupuesto->notas()->create([
@@ -316,34 +352,60 @@ class EditComponent extends Component
         return redirect()->route('presupuestos.index');
     }
 
-    // public function imprimirPresupuesto()
-    // {
-    //     $presupuesto = Presupuesto::find($this->identificador);
-    //     $cliente = Cliente::where('id', $presupuesto->id_cliente)->first();
-    //     $evento = Evento::where('id', $presupuesto->id_evento)->first();
-    //     $listaServicios = [];
-    //     $listaPacks = [];
-    //     $packs = ServicioPack::all();
+    public function downloadPdf()
+    {
+        $pdf=$this->crearPdf();
+        return response()->streamDownload(
+        fn () => print($pdf->output()),
+        'presupuesto-' . $this->identificador . '.pdf'
+    );
+    }
+    public function crearPdf()
+    {
+        $presupuesto = Presupuesto::find($this->identificador);
+        $data = [
+            'identificador' => $this->identificador,
+            'presupuesto' =>$presupuesto,
+            'clientes' => Cliente::all(),
+            'puertos' => Puerto::all(),
+            'proveedores' => Proveedor::all(),
+            'tarifas'=> Tarifa::all(),
+            'tarifasSeleccionadas' => $presupuesto->Tarifas()->get()->toArray(),
+            'cargo' => $presupuesto->cargosExtra()->get()->toArray(),
+            'notas' => $presupuesto->notas()->get()->toArray(),
+            'servicios' => $presupuesto->servicios()->get()->toArray(),
+            'generales' => $presupuesto->generales()->get()->toArray(),
 
-    //     foreach ($presupuesto->servicios()->get() as $servicio) {
-    //         $listaServicios[] = ['id' => $servicio->id, 'numero_monitores' => $servicio->pivot->numero_monitores, 'precioFinal' => $servicio->pivot->precio_final, 'tiempo' => $servicio->pivot->tiempo, 'hora_inicio' => $servicio->pivot->hora_inicio, 'hora_finalizacion' => $servicio->pivot->hora_finalizacion, 'existente' => 1];
-    //     }
+        ];
+        return $pdf = PDF::loadView('livewire.presupuestos.pdf-presupuesto', [
+            'identificador' => $this->identificador,
+            'presupuesto' =>$presupuesto,
+            'clientes' => Cliente::all(),
+            'puertos' => Puerto::all(),
+            'proveedores' => Proveedor::all(),
+            'tarifas'=> Tarifa::all(),
+            'tarifasSeleccionadas' => $presupuesto->Tarifas()->get()->toArray(),
+            'cargo' => $presupuesto->cargosExtra()->get()->toArray(),
+            'notas' => $presupuesto->notas()->get()->toArray(),
+            'servicios' => $presupuesto->servicios()->get()->toArray(),
+            'generales' => $presupuesto->generales()->get()->toArray(),
+        ]);
+    }
+    public function enviarCorreo()
+    {
+        $presupuesto = Presupuesto::find($this->identificador);
+        $cliente = Cliente::find($this->id_cliente);
+        $pdf = $this->crearPdf()->output();
 
-    //     foreach ($presupuesto->packs()->get() as $pack) {
-    //         $listaPacks[] = ['id' => $pack->id, 'numero_monitores' => json_decode($pack->pivot->numero_monitores, true), 'precioFinal' => $pack->pivot->precio_final, 'existente' => 1];
-    //     }
+        Mail::to($cliente->email)->send(new PresupuestoMailable($cliente, $pdf));
 
-    //     $nombreEvento = TipoEvento::find($evento->eventoNombre);
-
-    //     $datos =  [
-    //         'presupuesto' => $presupuesto, 'cliente' => $cliente, 'id_presupuesto' => $presupuesto->id, 'fechaEmision' => $this->fechaEmision, 'fechaVencimiento' => $this->fechaVencimiento,
-    //         'evento' => $evento, 'listaServicios' => $listaServicios, 'listaPacks' => $listaPacks, 'packs' => $packs, 'observaciones' => '','nombreEvento' => $nombreEvento->nombre, 'servicios' => Servicio::all(),
-    //     ];
-
-    //     $pdf = Pdf::loadView('livewire.presupuestos.contract-component', $datos)->setPaper('a4', 'vertical')->output(); //
-    //     return response()->streamDownload(
-    //         fn () => print($pdf),
-    //         'export_protocol.pdf'
-    //     );
-    // }
+        $this->alert('success', 'Correo enviado correctamente!', [
+            'position' => 'center',
+            'timer' => 3000,
+            'toast' => false,
+            'showConfirmButton' => true,
+            'onConfirmed' => 'confirmed',
+            'confirmButtonText' => 'Ok',
+        ]);
+    }
 }

@@ -310,6 +310,36 @@
                                     <td colspan="3"><button class="btn btn-primary w-100" wire:click.prevent="agregarNota">Agregar Notas</button></td>
                                 <tr>
                             </table>
+                            <table class="table p-0 table-striped table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+                                <tr>
+                                    <th colspan="3">Servicios</th>
+                                </tr>
+                                @foreach ($servicios as $index => $servicio)
+                                <tr>
+                                    <td><input type="text" class="form-control" wire:model="servicios.{{ $index }}.titulo" placeholder="Concepto"></td>
+                                    <td><textarea class="form-control" wire:model="servicios.{{ $index }}.descripcion" placeholder="descripción" rows="1"></textarea></td>
+                                    <td><button class="btn btn-danger" wire:click.prevent="eliminarServicio({{ $index }})">Eliminar</button></td>
+                                </tr>
+                                @endforeach
+                                <tr>
+                                    <td colspan="3"><button class="btn btn-primary w-100" wire:click.prevent="agregarServicio">Agregar Servicio</button></td>
+                                <tr>
+                            </table>
+                            <table class="table p-0 table-striped table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+                                <tr>
+                                    <th colspan="3">Condiciones Generales</th>
+                                </tr>
+                                @foreach ($generales as $index => $general)
+                                <tr>
+                                    <td><input type="text" class="form-control" wire:model="generales.{{ $index }}.titulo" placeholder="Concepto"></td>
+                                    <td><textarea class="form-control" wire:model="generales.{{ $index }}.descripcion" placeholder="descripción" rows="1"></textarea></td>
+                                    <td><button class="btn btn-danger" wire:click.prevent="eliminarGenerales({{ $index }})">Eliminar</button></td>
+                                </tr>
+                                @endforeach
+                                <tr>
+                                    <td colspan="3"><button class="btn btn-primary w-100" wire:click.prevent="agregarGenerales">Agregar Condiciones</button></td>
+                                <tr>
+                            </table>
                         </div>
                     </form>
                 </div>
@@ -321,7 +351,9 @@
                     <h5>Opciones de guardado</h5>
                     <div class="row">
                         <div class="col-12">
-                            <button class="w-100 btn btn-success mb-2" id="alertaGuardar">Guardar presupuesto</button>
+                            <button type="button" class="w-100 btn btn-success mb-2" id="alertaGuardar">Guardar presupuesto</button>
+                            <button type="button" wire:click="downloadPdf" class="w-100 btn btn-primary mb-2">Descargar PDF</button>
+                            <button type="button" wire:click="enviarCorreo" class="w-100 btn btn-primary mb-2">Enviar Correo</button>
                             <button class="w-100 btn btn-danger mb-2" type="button" id="alertaEliminar">Eliminar presupuesto</button>
                         </div>
                     </div>

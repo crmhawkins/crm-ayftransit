@@ -32,25 +32,26 @@ class HomeController extends Controller
      */
     public function index(Request $request)
     {
-        $presupuestos = Presupuesto::where('estado', 'Aceptado')->orWhere('estado', 'Pendiente')->orderBy('fechaEmision', 'ASC')->get();
-        $categorias = TipoEvento::all();
+        $presupuestosPendientes = Presupuesto::Where('estado', 'Pendiente')->orderBy('fechaEmision', 'ASC')->get();
+        $presupuestosAceptados = Presupuesto::where('estado', 'Aceptado')->orderBy('fechaEmision', 'ASC')->get();
+        // $categorias = TipoEvento::all();
 
-        $inicioSemana = Carbon::now()->startOfWeek();  // Lunes de esta semana
-        $finSemana = Carbon::now()->endOfWeek();  // Domingo de esta semana
-        $inicioMes = Carbon::now()->startOfMonth()->startOfWeek();  // Lunes de esta semana
-        $finMes = Carbon::now()->endOfMonth()->endOfWeek();  // Domingo de esta semana
-        $inicioMesPasado = Carbon::now()->startOfMonth()->startOfWeek()->subMonth();  // Lunes de esta semana
-        $finMesPasado = Carbon::now()->endofMonth()->endofWeek()->subMonth();  // Domingo de esta semana
-        $ingresos_mensuales = (float) ($presupuestos->whereBetween('fechaEmision', [$inicioMes, $finMes])->sum('precioFinal') - $presupuestos->whereBetween('fechaEmision', [$inicioMes, $finMes])->sum('adelanto'));
-        $ingresos_mensuales_pasado = (float) ($presupuestos->whereBetween('fechaEmision', [$inicioMesPasado, $finMesPasado])->sum('precioFinal') - $presupuestos->whereBetween('fechaEmision', [$inicioMesPasado, $finMesPasado])->sum('adelanto'));
-        $porcentaje_ingresos_mensuales = $ingresos_mensuales_pasado > 0 ? round(($ingresos_mensuales / $ingresos_mensuales_pasado) * 100) : 0;
-        $pendiente = (float) ($presupuestos->where('estado', '!=', 'Facturado')->whereBetween('fechaEmision', [$inicioMes, $finMes])->sum('precioFinal') - $presupuestos->where('estado', '!=', 'Facturado')->whereBetween('fechaEmision', [$inicioMes, $finMes])->sum('adelanto'));
+        // $inicioSemana = Carbon::now()->startOfWeek();  // Lunes de esta semana
+        // $finSemana = Carbon::now()->endOfWeek();  // Domingo de esta semana
+        // $inicioMes = Carbon::now()->startOfMonth()->startOfWeek();  // Lunes de esta semana
+        // $finMes = Carbon::now()->endOfMonth()->endOfWeek();  // Domingo de esta semana
+        // $inicioMesPasado = Carbon::now()->startOfMonth()->startOfWeek()->subMonth();  // Lunes de esta semana
+        // $finMesPasado = Carbon::now()->endofMonth()->endofWeek()->subMonth();  // Domingo de esta semana
+        // $ingresos_mensuales = (float) ($presupuestos->whereBetween('fechaEmision', [$inicioMes, $finMes])->sum('precioFinal') - $presupuestos->whereBetween('fechaEmision', [$inicioMes, $finMes])->sum('adelanto'));
+        // $ingresos_mensuales_pasado = (float) ($presupuestos->whereBetween('fechaEmision', [$inicioMesPasado, $finMesPasado])->sum('precioFinal') - $presupuestos->whereBetween('fechaEmision', [$inicioMesPasado, $finMesPasado])->sum('adelanto'));
+        // $porcentaje_ingresos_mensuales = $ingresos_mensuales_pasado > 0 ? round(($ingresos_mensuales / $ingresos_mensuales_pasado) * 100) : 0;
+        // $pendiente = (float) ($presupuestos->where('estado', '!=', 'Facturado')->whereBetween('fechaEmision', [$inicioMes, $finMes])->sum('precioFinal') - $presupuestos->where('estado', '!=', 'Facturado')->whereBetween('fechaEmision', [$inicioMes, $finMes])->sum('adelanto'));
 
-        $user = $request->user();
-        $eventos = Evento::whereBetween('diaEvento', [$inicioSemana, $finSemana])->orderBy('diaEvento', 'ASC')->get();
-        $presupuestosMes = Presupuesto::where('estado', 'Facturado')->whereBetween('fechaEmision', [$inicioMes, $finMes])->get();
+        // $user = $request->user();
+        // $eventos = Evento::whereBetween('diaEvento', [$inicioSemana, $finSemana])->orderBy('diaEvento', 'ASC')->get();
+        // $presupuestosMes = Presupuesto::where('estado', 'Facturado')->whereBetween('fechaEmision', [$inicioMes, $finMes])->get();
 
 
-        return view('home', compact('user', 'presupuestos', 'categorias', 'porcentaje_ingresos_mensuales', 'eventos',  'ingresos_mensuales', ));
+        return view('home', compact('presupuestosPendientes', 'presupuestosAceptados', ));
     }
 }

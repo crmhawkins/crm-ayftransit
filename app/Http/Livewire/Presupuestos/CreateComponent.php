@@ -48,6 +48,8 @@ class CreateComponent extends Component
     public $gastos_llegada_h4;
     public $gastos_llegada_40;
     public $notas=[];
+    public $servicios=[];
+    public $generales=[];
     public $gastos_llegada_20;
 
 
@@ -88,6 +90,24 @@ class CreateComponent extends Component
     {
         unset($this->notas[$index]);
         $this->notas = array_values($this->notas); // Reindexa el arreglo después de eliminar un elemento
+    }
+    public function agregarServicio()
+    {
+        $this->servicios[] = ['titulo' => '', 'descripcion' => ''];
+    }
+    public function eliminarServicio($index)
+    {
+        unset($this->servicios[$index]);
+        $this->servicios = array_values($this->servicios); // Reindexa el arreglo después de eliminar un elemento
+    }
+    public function agregarGenerales()
+    {
+        $this->generales[] = ['titulo' => '', 'descripcion' => ''];
+    }
+    public function eliminarGenerales($index)
+    {
+        unset($this->generales[$index]);
+        $this->generales = array_values($this->generales); // Reindexa el arreglo después de eliminar un elemento
     }
     public function nombreProveedor($id)
     {
@@ -217,6 +237,20 @@ class CreateComponent extends Component
                 'valor40' => $cargoExtra['valor40'],
                 'valorHQ' => $cargoExtra['valorHQ'],
                 'Unidad' => $cargoExtra['Unidad'],
+            ]);
+        }
+        $presupuesto->servicios()->delete();
+        foreach ($this->servicios as $servicio) {
+            $presupuesto->servicios()->create([
+                'titulo' => $servicio['titulo'],
+                'descripcion' => $servicio['descripcion'],
+            ]);
+        }
+        $presupuesto->generales()->delete();
+        foreach ($this->generales as $general) {
+            $presupuesto->generales()->create([
+                'titulo' => $general['titulo'],
+                'descripcion' => $general['descripcion'],
             ]);
         }
         $presupuesto->notas()->delete();

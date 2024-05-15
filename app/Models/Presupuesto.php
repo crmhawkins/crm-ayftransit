@@ -47,6 +47,14 @@ class Presupuesto extends Model
     {
         return $this->hasMany(Notas::class);
     }
+    public function servicios()
+    {
+        return $this->hasMany(Servicios::class);
+    }
+    public function generales()
+    {
+        return $this->hasMany(Generales::class);
+    }
     public function Tarifas()
     {
         return $this->hasMany(TarifasPresupuestos::class);

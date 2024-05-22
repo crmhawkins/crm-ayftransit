@@ -15,14 +15,43 @@ class CreateComponent extends Component
     public $empresa;
     public $cif;
     public $seguro;
-    public $pago;
     public $direccion;
     public $telefono;
     public $email;
+    public $pago;
+    public $notas = [];
+    public $tarifasTerrestres = [];
+    public $gastosAduanas = [];
 
     public function render()
     {
         return view('livewire.clientes.create-component');
+    }
+
+    public function agregarNotas()
+    {
+        $this->notas[] = ['titulo' => '', 'descripcion' => ''];
+    }
+    public function eliminarNotas($index)
+    {
+        unset($this->notas[$index]);
+        $this->notas = array_values($this->notas); // Reindexa el arreglo después de eliminar un elemento
+    }   public function agregarGastosAduanas()
+    {
+        $this->gastosAduanas[] = ['titulo' => '', 'descripcion' => ''];
+    }
+    public function eliminarGastosAduanas($index)
+    {
+        unset($this->gastosAduanas[$index]);
+        $this->gastosAduanas = array_values($this->gastosAduanas); // Reindexa el arreglo después de eliminar un elemento
+    }   public function agregarTarifasTerrestres()
+    {
+        $this->tarifasTerrestres[] = ['destino' => '', 'precio' => ''];
+    }
+    public function eliminarTarifasTerrestres($index)
+    {
+        unset($this->tarifasTerrestres[$index]);
+        $this->tarifasTerrestres = array_values($this->tarifasTerrestres); // Reindexa el arreglo después de eliminar un elemento
     }
 
     public function submit()
@@ -47,6 +76,24 @@ class CreateComponent extends Component
 
         $cliente = Cliente::create($validatedData);
 
+        foreach ($this->gastosAduanas as $gastosAduana) {
+            $cliente->gastosAduanas()->create([
+                'titulo' => $gastosAduana['titulo'],
+                'descripcion' => $gastosAduana['descripcion'],
+            ]);
+        }
+        foreach ($this->tarifasTerrestres as $tarifaTerrestre) {
+            $cliente->tarifasTerrestres()->create([
+                'destino' => $tarifaTerrestre['destino'],
+                'precio' => $tarifaTerrestre['precio'],
+            ]);
+        }
+        foreach ($this->notas as $nota) {
+            $cliente->notas()->create([
+                'titulo' => $nota['titulo'],
+                'descripcion' => $nota['descripcion'],
+            ]);
+        }
         // Registro del evento, ajusta según tu implementación actual
         event(new \App\Events\LogEvent(Auth::user(), 8, $cliente->id));
 

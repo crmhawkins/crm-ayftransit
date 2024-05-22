@@ -63,6 +63,11 @@ class PresupuestoController extends Controller
         return view('presupuesto.edit', compact('id'));
 
     }
+    public function generales()
+    {
+        return view('presupuesto.editCampos');
+
+    }
 
     /**
      * Update the specified resource in storage.

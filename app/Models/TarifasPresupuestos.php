@@ -25,6 +25,7 @@ class TarifasPresupuestos extends Model
         'precio_contenedor_h4',
         'dias',
         'tarifa_id',
+        'efectividad',
         'validez',
     ];
     /**

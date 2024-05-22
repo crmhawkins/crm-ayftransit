@@ -11,14 +11,18 @@ class Cliente extends Model
 {
     protected $fillable = ['nombre', 'direccion', 'telefono', 'email','empresa','pago','seguro','cif'];
 
-    public function operaciones()
+    public function gastosAduanas()
     {
-        return $this->hasMany(Operacion::class);
+        return $this->hasMany(GastosAduanas::class,'cliente_id');
     }
 
-    public function ofertas()
+    public function tarifasTerrestres()
     {
-        return $this->hasMany(Oferta::class);
+        return $this->hasMany(TarifasTerrestres::class,'cliente_id');
+    }
+    public function notas()
+    {
+        return $this->hasMany(NotasCliente::class,'cliente_id');
     }
 
 

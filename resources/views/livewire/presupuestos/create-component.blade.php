@@ -16,7 +16,6 @@
         </div> <!-- end row -->
     </div>
     <!-- end page-title -->
-
     <div class="row">
         <div class="col-md-9">
             <div class="card m-b-30">
@@ -41,7 +40,7 @@
                                     <option value="Facturado">Facturado</option>
                                 </select>
                             </div>
-                            <div class="form-group col-md-12">
+                            <div class="form-group col-md-6">
                                 <label for="Cliente">Selecciona un cliente</label>
                                 <select class="form-control" name="id_cliente" id="id_cliente"
                                     wire:model="id_cliente">
@@ -54,27 +53,17 @@
                                 </select>
                             </div>
                             <div class="form-group col-md-6">
-                                <label for="id_proveedorterrestre">Selecciona una proveedor terrestre</label>
-                                <select class="form-control" name="id_proveedorterrestre" id="id_proveedorterrestre"
-                                        wire:model="id_proveedorterrestre" wire:change="cambioProveedor()">
-                                    <option value="0">-- ELIGE UNA PROVEEDOR --</option>
-                                    @foreach ($proveedoresterrestres as $proveedor)
-                                        <option value="{{ $proveedor->id }}">
-                                            {{ $proveedor->nombre }}-{{ $proveedor->contacto }}
-                                        </option>
-                                    @endforeach
-                                </select>
-                            </div>
-                            <div class="form-group col-md-6">
                                 <label for="destino">Selecciona un destino terrestre</label>
                                 <select class="form-control" name="destino" id="destino"
                                     wire:model="destino" wire:change="cambioDestino()">
                                     <option value="0">-- ELIGE UN DESTINO --</option>
-                                    @foreach ($terrestres as $tarifa)
-                                        <option value="{{ $tarifa->id }}">
-                                            {{ $tarifa->destinoterrestre }}
-                                        </option>
-                                    @endforeach
+                                    @if (isset($tarifasTerrestres))
+                                        @foreach ($tarifasTerrestres as $tarifa)
+                                            <option value="{{ $tarifa->id }}">
+                                                {{ $tarifa->destino }}
+                                            </option>
+                                        @endforeach
+                                    @endif
                                 </select>
                             </div>
                             <div class="col-sm-4">
@@ -202,57 +191,82 @@
                             <table class="table p-0 table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                                 <thead class="thead-light">
                                     <tr>
-                                        <th>Proveedor</th>
-                                        <th>Origen</th>
-                                        <th>Destino</th>
-                                        <th>Validez</th>
+                                        <th colspan="2">Puerto - Puerto</th>
                                         @if ($tipo_mar_area_terr == 1)
-                                            @if($tipo_cont_grup == 1)
-                                                <th>20</th>
-                                                <th>40</th>
-                                                <th>H4</th>
-                                            @elseif($tipo_cont_grup == 2)
-                                                <th>Grupage</th>
-                                            @endif
+                                        @if($tipo_cont_grup == 1)
+                                        <th>20</th>
+                                        <th>40</th>
+                                        <th>H4</th>
+                                        @elseif($tipo_cont_grup == 2)
+                                        <th colspan="3">Grupage</th>
+                                        @endif
                                         @elseif($tipo_mar_area_terr == 2)
                                         @endif
+                                        <th>Validez</th>
                                         <th>Eliminar</th>
                                     </tr>
                                 </thead>
                                 @foreach ($tarifasSeleccionadas as $index => $tarifa)
                                 <tr>
-                                    <td>{{$this->nombreProveedor($tarifa['id_proveedor'])}}</td>
-                                    <td>{{$this->nombrePuerto($tarifa['origen_id'])}}</td>
-                                    <td>{{$this->nombrePuerto($tarifa['destino_id'])}}</td>
-                                    <td>{{$tarifa['validez']}}</td>
+                                    <td colspan="2">{{$this->nombrePuerto($tarifa['origen_id'])}} - {{$this->nombrePuerto($tarifa['destino_id'])}}</td>
                                     @if ($tipo_mar_area_terr == 1)
-                                        @if($tipo_cont_grup == 1)
-                                            <td>{{$tarifa['precio_contenedor_20']}}</td>
-                                            <td>{{$tarifa['precio_contenedor_40']}}</td>
-                                            <td>{{$tarifa['precio_contenedor_h4']}}</td>
-                                        @elseif($tipo_cont_grup == 2)
-                                            <td>{{$tarifa['precio_grupage']}}</td>
-                                        @endif
+                                    @if($tipo_cont_grup == 1)
+                                    <td>{{$tarifa['precio_contenedor_20']}}</td>
+                                    <td>{{$tarifa['precio_contenedor_40']}}</td>
+                                    <td>{{$tarifa['precio_contenedor_h4']}}</td>
+                                    @elseif($tipo_cont_grup == 2)
+                                    <td colspan="3">{{$tarifa['precio_grupage']}}</td>
+                                    @endif
                                     @elseif($tipo_mar_area_terr == 2)
                                     @endif
-                                <td><button class="btn btn-danger w-100" wire:click.prevent="eliminarTarifa({{ $index }})">Eliminar</button></td>
+                                    <td>Del {{\Carbon\Carbon::parse($tarifa['efectividad'])->format('d/m') }} Al {{\Carbon\Carbon::parse($tarifa['validez'])->format('d/m')}}</td>
+                                    <td><button class="btn btn-danger w-100" wire:click.prevent="eliminarTarifa({{ $index }})">Eliminar</button></td>
                                 </tr>
                                 @endforeach
-                            </table>
-                            <table class="table p-0 table-striped table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                                 <tr>
-                                    <th>Gastos</th>
-                                    @if($tipo_cont_grup == 1)
-                                            <td>20'</td>
-                                            <td>40'</td>
-                                            <td>HQ'</td>
-                                            <td></td>
-                                    @elseif($tipo_cont_grup == 2)
-                                            <td colspan="4">Grupage</td>
-                                    @endif
+                                    <td colspan="2">Quebranto Bancario</td>
+                                    @if ($tipo_mar_area_terr == 1)
+                                        @if($tipo_cont_grup == 1)
+                                        <td>1%</td>
+                                        <td>1%</td>
+                                        <td>1%</td>
+                                        @elseif($tipo_cont_grup == 2)
+                                        <td colspan="3">1%</td>
+                                        @endif
+                                        @elseif($tipo_mar_area_terr == 2)
+                                        @endif
+                                        <td colspan="2">Sobre Divisas</td>
                                 </tr>
                                 <tr>
-                                    <th>Forfait Gastos Llegada</th>
+                                    <th class="table-active" colspan="2">Gastos</th>
+                                    @if($tipo_cont_grup == 1)
+                                    <td class="table-active">20'</td>
+                                    <td class="table-active">40'</td>
+                                    <td class="table-active">H4'</td>
+                                    <td colspan="2" class="table-active"></td>
+                                    @elseif($tipo_cont_grup == 2)
+                                    <td colspan="4">Grupage</td>
+                                    @endif
+                                </tr>
+                                @foreach ($cargo as $index => $cargoExtra)
+                                <tr>
+                                    <td colspan="2"><input type="text" class="form-control" wire:model="cargo.{{ $index }}.concepto" placeholder="Concepto"></td>
+                                    @if($tipo_cont_grup == 1)
+                                    <td><input type="number" class="form-control" wire:model="cargo.{{ $index }}.valor20" placeholder="Valor contenedor 20"></td>
+                                    <td><input type="number" class="form-control" wire:model="cargo.{{ $index }}.valor40" placeholder="Valor contenedor 40"></td>
+                                    <td><input type="number" class="form-control" wire:model="cargo.{{ $index }}.valorHQ" placeholder="valor contenedor HQ"></td>
+                                    @elseif($tipo_cont_grup == 2)
+                                    <td><input type="number" class="form-control" wire:model="cargo.{{ $index }}.valorHQ" placeholder="valor contenedor HQ"></td>
+                                    @endif
+                                    <td><input type="text" class="form-control" wire:model="cargo.{{ $index }}.Unidad" placeholder="Unidad"></td>
+                                    <td><button class="btn btn-danger" wire:click.prevent="eliminarCargoExtra({{ $index }})">Eliminar</button></td>
+                                </tr>
+                                @endforeach
+                                <tr>
+                                    <td colspan="7"><button class="btn btn-primary w-100" wire:click.prevent="agregarCargoExtra">Agregar Gastos</button></td>
+                                <tr>
+                                <tr>
+                                    <th colspan="2">Forfait Gastos Llegada</th>
                                     @if($tipo_cont_grup == 1)
                                     <td><input class="form-control" type="number" wire:model=gastos_llegada_20></td>
                                     <td><input class="form-control" type="number" wire:model=gastos_llegada_40></td>
@@ -263,81 +277,78 @@
                                     @endif
                                 </tr>
                                 <tr>
-                                    <th>Transporte destino</th>
-                                    <td colspan="3"><input class="form-control" type="number" wire:model=precio_terrestre></td>
-                                    <td>Por Contenedor</td>
+                                    <th colspan="2">Transporte Camion</th>
+                                        <td colspan="3"><input class="form-control" type="number" wire:model=precio_terrestre></td>
+                                        <td>Por Contenedor</td>
                                 </tr>
                                 <tr>
-                                    <th>Recargo combustible transporte terrestre</th>
+                                    <th colspan="2">Recargo combustible transporte terrestre</th>
                                     <td>SEGÚN MES</td>
                                     <td>SEGÚN MES</td>
                                     <td>SEGÚN MES</td>
                                     <td>Por Contenedor</td>
                                 </tr>
                                 <tr>
-                                    <th>Recargo sobrepeso terrestre (+24 Tn)</th>
+                                    <th colspan="2">Recargo sobrepeso terrestre (+24 Tn)</th>
                                     <td>30 % s/tte</td>
                                     <td>30 % s/tte</td>
                                     <td>30 % s/tte</td>
                                     <td>Por Contenedor</td>
                                 </tr>
-                                @foreach ($cargo as $index => $cargoExtra)
                                 <tr>
-                                    <td><input type="text" class="form-control" wire:model="cargo.{{ $index }}.concepto" placeholder="Concepto"></td>
-                                    <td><input type="number" class="form-control" wire:model="cargo.{{ $index }}.valor20" placeholder="Valor contenedor 20"></td>
-                                    <td><input type="number" class="form-control" wire:model="cargo.{{ $index }}.valor40" placeholder="Valor contenedor 40"></td>
-                                    <td><input type="number" class="form-control" wire:model="cargo.{{ $index }}.valorHQ" placeholder="valor contenedor HQ"></td>
-                                    <td><input type="text" class="form-control" wire:model="cargo.{{ $index }}.Unidad" placeholder="Unidad"></td>
-                                    <td><button class="btn btn-danger" wire:click.prevent="eliminarCargoExtra({{ $index }})">Eliminar</button></td>
+                                    <th class="table-active" colspan="7">Gastos Aduanas</th>
+                                </tr>
+                                @foreach ($clienteGastos as $aduana)
+
+                                <tr>
+                                    <td colspan="2">{{$aduana['titulo']}}</td>
+                                    <td colspan="5">{{$aduana['descripcion']}}</td>
                                 </tr>
                                 @endforeach
                                 <tr>
-                                    <td colspan="6"><button class="btn btn-primary w-100" wire:click.prevent="agregarCargoExtra">Agregar Gastos</button></td>
-                                <tr>
-                            </table>
-                            <table class="table p-0 table-striped table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
-                                <tr>
-                                    <th colspan="3">Notas</th>
+                                    <th class="table-active" colspan="7">Notas</th>
                                 </tr>
+                                @foreach ($clienteNotas as $notacliente)
+                                <tr>
+                                    <td colspan="2">{{$notacliente['titulo']}}</td>
+                                    <td colspan="5">{{$notacliente['descripcion']}}</td>
+                                </tr>
+                                @endforeach
                                 @foreach ($notas as $index => $nota)
                                 <tr>
-                                    <td><input type="text" class="form-control" wire:model="notas.{{ $index }}.titulo" placeholder="Concepto"></td>
-                                    <td><textarea class="form-control" wire:model="notas.{{ $index }}.descripcion" placeholder="descripción" rows="1"></textarea></td>
+                                    <td colspan="2"><input type="text" class="form-control" wire:model="notas.{{ $index }}.titulo" placeholder="Concepto"></td>
+                                    <td colspan="4"><textarea class="form-control" wire:model="notas.{{ $index }}.descripcion" placeholder="descripción" rows="1"></textarea></td>
                                     <td><button class="btn btn-danger" wire:click.prevent="eliminarNota({{ $index }})">Eliminar</button></td>
                                 </tr>
                                 @endforeach
                                 <tr>
-                                    <td colspan="3"><button class="btn btn-primary w-100" wire:click.prevent="agregarNota">Agregar Notas</button></td>
+                                    <td colspan="7"><button class="btn btn-primary w-100" wire:click.prevent="agregarNota">Agregar Notas</button></td>
                                 <tr>
-                            </table>
-                            <table class="table p-0 table-striped table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                                 <tr>
-                                    <th colspan="3">Servicios</th>
+                                    <th class="table-active" colspan="7">Servicios</th>
                                 </tr>
                                 @foreach ($servicios as $index => $servicio)
                                 <tr>
-                                    <td><input type="text" class="form-control" wire:model="servicios.{{ $index }}.titulo" placeholder="Concepto"></td>
-                                    <td><textarea class="form-control" wire:model="servicios.{{ $index }}.descripcion" placeholder="descripción" rows="1"></textarea></td>
+                                    <td colspan="2"><input type="text" class="form-control" wire:model="servicios.{{ $index }}.titulo" placeholder="Concepto"></td>
+                                    <td colspan="4"><textarea class="form-control" wire:model="servicios.{{ $index }}.descripcion" placeholder="descripción" rows="1"></textarea></td>
                                     <td><button class="btn btn-danger" wire:click.prevent="eliminarServicio({{ $index }})">Eliminar</button></td>
                                 </tr>
                                 @endforeach
                                 <tr>
-                                    <td colspan="3"><button class="btn btn-primary w-100" wire:click.prevent="agregarServicio">Agregar Servicio</button></td>
+                                    <td colspan="7"><button class="btn btn-primary w-100" wire:click.prevent="agregarServicio">Agregar Servicio</button></td>
                                 <tr>
-                            </table>
-                            <table class="table p-0 table-striped table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                                 <tr>
-                                    <th colspan="3">Condiciones Generales</th>
+                                    <th class="table-active" colspan="7">Condiciones Generales</th>
                                 </tr>
                                 @foreach ($generales as $index => $general)
                                 <tr>
-                                    <td><input type="text" class="form-control" wire:model="generales.{{ $index }}.titulo" placeholder="Concepto"></td>
-                                    <td><textarea class="form-control" wire:model="generales.{{ $index }}.descripcion" placeholder="descripción" rows="1"></textarea></td>
+                                    <td colspan="2"><input type="text" class="form-control" wire:model="generales.{{ $index }}.titulo" placeholder="Concepto"></td>
+                                    <td colspan="4"><textarea class="form-control" wire:model="generales.{{ $index }}.descripcion" placeholder="descripción" rows="1"></textarea></td>
                                     <td><button class="btn btn-danger" wire:click.prevent="eliminarGenerales({{ $index }})">Eliminar</button></td>
                                 </tr>
                                 @endforeach
                                 <tr>
-                                    <td colspan="3"><button class="btn btn-primary w-100" wire:click.prevent="agregarGenerales">Agregar Condiciones</button></td>
+                                    <td colspan="7"><button class="btn btn-primary w-100" wire:click.prevent="agregarGenerales">Agregar Condiciones</button></td>
                                 <tr>
                             </table>
                         </div>
@@ -351,8 +362,7 @@
                     <h5>Opciones de guardado</h5>
                     <div class="row">
                         <div class="col-12">
-                            <button class="w-100 btn btn-success mb-2" id="alertaGuardar">Guardar
-                                presupuesto</button>
+                            <button class="w-100 btn btn-success mb-2" id="alertaGuardar">Guardar presupuesto</button>
                         </div>
                     </div>
                 </div>

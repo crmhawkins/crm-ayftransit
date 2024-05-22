@@ -3,10 +3,13 @@
 namespace App\Http\Livewire\Presupuestos;
 
 use App\Models\Cliente;
+use App\Models\CondicionesGenerales;
+use App\Models\NotasGenerales;
 use App\Models\Proveedor;
 use App\Models\Puerto;
 use App\Models\Tarifa;
 use App\Models\Presupuesto;
+use App\Models\ServiciosGenerales;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
 use Livewire\Component;
 use Carbon\Carbon;
@@ -29,8 +32,6 @@ class CreateComponent extends Component
     public $tipo_cont_grup; // Contenedor o Gupage
     public $destino;
     public $id_proveedorterrestre;
-    public $tarifasSeleccionadas =[];
-    public $cargo=[];
     public $id_proveedor;
     public $origen_id;
     public $destino_id;
@@ -47,9 +48,15 @@ class CreateComponent extends Component
     public $gastos_llegada_grupage;
     public $gastos_llegada_h4;
     public $gastos_llegada_40;
+    public $tarifasTerrestres;
+    public $tarifasSeleccionadas =[];
+    public $cargo=[];
     public $notas=[];
     public $servicios=[];
     public $generales=[];
+    public $clienteNotas = [];
+    public $clienteGastos = [];
+    public $cliente = [];
     public $gastos_llegada_20;
 
 
@@ -58,15 +65,23 @@ class CreateComponent extends Component
         $this->clientes = Cliente::all();
         $this->puertos = Puerto::all();
         $this->fechaEmision = Carbon::now()->format('Y-m-d');
-        $this->proveedoresterrestres = Proveedor::whereHas('tarifas', function($query) {
-            $query->where('tipo_mar_area_terr', 3);
-        })->get();
         $this->proveedores = Proveedor::all();
         $this->TarifasProveedores = [];
         $this->tarifas = Tarifa::where('validez', '>', Carbon::now()->toDateString())
         ->where('efectividad', '<', Carbon::now()->toDateString())
         ->where('tipo_mar_area_terr',1)
         ->get();
+        $this->notas = NotasGenerales::all()->toArray();
+        $this->servicios = ServiciosGenerales::all()->toArray();
+        $this->generales = CondicionesGenerales::all()->toArray();
+    }
+
+    public function updatedIdCliente(){
+
+        $clienteseleccionado = $this->clientes->find($this->id_cliente);
+        $this->clienteNotas = $clienteseleccionado->notas()->get()->toArray();
+        $this->clienteGastos = $clienteseleccionado->gastosAduanas()->get()->toArray();
+        $this->tarifasTerrestres = $clienteseleccionado->tarifasTerrestres()->get();
     }
 
     public function render()
@@ -133,7 +148,9 @@ class CreateComponent extends Component
             'precio_contenedor_40' => $tarifa->precio_contenedor_40 ?? null,
             'precio_contenedor_h4' => $tarifa->precio_contenedor_h4 ?? null,
             'dias' => $tarifa->dias ?? null,
-            'validez' => $tarifa->validez ?? null
+            'validez' => $tarifa->validez ?? null,
+            'efectividad' => $tarifa->efectividad ?? null
+
         ];
         $this->gastos_llegada_grupage = $this->proveedores->find($this->id_proveedor)->first()->gastos_llegada_grupage;
         $this->gastos_llegada_20 = $this->proveedores->find($this->id_proveedor)->first()->gastos_llegada_20;
@@ -181,7 +198,10 @@ class CreateComponent extends Component
     }
 
     public function cambioDestino(){
-        $this->precio_terrestre = Tarifa::find($this->destino)->precio_terrestre;
+        $precio = null;
+        $tarifaSeleccionada = $this->tarifasTerrestres->find($this->destino);
+        $precio= isset($tarifaSeleccionada) ? $tarifaSeleccionada->precio : null;
+        $this->precio_terrestre = $precio;
     }
 
     public function actualizarProveedores()
@@ -279,11 +299,13 @@ class CreateComponent extends Component
         if ($presupuesto) {
             $this->alert('success', 'Presupuesto registrado correctamente!', [
                 'position' => 'center',
-                'timer' => 3000,
                 'toast' => false,
                 'showConfirmButton' => true,
+                'showDenyButton' => true,
+                'confirmButtonText' => 'Listado',
+                'denyButtonText' => 'Generar nuevo',
                 'onConfirmed' => 'confirmed',
-                'confirmButtonText' => 'Ok',
+                'onDenied' => 'restart',
             ]);
 
         } else {
@@ -302,7 +324,12 @@ class CreateComponent extends Component
             'submit',
             'cambioProveedor',
             'cambioProveedor',
+            'restart',
         ];
+    }
+    public function restart()
+    {
+        $this->id_cliente=null;
     }
     public function confirmed()
     {

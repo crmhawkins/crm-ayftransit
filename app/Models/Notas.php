@@ -19,6 +19,9 @@ class Notas extends Model
         'titulo',
         'descripcion',
     ];
+    protected $dates = [
+        'created_at', 'updated_at', 'deleted_at',
+    ];
     /**
      * Obtiene la tarifa a la que pertenece el cargo extra.
      */

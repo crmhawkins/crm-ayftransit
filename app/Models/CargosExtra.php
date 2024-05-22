@@ -18,7 +18,6 @@ class CargosExtra extends Model
         'presupuesto_id',
         'concepto',
         'valor20',
-        'valor20',
         'valor40',
         'valorHQ',
         'Unidad',

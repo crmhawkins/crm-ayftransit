@@ -20,6 +20,12 @@ class EditComponent extends Component
     public $cif;
     public $seguro;
     public $pago;
+    public $notas = [];
+    public $tarifasTerrestres = [];
+    public $gastosAduanas = [];
+    public $notasToDelete = [];
+    public $tarifasTerrestresToDelete = [];
+    public $gastosAduanasToDelete = [];
 
     public function mount($identificador)
     {
@@ -34,11 +40,56 @@ class EditComponent extends Component
         $this->cif = $cliente->cif;
         $this->seguro = $cliente->seguro;
         $this->pago = $cliente->pago;
+        $this->notas = $cliente->notas()->get()->toArray();
+        $this->gastosAduanas = $cliente->gastosAduanas()->get()->toArray();
+        $this->tarifasTerrestres = $cliente->tarifasTerrestres()->get()->toArray();
     }
 
     public function render()
     {
         return view('livewire.clientes.edit-component');
+    }
+
+    public function agregarNotas()
+    {
+        $this->notas[] = ['id' => null, 'titulo' => '', 'descripcion' => ''];
+    }
+
+    public function eliminarNotas($index)
+    {
+        if (isset($this->notas[$index]['id'])) {
+            $this->notasToDelete[] = $this->notas[$index]['id'];
+        }
+        unset($this->notas[$index]);
+        $this->notas = array_values($this->notas); // Reindexa el arreglo después de eliminar un elemento
+    }
+
+    public function agregarGastosAduanas()
+    {
+        $this->gastosAduanas[] = ['id' => null, 'titulo' => '', 'descripcion' => ''];
+    }
+
+    public function eliminarGastosAduanas($index)
+    {
+        if (isset($this->gastosAduanas[$index]['id'])) {
+            $this->gastosAduanasToDelete[] = $this->gastosAduanas[$index]['id'];
+        }
+        unset($this->gastosAduanas[$index]);
+        $this->gastosAduanas = array_values($this->gastosAduanas); // Reindexa el arreglo después de eliminar un elemento
+    }
+
+    public function agregarTarifasTerrestres()
+    {
+        $this->tarifasTerrestres[] = ['id' => null, 'destino' => '', 'precio' => ''];
+    }
+
+    public function eliminarTarifasTerrestres($index)
+    {
+        if (isset($this->tarifasTerrestres[$index]['id'])) {
+            $this->tarifasTerrestresToDelete[] = $this->tarifasTerrestres[$index]['id'];
+        }
+        unset($this->tarifasTerrestres[$index]);
+        $this->tarifasTerrestres = array_values($this->tarifasTerrestres); // Reindexa el arreglo después de eliminar un elemento
     }
 
     public function update()
@@ -51,7 +102,7 @@ class EditComponent extends Component
             'nombre' => 'required',
             'direccion' => 'nullable',
             'telefono' => 'nullable',
-            'email' => 'required|email|unique:clientes,email,'. $this->identificador,
+            'email' => 'required|email|unique:clientes,email,' . $this->identificador,
         ]);
 
         $cliente = Cliente::find($this->identificador);
@@ -67,6 +118,10 @@ class EditComponent extends Component
             'pago'=> $this->pago,
         ]);
 
+        $this->updateOrCreateEntities($cliente, 'gastosAduanas', $this->gastosAduanasToDelete);
+        $this->updateOrCreateEntities($cliente, 'tarifasTerrestres', $this->tarifasTerrestresToDelete);
+        $this->updateOrCreateEntities($cliente, 'notas', $this->notasToDelete);
+
         event(new \App\Events\LogEvent(Auth::user(), 9, $cliente->id));
 
         if ($clienteUpdate) {
@@ -79,8 +134,6 @@ class EditComponent extends Component
                 'confirmButtonText' => 'Ok',
             ]);
 
-            $this->emitTo('clientes.index-component', 'refresh');
-            // Considera redirigir o cerrar el modal de edición según tu flujo de usuario
         } else {
             $this->alert('error', '¡No se ha podido actualizar la información del cliente!', [
                 'position' => 'center',
@@ -88,6 +141,28 @@ class EditComponent extends Component
                 'toast' => false,
             ]);
         }
+    }
+
+    private function updateOrCreateEntities($cliente, $relation, $entitiesToDelete)    {
+        $existingIds = $cliente->$relation()->pluck('id')->toArray();
+        $updatedIds = [];
+
+        foreach ($this->$relation as $entity) {
+            if (isset($entity['_delete'])) {
+                $cliente->$relation()->where('id', $entity['id'])->delete();
+            } else {
+                $updatedEntity = $cliente->$relation()->updateOrCreate(
+                    ['id' => $entity['id']],
+                    array_filter($entity, function ($key) {
+                        return $key !== 'id';
+                    }, ARRAY_FILTER_USE_KEY)
+                );
+                $updatedIds[] = $updatedEntity->id;
+            }
+        }
+        // Delete entities that are not in the updated list
+        $toDeleteIds = array_diff($existingIds, $updatedIds);
+        $cliente->$relation()->whereIn('id', array_merge($toDeleteIds, $entitiesToDelete))->delete();
     }
 
     // Añade las funciones de alerta según sean necesarias
@@ -111,6 +186,9 @@ class EditComponent extends Component
     {
         $cliente = Cliente::find($this->identificador);
         event(new \App\Events\LogEvent(Auth::user(), 10, $cliente->id));
+        $cliente->notas()->delete();
+        $cliente->gastosAduanas()->delete();
+        $cliente->tarifasTerrestres()->delete();
         $cliente->delete();
         $this->alert('success', 'Cliente eliminado correctamente.', [
             'position' => 'center',

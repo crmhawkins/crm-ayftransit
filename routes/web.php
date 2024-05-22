@@ -146,7 +146,7 @@ Route::group(['middleware' => 'is.admin', 'prefix' => 'admin'], function () {
     Route::get('presupuestos', [PresupuestoController::class, 'index'])->name('presupuestos.index');
     Route::get('presupuestos-create', [PresupuestoController::class, 'create'])->name('presupuestos.create');
     Route::get('presupuestos-edit/{id}', [PresupuestoController::class, 'edit'])->name('presupuestos.edit');
-
+    Route::get('presupuestos-generales', [PresupuestoController::class, 'generales'])->name('presupuestos.generales');
     // Facturas
     Route::get('facturas', [FacturaController::class, 'index'])->name('facturas.index');
     Route::get('facturas-create', [FacturaController::class, 'create'])->name('facturas.create');

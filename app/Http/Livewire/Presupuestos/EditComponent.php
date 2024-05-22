@@ -38,6 +38,9 @@ class EditComponent extends Component
     public $notas=[];
     public $servicios=[];
     public $generales=[];
+    public $clienteNotas = [];
+    public $clienteGastos = [];
+    public $tarifasTerrestres;
     public $id_proveedor;
     public $origen_id;
     public $destino_id;
@@ -70,6 +73,12 @@ class EditComponent extends Component
         ->where('tipo_mar_area_terr',1)
         ->get();
         $this->id_cliente = $presupuesto->id_cliente;
+        if(isset($this->id_cliente)){
+            $clienteseleccionado = $this->clientes->find($this->id_cliente);
+            $this->clienteNotas = $clienteseleccionado->notas()->get()->toArray();
+            $this->clienteGastos = $clienteseleccionado->gastosAduanas()->get()->toArray();
+            $this->tarifasTerrestres = $clienteseleccionado->tarifasTerrestres()->get();
+        }
         $this->estado = $presupuesto->estado;
         $this->fechaEmision = $presupuesto->fechaEmision;
         $this->tipo_imp_exp = $presupuesto->tipo_imp_exp;
@@ -96,6 +105,14 @@ class EditComponent extends Component
     public function render()
     {
         return view('livewire.presupuestos.edit-component');
+    }
+
+    public function updatedIdCliente(){
+
+        $clienteseleccionado = $this->clientes->find($this->id_cliente);
+        $this->clienteNotas = $clienteseleccionado->notas()->get()->toArray();
+        $this->clienteGastos = $clienteseleccionado->gastosAduanas()->get()->toArray();
+        $this->tarifasTerrestres = $clienteseleccionado->tarifasTerrestres()->get();
     }
 
     public function nombreProveedor($id)
@@ -158,7 +175,8 @@ class EditComponent extends Component
             'precio_contenedor_40' => $tarifa->precio_contenedor_40 ?? null,
             'precio_contenedor_h4' => $tarifa->precio_contenedor_h4 ?? null,
             'dias' => $tarifa->dias ?? null,
-            'validez' => $tarifa->validez ?? null
+            'validez' => $tarifa->validez ?? null,
+            'efectividad' => $tarifa->efectividad ?? null
         ];
         $this->gastos_llegada_grupage = $this->proveedores->find($this->id_proveedor)->first()->gastos_llegada_grupage;
         $this->gastos_llegada_20 = $this->proveedores->find($this->id_proveedor)->first()->gastos_llegada_20;
@@ -206,7 +224,10 @@ class EditComponent extends Component
     }
 
     public function cambioDestino(){
-        $this->precio_terrestre = Tarifa::find($this->destino)->precio_terrestre;
+        $precio = null;
+        $tarifaSeleccionada = $this->tarifasTerrestres->find($this->destino);
+        $precio= isset($tarifaSeleccionada) ? $tarifaSeleccionada->precio : null;
+        $this->precio_terrestre = $precio;
     }
 
     public function actualizarProveedores()
@@ -322,13 +343,100 @@ class EditComponent extends Component
         }
     }
 
+    public function nuevoPresupuesto()
+    {
+        $presupuesto = Presupuesto::create([
+            'id_cliente'=> $this->id_cliente,
+            'estado' => $this->estado,
+            'fechaEmision' => $this->fechaEmision,
+            'tipo_imp_exp' => $this->tipo_imp_exp,
+            'tipo_cont_grup' => $this->tipo_cont_grup,
+            'tipo_mar_area_terr' => $this->tipo_mar_area_terr,
+            'id_proveedorterrestre' => $this->id_proveedorterrestre,
+            'destino' => $this->destino,
+            'precio_terrestre' => $this->precio_terrestre,
+            'gastos_llegada_20'=> $this->gastos_llegada_20,
+            'gastos_llegada_40'=> $this->gastos_llegada_40,
+            'gastos_llegada_h4'=> $this->gastos_llegada_h4,
+            'gastos_llegada_grupage'=> $this->gastos_llegada_grupage
+        ]);
+
+
+        $presupuesto->cargosExtra()->delete();
+
+        foreach ($this->cargo as $cargoExtra) {
+            $presupuesto->cargosExtra()->create([
+                'concepto' => $cargoExtra['concepto'],
+                'valor20' => $cargoExtra['valor20'],
+                'valor40' => $cargoExtra['valor40'],
+                'valorHQ' => $cargoExtra['valorHQ'],
+                'Unidad' => $cargoExtra['Unidad'],
+            ]);
+        }
+        $presupuesto->servicios()->delete();
+        foreach ($this->servicios as $servicio) {
+            $presupuesto->servicios()->create([
+                'titulo' => $servicio['titulo'],
+                'descripcion' => $servicio['descripcion'],
+            ]);
+        }
+        $presupuesto->generales()->delete();
+        foreach ($this->generales as $general) {
+            $presupuesto->generales()->create([
+                'titulo' => $general['titulo'],
+                'descripcion' => $general['descripcion'],
+            ]);
+        }
+        $presupuesto->notas()->delete();
+        foreach ($this->notas as $nota) {
+            $presupuesto->notas()->create([
+                'titulo' => $nota['titulo'],
+                'descripcion' => $nota['descripcion'],
+            ]);
+        }
+        $presupuesto->Tarifas()->delete();
+        foreach ($this->tarifasSeleccionadas as $tarifa) {
+            $presupuesto->Tarifas()->create([
+                'tarifa_id' => $tarifa['tarifa_id'],
+                'origen_id' => $tarifa['origen_id'],
+                'destino_id' => $tarifa['destino_id'],
+                'id_proveedor' => $tarifa['id_proveedor'],
+                'precio_grupage' => $tarifa['precio_grupage'],
+                'precio_contenedor_20' => $tarifa['precio_contenedor_20'],
+                'precio_contenedor_40' => $tarifa['precio_contenedor_40'],
+                'precio_contenedor_h4' => $tarifa['precio_contenedor_h4'],
+                'dias' => $tarifa['dias'],
+                'validez' => $tarifa['validez'],
+            ]);
+        }
+
+        if ($presupuesto) {
+            $this->alert('success', 'Presupuesto registrado correctamente!', [
+                'position' => 'center',
+                'timer' => 3000,
+                'toast' => false,
+                'showConfirmButton' => true,
+                'onConfirmed' => 'confirmed',
+                'confirmButtonText' => 'Ok',
+            ]);
+
+        } else {
+            $this->alert('error', '¡No se ha podido registrar el presupuesto!', [
+                'position' => 'center',
+                'timer' => 3000,
+                'toast' => false,
+            ]);
+        }
+    }
+
     public function getListeners()
     {
         return [
             'confirmed',
             'update',
             'cambioProveedor',
-            'confirmDelete'
+            'confirmDelete',
+            'nuevoPresupuesto',
         ];
     }
 

@@ -49,6 +49,7 @@
                     <ul class="submenu">
                         <li><a href="/admin/presupuestos">Ver Todos</a></li>
                         <li><a href="/admin/presupuestos-create">Crear Presupuesto</a></li>
+                        <li><a href="/admin/presupuestos-generales">Notas / Servicios / Condiciones</a></li>
                         {{-- <li><a href="email-compose.html">Email Compose</a></li> --}}
                     </ul>
                 </li>

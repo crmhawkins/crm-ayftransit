@@ -26,7 +26,7 @@ class EditCamposComponent extends Component
     }
     public function render()
     {
-        return view('livewire.presupuestos.edit-Campos-component');
+        return view('livewire.presupuestos.edit-campos-component');
     }
     public function agregarNota()
     {

@@ -4240,6 +4240,65 @@
             "install-path": "../phar-io/version"
         },
         {
+            "name": "pharaonic/livewire-select2",
+            "version": "1.2.0",
+            "version_normalized": "1.2.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Pharaonic/livewire-select2.git",
+                "reference": "99b2fc771563501a301ea0ca42e475c66f07238b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Pharaonic/livewire-select2/zipball/99b2fc771563501a301ea0ca42e475c66f07238b",
+                "reference": "99b2fc771563501a301ea0ca42e475c66f07238b",
+                "shasum": ""
+            },
+            "require": {
+                "livewire/livewire": ">=2.0",
+                "php": ">=7.2"
+            },
+            "time": "2022-11-30T08:27:44+00:00",
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Pharaonic\\Livewire\\Select2\\Select2ServiceProvider"
+                    ]
+                }
+            },
+            "installation-source": "dist",
+            "autoload": {
+                "psr-4": {
+                    "Pharaonic\\Livewire\\Select2\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Moamen Eltouny (Raggi)",
+                    "email": "raggi@raggitech.com"
+                }
+            ],
+            "description": "Simple way to handle the Select2 for livewire components.",
+            "homepage": "https://github.com/pharaonic/livewire-select2",
+            "keywords": [
+                "laravel",
+                "livewire",
+                "livewire select",
+                "livewire select2",
+                "livewire-select2"
+            ],
+            "support": {
+                "issues": "https://github.com/Pharaonic/livewire-select2/issues",
+                "source": "https://github.com/Pharaonic/livewire-select2/tree/1.2.0"
+            },
+            "install-path": "../pharaonic/livewire-select2"
+        },
+        {
             "name": "phenx/php-font-lib",
             "version": "0.5.6",
             "version_normalized": "0.5.6.0",

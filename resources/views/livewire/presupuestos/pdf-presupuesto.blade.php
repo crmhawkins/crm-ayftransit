@@ -9,14 +9,14 @@
             font-family: 'Arial', sans-serif;
             font-size: 10pt;
             margin: 0;
-            padding: 0;
+
             color: #333;
         }
 
         header {
             text-align: center;
             padding: 10px 20px;
-            border-bottom: 2px solid #000;
+            border-bottom: 2px solid #30419b;
         }
 
         header img {
@@ -30,18 +30,12 @@
             margin: 10px 0 0 0;
         }
 
-        footer {
-            text-align: center;
-            padding: 10px 20px;
-            border-top: 2px solid #000;
-            font-size: 8pt;
-        }
 
         .section-title {
             font-size: 12pt;
             font-weight: bold;
             padding: 5px 0;
-            border-bottom: 2px solid #000;
+            border-bottom: 2px solid #30419b;
             margin-top: 20px;
         }
 
@@ -51,9 +45,20 @@
             margin-top: 10px;
         }
 
-        th, td {
-            border: 1px solid #000;
-            padding: 8px;
+        thead th {
+            border-bottom: 2px solid #30419b;
+
+        }
+        th {
+
+            padding: 10px;
+            text-align: left;
+        }
+        .linea {
+            border-right: 2px solid #30419b;
+        }
+        td {
+            padding: 10px;
             text-align: left;
         }
 
@@ -91,19 +96,71 @@
             border: none;
             padding: 4px;
         }
+        .datos-cliente{
+            display: inline-block;
+            width: 49%;
+        }
+        .derecha{
+            text-align: right;
+            transform: translateY(-10px) !important;
+        }
+        span.derecha{
+            padding: 4%;
+            background-color: #30419b;
+            color:#fff;
+        }
+        span.izquierda{
+            margin:10px 0 10px;
+            display: block;
+        }
+        .cliente{
+            margin: 10px 0 0 0 ;
+            width: 100%;
+        }
+        .footer{
+            background-color: #30419b;
+            color:#fff;
+            padding: 10px;
+        }
+        footer {
+            font-size: 8pt;
+            bottom: 0;
+            position: fixed;
+            width: 100%;
+        }
+        .firma{
+            display: block;
+            width: 100%;
+        }
+        .firma-footer{
+            display: inline-block;
+            width: 49.5%;
+        }
+        span.foot{
+            margin:10px 0 10px;
+            display: block;
+        }
     </style>
 </head>
 <body>
     <header>
         <img src="{{ public_path('images/logo_afy.jpg') }}" alt="Logo">
-        <h1>Presupuesto Nº {{ $identificador }}</h1>
-        <div>Fecha de Emisión: {{ $presupuesto->fechaEmision }}</div>
     </header>
 
     <section>
         <div class="section-title">Datos Cliente</div>
-        <p><strong>Empresa:</strong> {{ $clientes->find($presupuesto->id_cliente)->empresa }}</p>
-        <p><strong>Contacto:</strong> {{ $clientes->find($presupuesto->id_cliente)->nombre }}</p>
+        <div class="cliente">
+            <div class= "datos-cliente">
+                <span class="izquierda"><strong>Empresa:</strong> {{ $clientes->find($presupuesto->id_cliente)->empresa }}</span>
+                <span class="izquierda"><strong>Contacto:</strong> {{ $clientes->find($presupuesto->id_cliente)->nombre }}</span>
+            </div>
+            <div class= "datos-cliente derecha">
+                <span class="derecha"><strong>Presupuesto Nº:</strong> {{ $identificador }}</span>
+                <span class="derecha"><strong>Fecha de Emisión:</strong> {{ $presupuesto->fechaEmision }}</span>
+            </div>
+
+
+        </div>
     </section>
 
     <section>
@@ -113,156 +170,149 @@
                 <tr>
                     <th>Origen</th>
                     <th>Destino</th>
-                    <th>Validez</th>
                     @if ($presupuesto->tipo_mar_area_terr == 1)
-                        @if($presupuesto->tipo_cont_grup == 1)
-                            <th>Precio 20'</th>
-                            <th>Precio 40'</th>
-                            <th>Precio HQ'</th>
-                        @elseif($presupuesto->tipo_cont_grup == 2)
-                            <th>Grupage</th>
-                        @endif
+                    @if($presupuesto->tipo_cont_grup == 1)
+                    <th class="text-center">Precio 20'</th>
+                    <th class="text-center">Precio 40'</th>
+                    <th class="text-center">Precio HQ'</th>
+                    @elseif($presupuesto->tipo_cont_grup == 2)
+                    <th>Grupage</th>
+                    @endif
                     @elseif($presupuesto->tipo_mar_area_terr == 2)
                     @endif
+                    <th>Validez</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach ($tarifasSeleccionadas as $tarifa)
                 <tr>
                     <td>{{ $puertos->find($tarifa['origen_id'])->Nombre }}</td>
-                    <td>{{ $puertos->find($tarifa['destino_id'])->Nombre }}</td>
-                    <td>{{ $tarifa['validez'] }}</td>
+                    <td class="linea">{{ $puertos->find($tarifa['destino_id'])->Nombre }}</td>
                     @if ($presupuesto->tipo_mar_area_terr == 1)
-                        @if($presupuesto->tipo_cont_grup == 1)
-                            <td>{{ number_format($tarifa['precio_contenedor_20'], 2, ',', '.') }} €</td>
-                            <td>{{ number_format($tarifa['precio_contenedor_40'], 2, ',', '.') }} €</td>
-                            <td>{{ number_format($tarifa['precio_contenedor_h4'], 2, ',', '.') }} €</td>
-                        @elseif($presupuesto->tipo_cont_grup == 2)
-                            <td>{{ number_format($tarifa['precio_grupage'], 2, ',', '.') }} €</td>
-                        @endif
+                    @if($presupuesto->tipo_cont_grup == 1)
+                    <td class="text-center">{{ number_format($tarifa['precio_contenedor_20'], 2, ',', '.') }} €</td>
+                    <td class="text-center">{{ number_format($tarifa['precio_contenedor_40'], 2, ',', '.') }} €</td>
+                    <td class="text-center">{{ number_format($tarifa['precio_contenedor_h4'], 2, ',', '.') }} €</td>
+                    @elseif($presupuesto->tipo_cont_grup == 2)
+                    <td class="text-center">{{ number_format($tarifa['precio_grupage'], 2, ',', '.') }} €</td>
+                    @endif
                     @elseif($presupuesto->tipo_mar_area_terr == 2)
                     @endif
+                    <td>{{ $tarifa['validez'] }}</td>
                 </tr>
                 @endforeach
             </tbody>
-        </table>
-
-        <table>
             <thead>
                 <tr>
-                    <th>Gastos</th>
+                    <th colspan="2">Gastos</th>
                     @if($presupuesto->tipo_cont_grup == 1)
-                        <th>20'</th>
-                        <th>40'</th>
-                        <th>HQ'</th>
+                        <th class="text-center">20'</th>
+                        <th class="text-center">40'</th>
+                        <th class="text-center">HQ'</th>
                         <th></th>
                     @elseif($presupuesto->tipo_cont_grup == 2)
-                        <th colspan="4">Grupage</th>
+                        <th class="text-center" colspan="4">Grupage</th>
                     @endif
                 </tr>
             </thead>
             <tbody>
                 <tr>
-                    <th>Forfait Gastos Llegada</th>
+                    <th colspan="2"  class="linea">Forfait Gastos Llegada</th>
                     @if($presupuesto->tipo_cont_grup == 1)
-                    <td>{{$presupuesto->gastos_llegada_20}}</td>
-                    <td>{{$presupuesto->gastos_llegada_40}}</td>
-                    <td>{{$presupuesto->gastos_llegada_h4}}</td>
+                    <td class="text-center">{{$presupuesto->gastos_llegada_20}}</td>
+                    <td class="text-center">{{$presupuesto->gastos_llegada_40}}</td>
+                    <td class="text-center">{{$presupuesto->gastos_llegada_h4}}</td>
                     <td>Por Contenedor</td>
                     @elseif($presupuesto->tipo_cont_grup == 2)
-                    <td colspan="4">{{$presupuesto->gastos_llegada_grupage}}</td>
+                    <td class="text-center" colspan="4">{{$presupuesto->gastos_llegada_grupage}}</td>
                     @endif
                 </tr>
                 <tr>
-                    <th>Transporte Camion</th>
-                    <td colspan="3">{{$presupuesto->precio_terrestre}}</td>
+                    <th class="linea" colspan="2">Transporte Camion</th>
+                    <td class="text-center" colspan="3">{{$presupuesto->precio_terrestre}}</td>
                     <td>Por Contenedor</td>
                 </tr>
                 <tr>
-                    <th>Recargo combustible transporte terrestre</th>
-                    <td>SEGÚN MES</td>
-                    <td>SEGÚN MES</td>
-                    <td>SEGÚN MES</td>
+                    <th class="linea" colspan="2">Recargo combustible transporte terrestre</th>
+                    <td class="text-center">SEGÚN MES</td>
+                    <td class="text-center">SEGÚN MES</td>
+                    <td class="text-center">SEGÚN MES</td>
                     <td>Por Contenedor</td>
                 </tr>
                 <tr>
-                    <th>Recargo sobrepeso terrestre (+24 Tn)</th>
-                    <td>30 % s/tte</td>
-                    <td>30 % s/tte</td>
-                    <td>30 % s/tte</td>
+                    <th class="linea" colspan="2">Recargo sobrepeso terrestre (+24 Tn)</th>
+                    <td class="text-center">30 % s/tte</td>
+                    <td class="text-center">30 % s/tte</td>
+                    <td class="text-center">30 % s/tte</td>
                     <td>Por Contenedor</td>
                 </tr>
                 @foreach ($cargo as $cargoExtra)
                 <tr>
-                    <td>{{$cargoExtra['concepto']}}</td>
-                    <td>{{$cargoExtra['valor20']}}</td>
-                    <td>{{$cargoExtra['valor40']}}</td>
-                    <td>{{$cargoExtra['valorHQ']}}</td>
+                    <th class="linea" colspan="2">{{$cargoExtra['concepto']}}</th>
+                    <td class="text-center">{{$cargoExtra['valor20']}}</td>
+                    <td class="text-center">{{$cargoExtra['valor40']}}</td>
+                    <td class="text-center">{{$cargoExtra['valorHQ']}}</td>
                     <td>{{$cargoExtra['Unidad']}}</td>
                 </tr>
                 @endforeach
             </tbody>
-        </table>
-    </section>
-
-    <section class="notes">
-        <table>
             <thead>
                 <tr>
-                    <th colspan="4">Notas</th>
+                    <th colspan="6">Notas</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach ($notas as $nota)
                 <tr>
-                    <td>{{$nota['titulo']}}</td>
-                    <td colspan="3">{{$nota['descripcion']}}</td>
+                    <td class="linea" colspan="2">{{$nota['titulo']}}</td>
+                    <td colspan="4">{{$nota['descripcion']}}</td>
                 </tr>
                 @endforeach
             </tbody>
-        </table>
-    </section>
-
-    <section class="services">
-        <table>
             <thead>
                 <tr>
-                    <th colspan="4">Servicios</th>
+                    <th colspan="6">Servicios</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach ($servicios as $servicio)
                 <tr>
-                    <td>{{$servicio['titulo']}}</td>
-                    <td colspan="3">{{$servicio['descripcion']}}</td>
+                    <td class="linea" colspan="2">{{$servicio['titulo']}}</td>
+                    <td colspan="4">{{$servicio['descripcion']}}</td>
                 </tr>
                 @endforeach
             </tbody>
-        </table>
-    </section>
 
-    <section class="general-conditions">
-        <table>
             <thead>
                 <tr>
-                    <th colspan="4">Condiciones Generales</th>
+                    <th colspan="6">Condiciones Generales</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach ($generales as $general)
                 <tr>
-                    <td>{{$general['titulo']}}</td>
-                    <td colspan="3">{{$general['descripcion']}}</td>
+                    <td class="linea" colspan="2">{{$general['titulo']}}</td>
+                    <td colspan="4">{{$general['descripcion']}}</td>
                 </tr>
                 @endforeach
             </tbody>
         </table>
     </section>
-
     <footer>
-        <p>Gracias por seguir confiando y valorando nuestros servicios.</p>
-        <p><strong>Dirección:</strong> Edificio Arttysur Parque Empresarial Palmones - Avda. de los Empresarios nº 20 Planta 4 Oficina 14, 11379 Palmones, Los Barrios (Cádiz) España</p>
-        <p><strong>Tel:</strong> +34 956 631 940 | <strong>Email:</strong> comercial@ayftransit.com</p>
+        <div class="firma">
+            <div class="firma-footer footer-izquierda" style="transform: translateY(-20px) !important;">
+                <p>Gracias por seguir confiando y valorando nuestros servicios.</p>
+            </div>
+            <div class="firma-footer footer-derecha" style="text-align:right!important;">
+                <span class="foot">Atentamente,</span>
+                <span class="foot">Dpto. Tráfico Comercial</div>
+            </div>
+        </div>
+
+        <div class="footer text-center">
+            <p>Area de Servicio El Fresno, Torre A, oficina 404, 11370 Los Barrios, Cádiz</p>
+        <p>Tel + 34 956 631 940 - Extensión 2 Fax + 34 956 631 800 E-mail: comercial@ayftransit.com</p>
+        </div>
     </footer>
 </body>
 </html>

@@ -3,7 +3,7 @@
         'name' => 'laravel/laravel',
         'pretty_version' => 'dev-main',
         'version' => 'dev-main',
-        'reference' => 'c4127c78af8be87bc8e12ffe8393a31286855a31',
+        'reference' => 'f02fb63c130565751b993e2087668fd3ac634d84',
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -439,7 +439,7 @@
         'laravel/laravel' => array(
             'pretty_version' => 'dev-main',
             'version' => 'dev-main',
-            'reference' => 'c4127c78af8be87bc8e12ffe8393a31286855a31',
+            'reference' => 'f02fb63c130565751b993e2087668fd3ac634d84',
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
@@ -720,6 +720,15 @@
             'install_path' => __DIR__ . '/../phar-io/version',
             'aliases' => array(),
             'dev_requirement' => true,
+        ),
+        'pharaonic/livewire-select2' => array(
+            'pretty_version' => '1.2.0',
+            'version' => '1.2.0.0',
+            'reference' => '99b2fc771563501a301ea0ca42e475c66f07238b',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../pharaonic/livewire-select2',
+            'aliases' => array(),
+            'dev_requirement' => false,
         ),
         'phenx/php-font-lib' => array(
             'pretty_version' => '0.5.6',

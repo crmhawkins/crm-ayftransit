@@ -2,6 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Cliente;
+use App\Models\Presupuesto;
+use App\Models\Proveedor;
+use App\Models\Puerto;
+use App\Models\Tarifa;
 use Illuminate\Http\Request;
 
 class PresupuestoController extends Controller
@@ -66,6 +71,24 @@ class PresupuestoController extends Controller
     public function generales()
     {
         return view('presupuesto.editCampos');
+
+    }
+    public function pdf()
+    {
+        $identificador = 6;
+        $presupuesto = Presupuesto::find($identificador);
+        return view('livewire.presupuestos.pdf-presupuesto', [
+            'identificador' => $identificador,
+            'presupuesto' =>$presupuesto,
+            'clientes' => Cliente::all(),
+            'puertos' => Puerto::all(),
+            'proveedores' => Proveedor::all(),
+            'tarifas'=> Tarifa::all(),
+            'tarifasSeleccionadas' => $presupuesto->Tarifas()->get()->toArray(),
+            'cargo' => $presupuesto->cargosExtra()->get()->toArray(),
+            'notas' => $presupuesto->notas()->get()->toArray(),
+            'servicios' => $presupuesto->servicios()->get()->toArray(),
+            'generales' => $presupuesto->generales()->get()->toArray(),]);
 
     }
 

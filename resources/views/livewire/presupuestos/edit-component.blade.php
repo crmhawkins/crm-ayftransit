@@ -39,10 +39,14 @@
                                     <option value="Facturado">Facturado</option>
                                 </select>
                             </div>
-                            <div class="form-group col-md-6">
+                            <div class="form-group col-md-6" wire:ignore>
                                 <label for="Cliente">Selecciona un cliente</label>
-                                <select class="form-control" name="id_cliente" id="id_cliente"
-                                    wire:model="id_cliente">
+                                <select data-pharaonic="select2"
+                                        data-component-id="{{ $this->id }}"
+                                        class="form-control"
+                                        name="id_cliente"
+                                        id="id_cliente"
+                                        wire:model="id_cliente">
                                     <option value="0">-- ELIGE UN CLIENTE --</option>
                                     @foreach ($clientes as $cliente)
                                         <option value="{{ $cliente->id }}">
@@ -120,9 +124,13 @@
                             <div class="form-group col-md-12">
                                 <h5 class="ms-3" style="border-bottom: 1px gray solid !important; padding-bottom: 10px !important;">Flete Marítimo Puerto - Puerto</h5>
                             </div>
-                            <div class="form-group col-md-2">
+                            <div class="form-group col-md-2" wire:ignore>
                                 <label for="origen">Origen</label>
-                                <select class="form-control" name="origen_id" id="origen_id"
+                                <select data-pharaonic="select2"
+                                        data-component-id="{{ $this->id }}"
+                                        class="form-control"
+                                        name="origen_id"
+                                        id="origen_id"
                                         wire:model="origen_id">
                                     <option value="0">ELIGE ORIGEN</option>
                                     @foreach ($puertos as $puerto)
@@ -132,9 +140,13 @@
                                     @endforeach
                                 </select>
                             </div>
-                            <div class="form-group col-md-2">
+                            <div class="form-group col-md-2" wire:ignore>
                                 <label for="destino">Destino</label>
-                                <select class="form-control" name="destino_id" id="destino_id"
+                                <select data-pharaonic="select2"
+                                        data-component-id="{{ $this->id }}"
+                                        class="form-control"
+                                        name="destino_id"
+                                        id="destino_id"
                                         wire:model="destino_id">
                                     <option value="0">ELIGE DESTINO</option>
                                     @foreach ($puertos as $puerto)

@@ -14,15 +14,15 @@ class ComposerStaticInite9ca9adb74c620868cc54f1ae733fdc2
         '320cde22f66dd4f5d3fd621d3e88b98f' => __DIR__ . '/..' . '/symfony/polyfill-ctype/bootstrap.php',
         '667aeda72477189d0494fecd327c3641' => __DIR__ . '/..' . '/symfony/var-dumper/Resources/functions/dump.php',
         '25072dd6e2470089de65ae7bf11d3109' => __DIR__ . '/..' . '/symfony/polyfill-php72/bootstrap.php',
-        'f598d06aa772fa33d905e87be6398fb1' => __DIR__ . '/..' . '/symfony/polyfill-intl-idn/bootstrap.php',
         '662a729f963d39afe703c9d9b7ab4a8c' => __DIR__ . '/..' . '/symfony/polyfill-php83/bootstrap.php',
+        'f598d06aa772fa33d905e87be6398fb1' => __DIR__ . '/..' . '/symfony/polyfill-intl-idn/bootstrap.php',
         '8825ede83f2f289127722d4e842cf7e8' => __DIR__ . '/..' . '/symfony/polyfill-intl-grapheme/bootstrap.php',
         'b6b991a57620e2fb6b2f66f03fe9ddc2' => __DIR__ . '/..' . '/symfony/string/Resources/functions.php',
         '2cffec82183ee1cea088009cef9a6fc3' => __DIR__ . '/..' . '/ezyang/htmlpurifier/library/HTMLPurifier.composer.php',
+        '40275907c8566c390185147049ef6e5d' => __DIR__ . '/..' . '/livewire/livewire/src/helpers.php',
         '3bd81c9b8fcc150b69d8b63b4d2ccf23' => __DIR__ . '/..' . '/spatie/flare-client-php/src/helpers.php',
         '09f6b20656683369174dd6fa83b7e5fb' => __DIR__ . '/..' . '/symfony/polyfill-uuid/bootstrap.php',
         'a1105708a18b76903365ca1c4aa61b02' => __DIR__ . '/..' . '/symfony/translation/Resources/functions.php',
-        '40275907c8566c390185147049ef6e5d' => __DIR__ . '/..' . '/livewire/livewire/src/helpers.php',
         '35a6ad97d21e794e7e22a17d806652e4' => __DIR__ . '/..' . '/nunomaduro/termwind/src/Functions.php',
         '7b11c4dc42b3b3023073cb14e519683c' => __DIR__ . '/..' . '/ralouphie/getallheaders/src/getallheaders.php',
         'e39a8b23c42d4e1452234d762b03835a' => __DIR__ . '/..' . '/ramsey/uuid/src/functions.php',
@@ -121,6 +121,7 @@ class ComposerStaticInite9ca9adb74c620868cc54f1ae733fdc2
             'PhpParser\\' => 10,
             'PhpOption\\' => 10,
             'PhpOffice\\PhpSpreadsheet\\' => 25,
+            'Pharaonic\\Livewire\\Select2\\' => 27,
         ),
         'N' => 
         array (
@@ -438,6 +439,10 @@ class ComposerStaticInite9ca9adb74c620868cc54f1ae733fdc2
         'PhpOffice\\PhpSpreadsheet\\' => 
         array (
             0 => __DIR__ . '/..' . '/phpoffice/phpspreadsheet/src/PhpSpreadsheet',
+        ),
+        'Pharaonic\\Livewire\\Select2\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/pharaonic/livewire-select2/src',
         ),
         'NunoMaduro\\Collision\\' => 
         array (
@@ -770,6 +775,7 @@ class ComposerStaticInite9ca9adb74c620868cc54f1ae733fdc2
         'App\\Http\\Livewire\\Monitores\\IndexComponent' => __DIR__ . '/../..' . '/app/Http/Livewire/Monitores/IndexComponent.php',
         'App\\Http\\Livewire\\Presupuestos\\ContractComponent' => __DIR__ . '/../..' . '/app/Http/Livewire/Presupuestos/ContractComponent.php',
         'App\\Http\\Livewire\\Presupuestos\\CreateComponent' => __DIR__ . '/../..' . '/app/Http/Livewire/Presupuestos/CreateComponent.php',
+        'App\\Http\\Livewire\\Presupuestos\\EditCamposComponent' => __DIR__ . '/../..' . '/app/Http/Livewire/Presupuestos/EditCamposComponent.php',
         'App\\Http\\Livewire\\Presupuestos\\EditComponent' => __DIR__ . '/../..' . '/app/Http/Livewire/Presupuestos/EditComponent.php',
         'App\\Http\\Livewire\\Presupuestos\\IndexComponent' => __DIR__ . '/../..' . '/app/Http/Livewire/Presupuestos/IndexComponent.php',
         'App\\Http\\Livewire\\Productos\\CreateComponent' => __DIR__ . '/../..' . '/app/Http/Livewire/Productos/CreateComponent.php',
@@ -787,17 +793,6 @@ class ComposerStaticInite9ca9adb74c620868cc54f1ae733fdc2
         'App\\Http\\Livewire\\Puertos\\CreateComponent' => __DIR__ . '/../..' . '/app/Http/Livewire/Puertos/CreateComponent.php',
         'App\\Http\\Livewire\\Puertos\\EditComponent' => __DIR__ . '/../..' . '/app/Http/Livewire/Puertos/EditComponent.php',
         'App\\Http\\Livewire\\Puertos\\IndexComponent' => __DIR__ . '/../..' . '/app/Http/Livewire/Puertos/IndexComponent.php',
-        'App\\Http\\Livewire\\ResumenDias\\CreateComponent' => __DIR__ . '/../..' . '/app/Http/Livewire/ResumenDias/CreateComponent.php',
-        'App\\Http\\Livewire\\ResumenDias\\EditComponent' => __DIR__ . '/../..' . '/app/Http/Livewire/ResumenDias/EditComponent.php',
-        'App\\Http\\Livewire\\ResumenDias\\ShowComponent' => __DIR__ . '/../..' . '/app/Http/Livewire/ResumenDias/ShowComponent.php',
-        'App\\Http\\Livewire\\ResumenMensual\\EditComponent' => __DIR__ . '/../..' . '/app/Http/Livewire/ResumenMensual/EditComponent.php',
-        'App\\Http\\Livewire\\ResumenMensual\\IndexComponent' => __DIR__ . '/../..' . '/app/Http/Livewire/ResumenMensual/IndexComponent.php',
-        'App\\Http\\Livewire\\ResumenMensual\\ShowComponent' => __DIR__ . '/../..' . '/app/Http/Livewire/ResumenMensual/ShowComponent.php',
-        'App\\Http\\Livewire\\ResumenMensual\\ShowSemanaComponent' => __DIR__ . '/../..' . '/app/Http/Livewire/ResumenMensual/ShowSemanaComponent.php',
-        'App\\Http\\Livewire\\ResumenSemanas\\CreateComponent' => __DIR__ . '/../..' . '/app/Http/Livewire/ResumenSemanas/CreateComponent.php',
-        'App\\Http\\Livewire\\ResumenSemanas\\EditComponent' => __DIR__ . '/../..' . '/app/Http/Livewire/ResumenSemanas/EditComponent.php',
-        'App\\Http\\Livewire\\ResumenSemanas\\ShowComponent' => __DIR__ . '/../..' . '/app/Http/Livewire/ResumenSemanas/ShowComponent.php',
-        'App\\Http\\Livewire\\ResumenSemanas\\ShowDiaComponent' => __DIR__ . '/../..' . '/app/Http/Livewire/ResumenSemanas/ShowDiaComponent.php',
         'App\\Http\\Livewire\\ServiciosCategorias\\CreateComponent' => __DIR__ . '/../..' . '/app/Http/Livewire/ServiciosCategorias/CreateComponent.php',
         'App\\Http\\Livewire\\ServiciosCategorias\\EditComponent' => __DIR__ . '/../..' . '/app/Http/Livewire/ServiciosCategorias/EditComponent.php',
         'App\\Http\\Livewire\\ServiciosCategorias\\IndexComponent' => __DIR__ . '/../..' . '/app/Http/Livewire/ServiciosCategorias/IndexComponent.php',
@@ -901,7 +896,6 @@ class ComposerStaticInite9ca9adb74c620868cc54f1ae733fdc2
         'App\\Models\\Facturas' => __DIR__ . '/../..' . '/app/Models/Facturas.php',
         'App\\Models\\Gastos' => __DIR__ . '/../..' . '/app/Models/Gastos.php',
         'App\\Models\\GastosAduanas' => __DIR__ . '/../..' . '/app/Models/GastosAduanas.php',
-        'App\\Models\\GastosGenerales' => __DIR__ . '/../..' . '/app/Models/GastosGenerales.php',
         'App\\Models\\GastosMensuales' => __DIR__ . '/../..' . '/app/Models/GastosMensuales.php',
         'App\\Models\\Generales' => __DIR__ . '/../..' . '/app/Models/Generales.php',
         'App\\Models\\Iva' => __DIR__ . '/../..' . '/app/Models/Iva.php',
@@ -5041,6 +5035,7 @@ class ComposerStaticInite9ca9adb74c620868cc54f1ae733fdc2
         'PharIo\\Version\\VersionConstraintParser' => __DIR__ . '/..' . '/phar-io/version/src/VersionConstraintParser.php',
         'PharIo\\Version\\VersionConstraintValue' => __DIR__ . '/..' . '/phar-io/version/src/VersionConstraintValue.php',
         'PharIo\\Version\\VersionNumber' => __DIR__ . '/..' . '/phar-io/version/src/VersionNumber.php',
+        'Pharaonic\\Livewire\\Select2\\Select2ServiceProvider' => __DIR__ . '/..' . '/pharaonic/livewire-select2/src/Select2ServiceProvider.php',
         'PhpOffice\\PhpSpreadsheet\\Calculation\\ArrayEnabled' => __DIR__ . '/..' . '/phpoffice/phpspreadsheet/src/PhpSpreadsheet/Calculation/ArrayEnabled.php',
         'PhpOffice\\PhpSpreadsheet\\Calculation\\BinaryComparison' => __DIR__ . '/..' . '/phpoffice/phpspreadsheet/src/PhpSpreadsheet/Calculation/BinaryComparison.php',
         'PhpOffice\\PhpSpreadsheet\\Calculation\\Calculation' => __DIR__ . '/..' . '/phpoffice/phpspreadsheet/src/PhpSpreadsheet/Calculation/Calculation.php',

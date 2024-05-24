@@ -311,7 +311,6 @@
                                     <th class="table-active" colspan="7">Gastos Aduanas</th>
                                 </tr>
                                 @foreach ($clienteGastos as $aduana)
-
                                 <tr>
                                     <td colspan="2">{{$aduana['titulo']}}</td>
                                     <td colspan="5">{{$aduana['descripcion']}}</td>

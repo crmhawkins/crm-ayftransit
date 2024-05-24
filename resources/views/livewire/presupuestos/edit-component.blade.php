@@ -64,6 +64,7 @@
                                         @foreach ($tarifasTerrestres as $tarifa)
                                             <option value="{{ $tarifa->id }}">
                                                 {{ $tarifa->destino }}
+
                                             </option>
                                         @endforeach
                                     @endif

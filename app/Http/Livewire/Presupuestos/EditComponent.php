@@ -471,20 +471,6 @@ class EditComponent extends Component
     public function crearPdf()
     {
         $presupuesto = Presupuesto::find($this->identificador);
-        $data = [
-            'identificador' => $this->identificador,
-            'presupuesto' =>$presupuesto,
-            'clientes' => Cliente::all(),
-            'puertos' => Puerto::all(),
-            'proveedores' => Proveedor::all(),
-            'tarifas'=> Tarifa::all(),
-            'tarifasSeleccionadas' => $presupuesto->Tarifas()->get()->toArray(),
-            'cargo' => $presupuesto->cargosExtra()->get()->toArray(),
-            'notas' => $presupuesto->notas()->get()->toArray(),
-            'servicios' => $presupuesto->servicios()->get()->toArray(),
-            'generales' => $presupuesto->generales()->get()->toArray(),
-
-        ];
         return $pdf = PDF::loadView('livewire.presupuestos.pdf-presupuesto', [
             'identificador' => $this->identificador,
             'presupuesto' =>$presupuesto,
@@ -492,6 +478,8 @@ class EditComponent extends Component
             'puertos' => Puerto::all(),
             'proveedores' => Proveedor::all(),
             'tarifas'=> Tarifa::all(),
+            'clienteGastos'=> $this->clienteGastos,
+            'clienteNotas'=>  $this->clienteNotas,
             'tarifasSeleccionadas' => $presupuesto->Tarifas()->get()->toArray(),
             'cargo' => $presupuesto->cargosExtra()->get()->toArray(),
             'notas' => $presupuesto->notas()->get()->toArray(),

@@ -51,14 +51,14 @@
         }
         th {
 
-            padding: 10px;
+            padding: 5px;
             text-align: left;
         }
         .linea {
             border-right: 2px solid #30419b;
         }
         td {
-            padding: 10px;
+            padding: 5px;
             text-align: left;
         }
 
@@ -165,7 +165,7 @@
 
     <section>
         <div class="section-title">Detalle de Flete Marítimo y Gastos</div>
-        <table>
+        <table class="table-sm">
             <thead>
                 <tr>
                     <th>Origen</th>
@@ -198,9 +198,23 @@
                     @endif
                     @elseif($presupuesto->tipo_mar_area_terr == 2)
                     @endif
-                    <td>{{ $tarifa['validez'] }}</td>
+                    <td>Del {{\Carbon\Carbon::parse($tarifa['efectividad'])->format('d/m') }} Al {{\Carbon\Carbon::parse($tarifa['validez'])->format('d/m')}}</td>
                 </tr>
                 @endforeach
+                <tr>
+                    <td colspan="2">Quebranto Bancario</td>
+                    @if ($presupuesto->tipo_mar_area_terr == 1)
+                        @if($presupuesto->tipo_cont_grup == 1)
+                        <td>1%</td>
+                        <td>1%</td>
+                        <td>1%</td>
+                        @elseif($presupuesto->tipo_cont_grup == 2)
+                        <td colspan="3">1%</td>
+                        @endif
+                        @elseif($presupuesto->tipo_mar_area_terr == 2)
+                        @endif
+                        <td colspan="2">Sobre Divisas</td>
+                </tr>
             </tbody>
             <thead>
                 <tr>
@@ -216,6 +230,15 @@
                 </tr>
             </thead>
             <tbody>
+                @foreach ($cargo as $cargoExtra)
+                <tr>
+                    <th class="linea" colspan="2">{{$cargoExtra['concepto']}}</th>
+                    <td class="text-center">{{$cargoExtra['valor20']}}</td>
+                    <td class="text-center">{{$cargoExtra['valor40']}}</td>
+                    <td class="text-center">{{$cargoExtra['valorHQ']}}</td>
+                    <td>{{$cargoExtra['Unidad']}}</td>
+                </tr>
+                @endforeach
                 <tr>
                     <th colspan="2"  class="linea">Forfait Gastos Llegada</th>
                     @if($presupuesto->tipo_cont_grup == 1)
@@ -246,13 +269,17 @@
                     <td class="text-center">30 % s/tte</td>
                     <td>Por Contenedor</td>
                 </tr>
-                @foreach ($cargo as $cargoExtra)
+            </tbody>
+            <thead>
                 <tr>
-                    <th class="linea" colspan="2">{{$cargoExtra['concepto']}}</th>
-                    <td class="text-center">{{$cargoExtra['valor20']}}</td>
-                    <td class="text-center">{{$cargoExtra['valor40']}}</td>
-                    <td class="text-center">{{$cargoExtra['valorHQ']}}</td>
-                    <td>{{$cargoExtra['Unidad']}}</td>
+                    <th colspan="6">Gastos Aduanas</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach ($clienteGastos as $aduana)
+                <tr>
+                    <td class="linea" colspan="2">{{$aduana['titulo']}}</td>
+                    <td colspan="4">{{$aduana['descripcion']}}</td>
                 </tr>
                 @endforeach
             </tbody>
@@ -262,6 +289,12 @@
                 </tr>
             </thead>
             <tbody>
+                @foreach ($clienteNotas as $notacliente)
+                    <tr>
+                        <td class="linea" colspan="2">{{$notacliente['titulo']}}</td>
+                        <td colspan="4">{{$notacliente['descripcion']}}</td>
+                    </tr>
+                @endforeach
                 @foreach ($notas as $nota)
                 <tr>
                     <td class="linea" colspan="2">{{$nota['titulo']}}</td>

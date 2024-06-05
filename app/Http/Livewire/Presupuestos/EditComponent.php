@@ -437,6 +437,7 @@ class EditComponent extends Component
             'cambioProveedor',
             'confirmDelete',
             'nuevoPresupuesto',
+            'enviarCorreo',
         ];
     }
 
@@ -492,7 +493,6 @@ class EditComponent extends Component
         $presupuesto = Presupuesto::find($this->identificador);
         $cliente = Cliente::find($this->id_cliente);
         $pdf = $this->crearPdf()->output();
-
         Mail::to($cliente->email)->send(new PresupuestoMailable($cliente, $pdf));
 
         $this->alert('success', 'Correo enviado correctamente!', [

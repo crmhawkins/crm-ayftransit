@@ -15,7 +15,6 @@ class PresupuestoMailable extends Mailable
 
     public $cliente;
     public $pdf;
-
     /**
      * Create a new message instance.
      *

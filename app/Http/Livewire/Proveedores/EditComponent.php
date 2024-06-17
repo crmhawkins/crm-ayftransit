@@ -54,6 +54,12 @@ class EditComponent extends Component
 
     public function addGasto()
     {
+        $validated = $this->validate([
+            'concepto' => 'required',
+        ],[
+            'concepto.required' => 'El concepto es obligatorio.',
+        ]);
+
         ProveedorGasto::create([
             'proveedor_id' => $this->identificador,
             'concepto' => $this->concepto,

@@ -76,6 +76,8 @@
                             <div class="row mb-3">
                                 <div class="col-sm-3">
                                     <input type="text" wire:model="concepto" class="form-control" placeholder="Concepto">
+                                    @error('concepto') <span class="text-danger">{{ $message }}</span> @enderror
+
                                 </div>
                                 <div class="col-sm-2">
                                     <input type="number" wire:model="gasto_20" class="form-control" placeholder="Gasto 20">

@@ -35,14 +35,12 @@
                             <div class="col-sm-4">
                                 <label for="nombre" class="col-form-label">Nombre de contacto</label>
                                 <input type="text" wire:model="nombre" class="form-control" id="nombre" placeholder="Nombre de contacto">
-                                @error('nombre') <span class="text-danger">{{ $message }}</span> @enderror
                             </div>
                         </div>
                         <div class="form-group row">
                             <div class="col-sm-4">
                                 <label for="direccion" class="col-form-label">Dirección</label>
                                 <input type="text" wire:model="direccion" class="form-control" id="direccion" placeholder="Dirección">
-                                @error('direccion') <span class="text-danger">{{ $message }}</span> @enderror
                             </div>
                             <div class="col-sm-4">
                                 <label for="telefono" class="col-form-label">Teléfono</label>
@@ -59,12 +57,10 @@
                             <div class="col-sm-6">
                                 <label for="seguro" class="col-form-label">Seguro</label>
                                 <input type="text" wire:model="seguro" class="form-control" id="seguro" placeholder="Seguro">
-                                @error('seguro') <span class="text-danger">{{ $message }}</span> @enderror
                             </div>
                             <div class="col-sm-6">
                                 <label for="pago" class="col-form-label">Metodo de pago</label>
                                 <input type="text" wire:model="pago" class="form-control" id="pago" placeholder="Pago">
-                                @error('email') <span class="text-danger">{{ $message }}</span> @enderror
                             </div>
                         </div>
                         <table class="table table-bordered dt-responsive nowrap" style="width: 100%;">

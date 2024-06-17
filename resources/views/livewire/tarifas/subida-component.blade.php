@@ -86,7 +86,7 @@
                                         @endforeach
                                 </select>
                             </div>
-                            <div class="col-sm-2">
+                            {{-- <div class="col-sm-2">
                                 <label for="cargo40" class="col-form-label">Cargo a sumar 20</label>
                                 <input type="number" wire:model="cargo20" class="form-control" id="cargo20" placeholder="Precio">
                             </div>
@@ -101,7 +101,7 @@
                             <div class="col-sm-2">
                                 <label for="cargoGrup" class="col-form-label">Cargo a sumar Grupage</label>
                                 <input type="number" wire:model="cargoGrup" class="form-control" id="cargoGrup" placeholder="Precio">
-                            </div>
+                            </div> --}}
                         </div>
                         <div id="spreadsheet" style="width: 100%; overflow-x: auto; height: auto;" wire:ignore></div>
                     </form>

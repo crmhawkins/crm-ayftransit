@@ -82,6 +82,7 @@ class SubidaComponent extends Component
                 $precio40 = floatval(str_replace('.', '', $tarifaData['5']));
                 $precioHC = floatval(str_replace('.', '', $tarifaData['6']));
                 $precioGrup = floatval(str_replace('.', '', $tarifaData['7']));
+                $dias =  $tarifaData['8'];
 
                 Tarifa::create([
                     'origen_id' => $origen->id,
@@ -94,6 +95,7 @@ class SubidaComponent extends Component
                     'precio_contenedor_40' => $precio40+ $this->cargo40,
                     'precio_contenedor_h4' => $precioHC + $this->cargoHc,
                     'precio_grupage' => $precioGrup + $this->cargoGrup,
+                    'dias' => $dias,
                     'validez' => Carbon::createFromFormat('Y-m-d', $tarifaData['0']),
                     'efectividad' => Carbon::createFromFormat('Y-m-d', $tarifaData['1']),
                 ]);

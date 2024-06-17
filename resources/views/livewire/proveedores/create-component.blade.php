@@ -49,7 +49,7 @@
                                 @error('telefono') <span class="text-danger">{{ $message }}</span> @enderror
                             </div>
                         </div>
-                        <div class="form-group row">
+                        {{-- <div class="form-group row">
                             <div class="col-sm-3">
                                 <label for="gastos_llegada_20" class="col-form-label">Gastos de llegada 20</label>
                                 <input type="number" wire:model="gastos_llegada_20" class="form-control" id="gastos_llegada_20" placeholder="Gastos de llegada">
@@ -70,7 +70,7 @@
                                 <input type="number" wire:model="gastos_llegada_grupage" class="form-control" id="gastos_llegada_grupage" placeholder="Gastos de llegada">
                                 @error('gastos_llegada_grupage') <span class="text-danger">{{ $message }}</span> @enderror
                             </div>
-                        </div>
+                        </div> --}}
                     </form>
                 </div>
             </div>

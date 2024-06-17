@@ -139,16 +139,17 @@
 
         var mySpreadsheet = jexcel(document.getElementById('spreadsheet'), {
             data: data,
-            minDimensions: [7, 20],
+            minDimensions: [8, 20],
             columns: [
-                {type: 'calendar', title: 'Fecha validez', width: widthInPercent(15), options: { format: 'YYYY-MM-DD' }},
-                {type: 'calendar', title: 'Fecha efectividad', width: widthInPercent(15), options: { format: 'YYYY-MM-DD' }},
+                {type: 'calendar', title: 'Fecha validez', width: widthInPercent(13), options: { format: 'YYYY-MM-DD' }},
+                {type: 'calendar', title: 'Fecha efectividad', width: widthInPercent(13), options: { format: 'YYYY-MM-DD' }},
                 {type: 'text', title: 'Origen', width: widthInPercent(10)},
                 {type: 'text', title: 'Destino', width: widthInPercent(10)},
                 {type: 'number', title: 'Precio 20', width: widthInPercent(10)},
                 {type: 'number', title: 'Precio 40', width: widthInPercent(10)},
                 {type: 'number', title: 'Precio HC', width: widthInPercent(10)},
                 {type: 'number', title: 'Precio Grupage', width: widthInPercent(10)},
+                {type: 'number', title: 'Dias', width: widthInPercent(6)},
             ]
         });
         $("#alertaGuardar").on("click", () => {

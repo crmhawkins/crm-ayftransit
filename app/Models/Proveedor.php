@@ -15,4 +15,10 @@ class Proveedor extends Model
     {
         return $this->hasMany(Tarifa::class,'proveedor_id');
     }
+
+    public function gastos()
+    {
+        return $this->hasMany(ProveedorGasto::class);
+    }
+
 }

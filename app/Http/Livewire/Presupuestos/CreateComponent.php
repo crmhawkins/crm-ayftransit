@@ -58,6 +58,7 @@ class CreateComponent extends Component
     public $clienteGastos = [];
     public $cliente = [];
     public $gastos_llegada_20;
+    public $filtrar = 'precio';
 
 
     public function mount()
@@ -138,29 +139,33 @@ class CreateComponent extends Component
     public function agregarTarifa()
     {
         $tarifa = Tarifa::find($this->tarifa_id);
-        $this->tarifasSeleccionadas [] = [
+        $proveedor = Proveedor::find($tarifa->proveedor_id);
+        $gastos = $proveedor->gastos;
+
+        $precio_total_20 = isset($tarifa->precio_contenedor_20) ? $tarifa->precio_contenedor_20 + $gastos->sum('gasto_20') : null;
+        $precio_total_40 = isset($tarifa->precio_contenedor_40) ? $tarifa->precio_contenedor_40 + $gastos->sum('gasto_40') : null;
+        $precio_total_h4 = isset($tarifa->precio_contenedor_h4) ? $tarifa->precio_contenedor_h4 + $gastos->sum('gasto_h4') : null;
+        $precio_total_grupage = isset($tarifa->precio_grupage) ? $tarifa->precio_grupage + $gastos->sum('gasto_grupage') : null;
+
+        $this->tarifasSeleccionadas[] = [
             'id_proveedor' => $tarifa->proveedor_id ?? null,
             'tarifa_id' => $tarifa->tarifa_id ?? null,
             'origen_id' => $tarifa->origen_id ?? null,
             'destino_id' => $tarifa->destino_id ?? null,
-            'precio_grupage' => $tarifa->precio_grupage ?? null,
-            'precio_contenedor_20' => $tarifa->precio_contenedor_20 ?? null,
-            'precio_contenedor_40' => $tarifa->precio_contenedor_40 ?? null,
-            'precio_contenedor_h4' => $tarifa->precio_contenedor_h4 ?? null,
+            'precio_grupage' => $precio_total_grupage,
+            'precio_contenedor_20' => $precio_total_20,
+            'precio_contenedor_40' => $precio_total_40,
+            'precio_contenedor_h4' => $precio_total_h4,
             'dias' => $tarifa->dias ?? null,
             'validez' => $tarifa->validez ?? null,
             'efectividad' => $tarifa->efectividad ?? null
-
         ];
-        $this->gastos_llegada_grupage = $this->proveedores->find($this->id_proveedor)->first()->gastos_llegada_grupage;
-        $this->gastos_llegada_20 = $this->proveedores->find($this->id_proveedor)->first()->gastos_llegada_20;
-        $this->gastos_llegada_40 = $this->proveedores->find($this->id_proveedor)->first()->gastos_llegada_40;
-        $this->gastos_llegada_h4 = $this->proveedores->find($this->id_proveedor)->first()->gastos_llegada_h4;
-        $this->origen_id= null;
+
+        $this->origen_id = null;
         $this->destino_id = null;
         $this->id_proveedor = null;
         $this->selectProveedorTarifa = null;
-        $this->TarifasProveedores =[];
+        $this->TarifasProveedores = [];
     }
 
     public function eliminarTarifa($index)
@@ -207,20 +212,31 @@ class CreateComponent extends Component
     public function actualizarProveedores()
     {
         $this->TarifasProveedores = Tarifa::where('origen_id', $this->origen_id)
-        ->where('destino_id', $this->destino_id)
-        ->where('tipo_mar_area_terr', $this->tipo_mar_area_terr)
-        ->where('tipo_imp_exp', $this->tipo_imp_exp)
-        ->where('tipo_cont_grup', $this->tipo_cont_grup)
-        ->where('validez', '>', Carbon::now()->toDateString())
-        ->where('efectividad', '<', Carbon::now()->toDateString())
-        ->whereHas('proveedor', function ($query) {
-            // Aquí podrías añadir filtros adicionales para el proveedor si es necesario
-        })
-        ->with('proveedor')
-        ->get();
+            ->where('destino_id', $this->destino_id)
+            ->where('tipo_mar_area_terr', $this->tipo_mar_area_terr)
+            ->where('tipo_imp_exp', $this->tipo_imp_exp)
+            ->where('tipo_cont_grup', $this->tipo_cont_grup)
+            ->where('validez', '>', Carbon::now()->toDateString())
+            ->where('efectividad', '<', Carbon::now()->toDateString())
+            ->with(['proveedor', 'proveedor.gastos'])
+            ->get();
 
-        // Ordenar todas las tarifas por el precio de contenedor 20, como ejemplo.
-        $this->TarifasProveedores = $this->TarifasProveedores->sortBy('precio_contenedor_20')->values();
+        foreach ($this->TarifasProveedores as $tarifa) {
+            $gastos = $tarifa->proveedor->gastos;
+
+            $tarifa->precio_total_20 = isset($tarifa->precio_contenedor_20) ? $tarifa->precio_contenedor_20 + $gastos->sum('gasto_20') : null;
+            $tarifa->precio_total_40 = isset($tarifa->precio_contenedor_40) ? $tarifa->precio_contenedor_40 + $gastos->sum('gasto_40') : null;
+            $tarifa->precio_total_h4 = isset($tarifa->precio_contenedor_h4) ? $tarifa->precio_contenedor_h4 + $gastos->sum('gasto_h4') : null;
+            $tarifa->precio_total_grupage = isset($tarifa->precio_grupage) ? $tarifa->precio_grupage + $gastos->sum('gasto_grupage') : null;
+        }
+
+        if ($this->filtrar == 'precio') {
+            $this->TarifasProveedores = $this->TarifasProveedores->sortBy(function($tarifa) {
+                return $tarifa->precio_total_20; // Ordenar por precio total de contenedor 20 por defecto
+            })->values();
+        } elseif ($this->filtrar == 'dias') {
+            $this->TarifasProveedores = $this->TarifasProveedores->sortBy('dias')->values();
+        }
     }
 
     public function updated()

@@ -3,6 +3,7 @@
 namespace App\Http\Livewire\Proveedores;
 
 use App\Models\Proveedor;
+use App\Models\ProveedorGasto;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
 use Livewire\Component;
 use Illuminate\Support\Facades\Auth;
@@ -22,6 +23,12 @@ class EditComponent extends Component
     public $telefono;
     public $email;
 
+    public $concepto;
+    public $gasto_20;
+    public $gasto_40;
+    public $gasto_h4;
+    public $gasto_grupage;
+
     public function mount($identificador)
     {
         $Proveedor = Proveedor::find($identificador);
@@ -40,7 +47,37 @@ class EditComponent extends Component
 
     public function render()
     {
-        return view('livewire.proveedores.edit-component');
+        return view('livewire.proveedores.edit-component', [
+            'gastos_adicionales' => ProveedorGasto::where('proveedor_id', $this->identificador)->get(),
+        ]);
+    }
+
+    public function addGasto()
+    {
+        ProveedorGasto::create([
+            'proveedor_id' => $this->identificador,
+            'concepto' => $this->concepto,
+            'gasto_20' => empty($this->gasto_20) ? null : $this->gasto_20,
+            'gasto_40' => empty($this->gasto_40) ? null : $this->gasto_40,
+            'gasto_h4' => empty($this->gasto_h4) ? null : $this->gasto_h4,
+            'gasto_grupage' => empty($this->gasto_grupage) ? null : $this->gasto_grupage,
+        ]);
+
+        $this->resetGastoFields();
+    }
+
+    public function removeGasto($id)
+    {
+        ProveedorGasto::find($id)->delete();
+    }
+
+    public function resetGastoFields()
+    {
+        $this->concepto = '';
+        $this->gasto_20 = '';
+        $this->gasto_40 = '';
+        $this->gasto_h4 = '';
+        $this->gasto_grupage = '';
     }
 
     public function update()
@@ -84,7 +121,6 @@ class EditComponent extends Component
             ]);
 
             $this->emitTo('proveedores.index-component', 'refresh');
-            // Considera redirigir o cerrar el modal de edición según tu flujo de usuario
         } else {
             $this->alert('error', '¡No se ha podido actualizar la información del Proveedor!', [
                 'position' => 'center',
@@ -94,7 +130,6 @@ class EditComponent extends Component
         }
     }
 
-    // Añade las funciones de alerta según sean necesarias
     public function getListeners()
     {
         return [
@@ -106,12 +141,9 @@ class EditComponent extends Component
 
     public function confirmed()
     {
-        // Implementa lo que sucederá cuando se confirme una acción (ej. redirección)
         return redirect()->route('proveedores.index');
-
     }
 
-    // Implementa la lógica para la confirmación de eliminación si es necesario
     public function confirmDelete()
     {
         $Proveedor = Proveedor::find($this->identificador);

@@ -239,7 +239,7 @@
                     <td>{{$cargoExtra['Unidad']}}</td>
                 </tr>
                 @endforeach
-                <tr>
+                {{-- <tr>
                     <th colspan="2"  class="linea">Forfait Gastos Llegada</th>
                     @if($presupuesto->tipo_cont_grup == 1)
                     <td class="text-center">{{$presupuesto->gastos_llegada_20}}</td>
@@ -249,7 +249,7 @@
                     @elseif($presupuesto->tipo_cont_grup == 2)
                     <td class="text-center" colspan="4">{{$presupuesto->gastos_llegada_grupage}}</td>
                     @endif
-                </tr>
+                </tr> --}}
                 <tr>
                     <th class="linea" colspan="2">Transporte Camion</th>
                     <td class="text-center" colspan="3">{{$presupuesto->precio_terrestre}}</td>

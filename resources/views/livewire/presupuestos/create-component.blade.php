@@ -124,6 +124,13 @@
                             <div class="form-group col-md-12">
                                 <h5 class="ms-3" style="border-bottom: 1px gray solid !important; padding-bottom: 10px !important;">Flete Marítimo Puerto - Puerto</h5>
                             </div>
+                            <div class="form-group col-md-12">
+                                <label for="filtrar">Filtrar por</label>
+                                <select class="form-control" name="filtrar" id="filtrar" wire:model="filtrar">
+                                    <option value="precio">Economico</option>
+                                    <option value="dias">Rapido</option>
+                                </select>
+                            </div>
                             <div class="form-group col-md-2" wire:ignore>
                                 <label for="origen">Origen</label>
                                 <select data-pharaonic="select2"
@@ -157,45 +164,50 @@
                                 </select>
                             </div>
                             @if ($tipo_cont_grup == 1)
-                            <div class="form-group col-md-6">
-                                <label for="id_proveedor">Selecciona una naviera</label>
-                                <select class="form-control" name="id_proveedor" id="id_proveedor"
-                                        wire:model="selectProveedorTarifa">
-                                    <option value="0">-- ELIGE UNA NAVIERA --</option>
-                                    @foreach ($TarifasProveedores as $tarifa)
-                                        <option value="{{ $tarifa->proveedor->id }}-{{ $tarifa->id }}">
-                                            {{ $tarifa->proveedor->nombre }}  -- ${{ $tarifa->precio_contenedor_20 }} -- ${{ $tarifa->precio_contenedor_40 }} -- ${{ $tarifa->precio_contenedor_h4 }}
-                                        </option>
-                                    @endforeach
-                                </select>
-                            </div>
-                            @elseif($tipo_cont_grup == 2)
-                            <div class="form-group col-md-6">
-                                <label for="id_proveedor">Selecciona una naviera</label>
-                                <select class="form-control" name="id_proveedor" id="id_proveedor"
-                                        wire:model="selectProveedorTarifa">
-                                    <option value="0">-- ELIGE UNA NAVIERA --</option>
-                                    @foreach ($TarifasProveedores as $tarifa)
-                                        <option value="{{ $tarifa->proveedor->id }}-{{ $tarifa->id }}">
-                                            {{ $tarifa->proveedor->nombre }}  --  ${{ $tarifa->precio_grupage }}
-                                        </option>
-                                    @endforeach
-                                </select>
-                            </div>
-                            @else
-                            <div class="form-group col-md-6">
-                                <label for="id_proveedor">Selecciona una naviera</label>
-                                <select class="form-control" name="id_proveedor" id="id_proveedor"
-                                        wire:model="selectProveedorTarifa">
-                                    <option value="0">-- ELIGE UNA NAVIERA --</option>
-                                    @foreach ($TarifasProveedores as $tarifa)
-                                        <option value="{{ $tarifa->proveedor->id }}-{{ $tarifa->id }}">
-                                            {{ $tarifa->proveedor->nombre }}  --  ${{ $tarifa->precio_grupage }}
-                                        </option>
-                                    @endforeach
-                                </select>
-                            </div>
-                            @endif
+                        <div class="form-group col-md-6">
+                            <label for="id_proveedor">Selecciona una naviera</label>
+                            <select class="form-control" name="id_proveedor" id="id_proveedor"
+                                    wire:model="selectProveedorTarifa">
+                                <option value="0">-- ELIGE UNA NAVIERA --</option>
+                                @foreach ($TarifasProveedores as $tarifa)
+                                    <option value="{{ $tarifa->proveedor->id }}-{{ $tarifa->id }}">
+                                        {{ $tarifa->proveedor->nombre }}
+                                        @if (isset($tarifa->precio_total_20)) -- ${{ $tarifa->precio_total_20 }} @endif
+                                        @if (isset($tarifa->precio_total_40)) -- ${{ $tarifa->precio_total_40 }} @endif
+                                        @if (isset($tarifa->precio_total_h4)) -- ${{ $tarifa->precio_total_h4 }} @endif
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+                        @elseif($tipo_cont_grup == 2)
+                        <div class="form-group col-md-6">
+                            <label for="id_proveedor">Selecciona una naviera</label>
+                            <select class="form-control" name="id_proveedor" id="id_proveedor"
+                                    wire:model="selectProveedorTarifa">
+                                <option value="0">-- ELIGE UNA NAVIERA --</option>
+                                @foreach ($TarifasProveedores as $tarifa)
+                                    <option value="{{ $tarifa->proveedor->id }}-{{ $tarifa->id }}">
+                                        {{ $tarifa->proveedor->nombre }}
+                                        @if (isset($tarifa->precio_total_grupage)) -- ${{ $tarifa->precio_total_grupage }} @endif
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+                        @else
+                        <div class="form-group col-md-6">
+                            <label for="id_proveedor">Selecciona una naviera</label>
+                            <select class="form-control" name="id_proveedor" id="id_proveedor"
+                                    wire:model="selectProveedorTarifa">
+                                <option value="0">-- ELIGE UNA NAVIERA --</option>
+                                @foreach ($TarifasProveedores as $tarifa)
+                                    <option value="{{ $tarifa->proveedor->id }}-{{ $tarifa->id }}">
+                                        {{ $tarifa->proveedor->nombre }}
+                                        @if (isset($tarifa->precio_total_grupage)) -- ${{ $tarifa->precio_total_grupage }} @endif
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+                        @endif
                             <div class="col-2">
                                 <label for="btn"></label>
                                 <button class="btn btn-primary w-100 mt-2" wire:click.prevent="agregarTarifa">Agregar Tarifa</button>
@@ -277,7 +289,7 @@
                                 <tr>
                                     <td colspan="7"><button class="btn btn-primary w-100" wire:click.prevent="agregarCargoExtra">Agregar Gastos</button></td>
                                 <tr>
-                                <tr>
+                                {{-- <tr>
                                     <th colspan="2">Forfait Gastos Llegada</th>
                                     @if($tipo_cont_grup == 1)
                                     <td><input class="form-control" type="number" wire:model=gastos_llegada_20></td>
@@ -287,7 +299,7 @@
                                     @elseif($tipo_cont_grup == 2)
                                     <td colspan="4"><input class="form-control" type="number" wire:model=gastos_llegada_grupage></td>
                                     @endif
-                                </tr>
+                                </tr> --}}
                                 <tr>
                                     <th colspan="2">Transporte Camion</th>
                                         <td colspan="3"><input class="form-control" type="number" wire:model=precio_terrestre></td>

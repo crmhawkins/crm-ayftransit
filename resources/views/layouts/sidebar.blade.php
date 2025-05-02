@@ -32,6 +32,7 @@
                     <ul class="submenu">
                         <li><a href="/admin/tarifas-create">Crear Tarifa Inidvidual</a></li>
                         <li><a href="/admin/tarifas-subida">Crear Tarifas</a></li>
+                        <li><a href="/tarifas/importar">Importar desde excel</a></li>
                         <li><a href="/admin/tarifas-marinas"><i class="fa-solid fa-ship"></i><span> Ver Maritimas</i></a></li>
                         <li><a href="/admin/tarifas-terrestres"><i class="fa-solid fa-truck"></i><span> Ver Terrestres</i></a></li>
                         <li><a href="/admin/tarifas-aereas"><i class="fa-solid fa-plane"></i><span> Ver Aereas</i></a></li>

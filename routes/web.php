@@ -321,3 +321,19 @@ Route::group(['middleware' => 'is.admin', 'prefix' => 'admin'], function () {
      Route::get('/service/jwt', [MapKitController::class, 'getJwt']);
 
 });
+
+// ... otras rutas ...
+
+use App\Http\Controllers\TarifaImportController;
+
+Route::middleware(['auth'])->group(function () {
+    // ... otras rutas autenticadas ...
+
+    Route::get('/tarifas/importar', [TarifaImportController::class, 'showImportForm'])->name('tarifas.import.form');
+    Route::post('/tarifas/importar', [TarifaImportController::class, 'handleImport'])->name('tarifas.import.handle');
+
+    // ... otras rutas autenticadas ...
+});
+
+// ... resto de web.php ...
+

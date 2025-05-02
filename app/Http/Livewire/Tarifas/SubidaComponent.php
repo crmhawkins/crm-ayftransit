@@ -120,195 +120,195 @@ class SubidaComponent extends Component
         }
     }
 
-    // public function isDateValid($date, $format = 'Y-m-d')
-    // {
-    //     try {
-    //         Carbon::createFromFormat($format, $date);
-    //         return true;  // La fecha es válida
-    //     } catch (\Exception $e) {
-    //         return false;  // La fecha no es válida
-    //     }
-    // }
-    // public function excelDateToDate($excelDateNumber) {
-    //     $baseDate = DateTime::createFromFormat('Y-m-d', '1899-12-30'); // Fecha base de Excel (sistema de fecha de 1900)
-    //     $date = clone $baseDate;
-    //     $date->add(new DateInterval('P' . intval($excelDateNumber) . 'D'));
-    //     return $date->format('Y-m-d');
-    // }
-    // public function tarifasOne()
-    // {
-    //     $tarifa= false;
-    //     $path = $this->file->store('temp');
-    //     $data = Excel::toArray([], storage_path('app/'.$path));
+    public function isDateValid($date, $format = 'Y-m-d')
+    {
+        try {
+            Carbon::createFromFormat($format, $date);
+            return true;  // La fecha es válida
+        } catch (\Exception $e) {
+            return false;  // La fecha no es válida
+        }
+    }
+    public function excelDateToDate($excelDateNumber) {
+        $baseDate = DateTime::createFromFormat('Y-m-d', '1899-12-30'); // Fecha base de Excel (sistema de fecha de 1900)
+        $date = clone $baseDate;
+        $date->add(new DateInterval('P' . intval($excelDateNumber) . 'D'));
+        return $date->format('Y-m-d');
+    }
+
+    public function tarifasOne()
+    {
+        $tarifa= false;
+        $path = $this->file->store('temp');
+        $data = Excel::toArray([], storage_path('app/'.$path));
 
 
-    //      $sheets_to_process = [1,2]; // Hojas 2 y 3, los índices comienzan en 0
+         $sheets_to_process = [1,2]; // Hojas 2 y 3, los índices comienzan en 0
 
-    //     foreach ($sheets_to_process as $sheet_index) {
-    //         $sheet_data = $data[$sheet_index];
+        foreach ($sheets_to_process as $sheet_index) {
+            $sheet_data = $data[$sheet_index];
 
-    //         $extra_charges_dry = 0;
-    //         for ($i = 14; $i <= 41; $i++) {
+            $extra_charges_dry = 0;
+            for ($i = 14; $i <= 41; $i++) {
 
-    //             if (isset($sheet_data[$i]) && (strpos($sheet_data[$i][1], 'OBS') !== false || strpos($sheet_data[$i][1], 'ETS') !== false) && $sheet_data[$i][2] === 'DRY') {
-    //                 $extra_charges_dry += floatval(str_replace('$', '', $sheet_data[$i][5]));
-    //             }
-    //             if (isset($sheet_data[$i]) && in_array($sheet_data[$i][1], ['SCT', 'Emergency PSS'])) {
-    //                 $extra_charges_dry += floatval(str_replace('$', '', $sheet_data[$i][5]));
-    //             }
-    //         }
+                if (isset($sheet_data[$i]) && (strpos($sheet_data[$i][1], 'OBS') !== false || strpos($sheet_data[$i][1], 'ETS') !== false) && $sheet_data[$i][2] === 'DRY') {
+                    $extra_charges_dry += floatval(str_replace('$', '', $sheet_data[$i][5]));
+                }
+                if (isset($sheet_data[$i]) && in_array($sheet_data[$i][1], ['SCT', 'Emergency PSS'])) {
+                    $extra_charges_dry += floatval(str_replace('$', '', $sheet_data[$i][5]));
+                }
+            }
 
-    //         $origen_col = $sheet_index == 1 ? 5 : 4; // En hoja 1 (índice 0) origen está en columna 5, en hoja 2 en columna 4
-    //         $destino_col = $sheet_index == 1 ? 6 : 5; // En hoja 1 (índice 0) destino está en columna 6, en hoja 2 en columna 5
+            $origen_col = $sheet_index == 1 ? 5 : 4; // En hoja 1 (índice 0) origen está en columna 5, en hoja 2 en columna 4
+            $destino_col = $sheet_index == 1 ? 6 : 5; // En hoja 1 (índice 0) destino está en columna 6, en hoja 2 en columna 5
 
-    //          for ($index = 42; $index < count($sheet_data); $index++) {
-    //             $row = $sheet_data[$index];
-    //             if (!empty($row[1]) && !empty($row[2])) {
+             for ($index = 42; $index < count($sheet_data); $index++) {
+                $row = $sheet_data[$index];
+                if (!empty($row[1]) && !empty($row[2])) {
 
-    //                 if ($this->isDateValid($this->excelDateToDate($row[1]))) {
-    //                     // La fecha en $row[1] es válida, procesar la fila
-    //                     $origen = Puerto::firstOrCreate(['Nombre' => $row[$origen_col]]);
-    //                     $destino = Puerto::firstOrCreate(['Nombre' => $row[ $destino_col]]);
-    //                     $effective_date = Carbon::createFromFormat('Y-m-d', $this->excelDateToDate($row[1]));
-    //                     $expiry_date = Carbon::createFromFormat('Y-m-d', $this->excelDateToDate($row[2]));
+                    if ($this->isDateValid($this->excelDateToDate($row[1]))) {
+                        // La fecha en $row[1] es válida, procesar la fila
+                        $origen = Puerto::firstOrCreate(['Nombre' => $row[$origen_col]]);
+                        $destino = Puerto::firstOrCreate(['Nombre' => $row[ $destino_col]]);
+                        $effective_date = Carbon::createFromFormat('Y-m-d', $this->excelDateToDate($row[1]));
+                        $expiry_date = Carbon::createFromFormat('Y-m-d', $this->excelDateToDate($row[2]));
 
-    //                     $tarifa = new Tarifa([
-    //                         'origen_id' => $origen->id,
-    //                         'destino_id' => $destino->id,
-    //                         v
-    //                         'precio_contenedor_20' => floatval($row[11]) + $extra_charges_dry,
-    //                         'precio_contenedor_40' => floatval($row[12]) + (2 * $extra_charges_dry),
-    //                         'precio_contenedor_h4' => floatval($row[13]) + (2 * $extra_charges_dry),
-    //                     ]);
-    //                     $tarifa->save();
-    //                 } else {
-    //                     // La fecha en $row[1] no es válida, manejar el error o saltar la fila
-    //                 }
-    //             }
-    //         }
-    //     }
+                        $tarifa = new Tarifa([
+                            'origen_id' => $origen->id,
+                            'destino_id' => $destino->id,
+                            'precio_contenedor_20' => floatval($row[11]) + $extra_charges_dry,
+                            'precio_contenedor_40' => floatval($row[12]) + (2 * $extra_charges_dry),
+                            'precio_contenedor_h4' => floatval($row[13]) + (2 * $extra_charges_dry),
+                        ]);
+                        $tarifa->save();
+                    } else {
+                        // La fecha en $row[1] no es válida, manejar el error o saltar la fila
+                    }
+                }
+            }
+        }
 
-    //     // Remove temp file after import
-    //     unlink(storage_path('app/'.$path));
-    //     $this->file = null;
-    //     if ($tarifa) {
-    //         $this->alert('success', 'Tarifas registradas correctamente!', [
-    //             'position' => 'center',
-    //             'timer' => 3000,
-    //             'toast' => false,
-    //             'showConfirmButton' => true,
-    //             'onConfirmed' => '',
-    //             'confirmButtonText' => 'Ok',
-    //             'timerProgressBar' => true,
-    //         ]);
+        // Remove temp file after import
+        unlink(storage_path('app/'.$path));
+        $this->file = null;
+        if ($tarifa) {
+            $this->alert('success', 'Tarifas registradas correctamente!', [
+                'position' => 'center',
+                'timer' => 3000,
+                'toast' => false,
+                'showConfirmButton' => true,
+                'onConfirmed' => '',
+                'confirmButtonText' => 'Ok',
+                'timerProgressBar' => true,
+            ]);
 
-    //         $this->reset([
-    //             'origen_id',
-    //             'destino_id',
-    //             'destinoterrestre',
-    //             'precio_contenedor_20',
-    //             'precio_contenedor_40',
-    //             'precio_contenedor_h4',
-    //             'precio_terrestre',
-    //             'precio_grupage',
-    //             'tipo_imp_exp',
-    //             'tipo_cont_grup',
-    //             'tipo_mar_area_terr',
-    //             'proveedor_id',
-    //             'dias',
-    //             'cargo',
-    //             'validez',
-    //         ]);
-    //     } else {
-    //         $this->alert('error', '¡No se ha podido registrar las tarifas!', [
-    //             'position' => 'center',
-    //             'timer' => 3000,
-    //             'toast' => false,
-    //         ]);
-    //     }
-    // }
-    // public function tarifasHyundai()
-    // {
+            $this->reset([
+                'origen_id',
+                'destino_id',
+                'destinoterrestre',
+                'precio_contenedor_20',
+                'precio_contenedor_40',
+                'precio_contenedor_h4',
+                'precio_terrestre',
+                'precio_grupage',
+                'tipo_imp_exp',
+                'tipo_cont_grup',
+                'tipo_mar_area_terr',
+                'proveedor_id',
+                'dias',
+                'cargo',
+                'validez',
+            ]);
+        } else {
+            $this->alert('error', '¡No se ha podido registrar las tarifas!', [
+                'position' => 'center',
+                'timer' => 3000,
+                'toast' => false,
+            ]);
+        }
+    }
+    public function tarifasHyundai()
+    {
 
-    //     $tarifa= false;
-    //     $path = $this->file->store('temp');
-    //     $data = Excel::toArray([], storage_path('app/'.$path));
+        $tarifa= false;
+        $path = $this->file->store('temp');
+        $data = Excel::toArray([], storage_path('app/'.$path));
 
 
-    //      $sheets_to_process = [0]; // Hojas 2 y 3, los índices comienzan en 0
+         $sheets_to_process = [0]; // Hojas 2 y 3, los índices comienzan en 0
 
-    //     foreach ($sheets_to_process as $sheet_index) {
-    //         $sheet_data = $data[$sheet_index];
-    //     dd($sheet_data[9][6]);
-    //         $destino = Puerto::firstOrCreate(['Nombre' => $sheet_data[9][5]]); // Adjusted to 0-based index, where row 10 is index 9
+        foreach ($sheets_to_process as $sheet_index) {
+            $sheet_data = $data[$sheet_index];
+        dd($sheet_data[9][6]);
+            $destino = Puerto::firstOrCreate(['Nombre' => $sheet_data[9][5]]); // Adjusted to 0-based index, where row 10 is index 9
 
-    //          for ($index = 13; $index < count($sheet_data); $index++) {
-    //             $row = $sheet_data[$index];
-    //             if (!empty($row[1]) && !empty($row[2])) {
+             for ($index = 13; $index < count($sheet_data); $index++) {
+                $row = $sheet_data[$index];
+                if (!empty($row[1]) && !empty($row[2])) {
 
-    //                 if ($this->isDateValid($this->excelDateToDate($row[1]))) {
-    //                     // La fecha en $row[1] es válida, procesar la fila
-    //                     $origen = Puerto::firstOrCreate(['Nombre' => $row[2] ,'Pais' => $row[0]]);
-    //                     $effective_date = Carbon::createFromFormat('Y-m-d', $this->excelDateToDate($row[4]));
-    //                     $expiry_date = Carbon::createFromFormat('Y-m-d', $this->excelDateToDate($row[5]));
+                    if ($this->isDateValid($this->excelDateToDate($row[1]))) {
+                        // La fecha en $row[1] es válida, procesar la fila
+                        $origen = Puerto::firstOrCreate(['Nombre' => $row[2] ,'Pais' => $row[0]]);
+                        $effective_date = Carbon::createFromFormat('Y-m-d', $this->excelDateToDate($row[4]));
+                        $expiry_date = Carbon::createFromFormat('Y-m-d', $this->excelDateToDate($row[5]));
 
-    //                     $tarifa = new Tarifa([
-    //                         'origen_id' => $origen->id,
-    //                         'destino_id' => $destino->id,
-    //                         'proveedor_id' => $this->proveedor_id,
-    //                         'validez' => $expiry_date,
-    //                         'tipo_mar_area_terr' => $this->tipo_mar_area_terr,
-    //                         'tipo_imp_exp' => $this->tipo_imp_exp,
-    //                         'tipo_cont_grup' => $this->tipo_cont_grup,
-    //                         'precio_contenedor_20' => floatval($row[18]),
-    //                         'precio_contenedor_40' => floatval($row[19]),
-    //                         'precio_contenedor_h4' => floatval($row[20]),
-    //                     ]);
-    //                     $tarifa->save();
-    //                 } else {
-    //                     // La fecha en $row[1] no es válida, manejar el error o saltar la fila
-    //                 }
-    //             }
-    //         }
-    //     }
+                        $tarifa = new Tarifa([
+                            'origen_id' => $origen->id,
+                            'destino_id' => $destino->id,
+                            'proveedor_id' => $this->proveedor_id,
+                            'validez' => $expiry_date,
+                            'tipo_mar_area_terr' => $this->tipo_mar_area_terr,
+                            'tipo_imp_exp' => $this->tipo_imp_exp,
+                            'tipo_cont_grup' => $this->tipo_cont_grup,
+                            'precio_contenedor_20' => floatval($row[18]),
+                            'precio_contenedor_40' => floatval($row[19]),
+                            'precio_contenedor_h4' => floatval($row[20]),
+                        ]);
+                        $tarifa->save();
+                    } else {
+                        // La fecha en $row[1] no es válida, manejar el error o saltar la fila
+                    }
+                }
+            }
+        }
 
-    //     // Remove temp file after import
-    //     unlink(storage_path('app/'.$path));
-    //     $this->file = null;
-        // if ($tarifa) {
-        //     $this->alert('success', 'Tarifas registradas correctamente!', [
-        //         'position' => 'center',
-        //         'timer' => 3000,
-        //         'toast' => false,
-        //         'showConfirmButton' => true,
-        //         'onConfirmed' => '',
-        //         'confirmButtonText' => 'Ok',
-        //         'timerProgressBar' => true,
-        //     ]);
+        // Remove temp file after import
+        unlink(storage_path('app/'.$path));
+        $this->file = null;
+        if ($tarifa) {
+            $this->alert('success', 'Tarifas registradas correctamente!', [
+                'position' => 'center',
+                'timer' => 3000,
+                'toast' => false,
+                'showConfirmButton' => true,
+                'onConfirmed' => '',
+                'confirmButtonText' => 'Ok',
+                'timerProgressBar' => true,
+            ]);
 
-        //     $this->reset([
-        //         'origen_id',
-        //         'destino_id',
-        //         'destinoterrestre',
-        //         'precio_contenedor_20',
-        //         'precio_contenedor_40',
-        //         'precio_contenedor_h4',
-        //         'precio_terrestre',
-        //         'precio_grupage',
-        //         'tipo_imp_exp',
-        //         'tipo_cont_grup',
-        //         'tipo_mar_area_terr',
-        //         'proveedor_id',
-        //         'dias',
-        //         'cargo',
-        //         'validez',
-        //     ]);
-        // } else {
-        //     $this->alert('error', '¡No se ha podido registrar las tarifas!', [
-        //         'position' => 'center',
-        //         'timer' => 3000,
-        //         'toast' => false,
-        //     ]);
-        // }
-    // }
+            $this->reset([
+                'origen_id',
+                'destino_id',
+                'destinoterrestre',
+                'precio_contenedor_20',
+                'precio_contenedor_40',
+                'precio_contenedor_h4',
+                'precio_terrestre',
+                'precio_grupage',
+                'tipo_imp_exp',
+                'tipo_cont_grup',
+                'tipo_mar_area_terr',
+                'proveedor_id',
+                'dias',
+                'cargo',
+                'validez',
+            ]);
+        } else {
+            $this->alert('error', '¡No se ha podido registrar las tarifas!', [
+                'position' => 'center',
+                'timer' => 3000,
+                'toast' => false,
+            ]);
+        }
+    }
 }

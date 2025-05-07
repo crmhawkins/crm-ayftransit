@@ -20,7 +20,7 @@ class TarifaImportController extends Controller
     {
         $proveedores = [
             'one_med_north_spain' => 'ONE',
-            'hmm_india' => 'HMM',
+            'hmm_fe4' => 'HMM',
             'generic_feb_quincena' => 'OPERINTER',
             'generic_far_east_pod_espana' => 'MSC ASECOMEX',
         ];
@@ -252,106 +252,60 @@ class TarifaImportController extends Controller
     private function parseOneMedNorthSpain($spreadsheet, $additionalData, $sumData)
     {
         Log::info("Parseando formato 'one_med_north_spain'");
-
+        $sheetNames = ['ASIA OCEANIA - MED', 'JAPAN - MED', 'ASIA OCEANIA - N.SPAIN', 'JAPAN - N.SPAIN'];
         $proveedorId = $this->findOrCreateProveedor('OCEAN NETWORK EXPRESS');
 
-        foreach ($spreadsheet->getAllSheets() as $sheet) {
-            $sheetName = $sheet->getTitle();
-            Log::info("Procesando hoja: '{$sheetName}'");
+        foreach ($sheetNames as $sheetName) {
+            if ($spreadsheet->sheetExists($sheetName)) {
+                $sheet = $spreadsheet->getSheetByName($sheetName);
+                $highestRow = $sheet->getHighestRow();
+                $startRow = 18; // Ajustar según inspección real
 
-            $highestRow = $sheet->getHighestRow();
-            $startRow = 18; // Ajustar según inspección real
+                for ($row = $startRow; $row <= $highestRow; $row++) {
+                    $polName = $sheet->getCell('B' . $row)->getValue();
+                    $podName = $sheet->getCell('C' . $row)->getValue();
+                    $dv20Excel = $this->parseFloatValue($sheet->getCell('G' . $row)->getCalculatedValue());
+                    $dv40Excel = $this->parseFloatValue($sheet->getCell('H' . $row)->getCalculatedValue());
+                    $hc40Excel = $this->parseFloatValue($sheet->getCell('I' . $row)->getCalculatedValue());
+                    $validityCell = $sheet->getCell('F' . $row)->getValue(); // Fecha fin
+                    $transitTime = $sheet->getCell('E' . $row)->getValue();
 
-            for ($row = $startRow; $row <= $highestRow; $row++) {
-                $polName = $sheet->getCell('B' . $row)->getValue();
-                $podName = $sheet->getCell('C' . $row)->getValue();
-                $dv20Excel = $this->parseFloatValue($sheet->getCell('G' . $row)->getCalculatedValue());
-                $dv40Excel = $this->parseFloatValue($sheet->getCell('H' . $row)->getCalculatedValue());
-                $hc40Excel = $this->parseFloatValue($sheet->getCell('I' . $row)->getCalculatedValue());
-                $validityCell = $sheet->getCell('F' . $row)->getValue(); // Fecha fin
-                $transitTime = $sheet->getCell('E' . $row)->getValue();
+                    $origenId = $this->findOrCreatePuerto($polName);
+                    $destinoId = $this->findOrCreatePuerto($podName);
 
-                $origenId = $this->findOrCreatePuerto($polName);
-                $destinoId = $this->findOrCreatePuerto($podName);
+                    if (empty($origenId) || empty($destinoId) || ($dv20Excel === null && $dv40Excel === null && $hc40Excel === null)) {
+                        Log::warning("Fila {$row} en hoja '{$sheetName}' (ONE) omitida por datos incompletos o inválidos (Origen: {$polName}, Destino: {$podName}).");
+                        continue;
+                    }
 
-                if (empty($origenId) || empty($destinoId) || ($dv20Excel === null && $dv40Excel === null && $hc40Excel === null)) {
-                    Log::warning("Fila {$row} en hoja '{$sheetName}' (ONE) omitida por datos incompletos o inválidos (Origen: {$polName}, Destino: {$podName}).");
-                    continue;
+                    $validityDates = $this->parseValidity($validityCell);
+
+                    Tarifa::create(array_merge($additionalData, [
+                        'origen_id' => $origenId,
+                        'destino_id' => $destinoId,
+                        'proveedor_id' => $proveedorId,
+                        'precio_contenedor_20' => ($dv20Excel !== null) ? $dv20Excel + $sumData['cargo20'] : null,
+                        'precio_contenedor_40' => ($dv40Excel !== null) ? $dv40Excel + $sumData['cargo40'] : null,
+                        'precio_contenedor_h4' => ($hc40Excel !== null) ? $hc40Excel + $sumData['cargoHc'] : null,
+                        'precio_grupage' => ($additionalData['tipo_cont_grup'] === 'Grupaje') ? $sumData['cargoGrup'] : null, // Sumar solo si es grupaje, no hay valor base en este excel
+                        'dias' => is_numeric($transitTime) ? (int)$transitTime : null,
+                        'validez' => $validityDates['validez'],
+                        'efectividad' => $validityDates['efectividad'],
+                    ]));
                 }
-
-                $validityDates = $this->parseValidity($validityCell);
-
-                Tarifa::create(array_merge($additionalData, [
-                    'origen_id' => $origenId,
-                    'destino_id' => $destinoId,
-                    'proveedor_id' => $proveedorId,
-                    'precio_contenedor_20' => ($dv20Excel !== null) ? $dv20Excel + $sumData['cargo20'] : null,
-                    'precio_contenedor_40' => ($dv40Excel !== null) ? $dv40Excel + $sumData['cargo40'] : null,
-                    'precio_contenedor_h4' => ($hc40Excel !== null) ? $hc40Excel + $sumData['cargoHc'] : null,
-                    'precio_grupage' => ($additionalData['tipo_cont_grup'] === 'Grupaje') ? $sumData['cargoGrup'] : null,
-                    'dias' => is_numeric($transitTime) ? (int)$transitTime : null,
-                    'validez' => $validityDates['validez'],
-                    'efectividad' => $validityDates['efectividad'],
-                ]));
+            } else {
+                 Log::warning("Hoja '{$sheetName}' no encontrada en el archivo 'one_med_north_spain'.");
             }
         }
-
         Log::info("Parseo de 'one_med_north_spain' finalizado.");
     }
+
     private function parseHmmIndia($spreadsheet, $additionalData, $sumData)
     {
         Log::info("Parseando formato 'hmm_india'");
-
-        $proveedorId = $this->findOrCreateProveedor('HMM');
-
-        foreach ($spreadsheet->getAllSheets() as $sheet) {
-            $sheetTitle = $sheet->getTitle();
-            Log::info("Procesando hoja: '{$sheetTitle}'");
-
-            $highestRow = $sheet->getHighestRow();
-            $startRow = 4; // Ajustar si necesario
-
-            $generalValidity = $sheet->getCell('B1')->getValue();
-            $validityDates = $this->parseValidity($generalValidity, 'd/m - d/m/Y'); // Ajustar formato
-
-            for ($row = $startRow; $row <= $highestRow; $row++) {
-                $polName = $sheet->getCell('A' . $row)->getValue();
-                $podName = $sheet->getCell('B' . $row)->getValue();
-                $dv20Excel = $this->parseFloatValue($sheet->getCell('C' . $row)->getCalculatedValue());
-                $dv40Excel = $this->parseFloatValue($sheet->getCell('D' . $row)->getCalculatedValue());
-                $hc40Excel = $this->parseFloatValue($sheet->getCell('E' . $row)->getCalculatedValue());
-
-                $origenId = $this->findOrCreatePuerto($polName);
-                $destinoId = $this->findOrCreatePuerto($podName);
-
-                if (empty($origenId) || empty($destinoId) || ($dv20Excel === null && $dv40Excel === null && $hc40Excel === null)) {
-                    Log::warning("Fila {$row} en hoja '{$sheetTitle}' (HMM India) omitida por datos incompletos o inválidos (Origen: {$polName}, Destino: {$podName}).");
-                    continue;
-                }
-
-                Tarifa::create(array_merge($additionalData, [
-                    'origen_id' => $origenId,
-                    'destino_id' => $destinoId,
-                    'proveedor_id' => $proveedorId,
-                    'precio_contenedor_20' => ($dv20Excel !== null) ? $dv20Excel + $sumData['cargo20'] : null,
-                    'precio_contenedor_40' => ($dv40Excel !== null) ? $dv40Excel + $sumData['cargo40'] : null,
-                    'precio_contenedor_h4' => ($hc40Excel !== null) ? $hc40Excel + $sumData['cargoHc'] : null,
-                    'precio_grupage' => ($additionalData['tipo_cont_grup'] === 'Grupaje') ? $sumData['cargoGrup'] : null,
-                    'validez' => $validityDates['validez'],
-                    'efectividad' => $validityDates['efectividad'],
-                ]));
-            }
-        }
-
-        Log::info("Parseo de 'hmm_india' finalizado.");
-    }
-
-    private function parseHmmFe4($spreadsheet, $additionalData, $sumData)
-    {
-        Log::info("Parseando formato 'hmm_fe4'");
         $sheet = $spreadsheet->getActiveSheet();
         $highestRow = $sheet->getHighestRow();
-        $startRow = 4; // Ajustar
+        $startRow = 14; // Ajustar
         $proveedorId = $this->findOrCreateProveedor('HMM');
 
         $generalValidity = $sheet->getCell('B1')->getValue();
@@ -360,15 +314,15 @@ class TarifaImportController extends Controller
         for ($row = $startRow; $row <= $highestRow; $row++) {
             $polName = $sheet->getCell('A' . $row)->getValue();
             $podName = $sheet->getCell('B' . $row)->getValue();
-            $dv20Excel = $this->parseFloatValue($sheet->getCell('C' . $row)->getCalculatedValue());
-            $dv40Excel = $this->parseFloatValue($sheet->getCell('D' . $row)->getCalculatedValue());
-            $hc40Excel = $this->parseFloatValue($sheet->getCell('E' . $row)->getCalculatedValue());
+            $dv20Excel = $this->parseFloatValue($sheet->getCell('Y' . $row)->getCalculatedValue());
+            $dv40Excel = $this->parseFloatValue($sheet->getCell('Z' . $row)->getCalculatedValue());
+            $hc40Excel = $this->parseFloatValue($sheet->getCell('AA' . $row)->getCalculatedValue());
 
             $origenId = $this->findOrCreatePuerto($polName);
             $destinoId = $this->findOrCreatePuerto($podName);
 
             if (empty($origenId) || empty($destinoId) || ($dv20Excel === null && $dv40Excel === null && $hc40Excel === null)) {
-                 Log::warning("Fila {$row} en hoja '{$sheet->getTitle()}' (HMM FE4) omitida por datos incompletos o inválidos (Origen: {$polName}, Destino: {$podName}).");
+                Log::warning("Fila {$row} en hoja '{$sheet->getTitle()}' (HMM India) omitida por datos incompletos o inválidos (Origen: {$polName}, Destino: {$podName}).");
                 continue;
             }
 
@@ -384,117 +338,161 @@ class TarifaImportController extends Controller
                 'efectividad' => $validityDates['efectividad'],
             ]));
         }
-        Log::info("Parseo de 'hmm_fe4' finalizado.");
+        Log::info("Parseo de 'hmm_india' finalizado.");
+    }
+
+    private function parseHmmFe4($spreadsheet, $additionalData, $sumData)
+    {
+        Log::info("Parseando formato 'HMM'");
+        $sheetNames = ['ESALG', 'ESBIO', 'ESVGO', 'PTLEI', 'PTLIS'];
+        $proveedorId = $this->findOrCreateProveedor('HMM');
+
+        foreach ($sheetNames as $sheetName) {
+            if ($spreadsheet->sheetExists($sheetName)) {
+                $sheet = $spreadsheet->getSheetByName($sheetName);
+                $highestRow = $sheet->getHighestRow();
+                $startRow = 14; // Ajustar según inspección real
+
+                for ($row = $startRow; $row <= $highestRow; $row++) {
+                    $polName = $sheet->getCell('J11')->getValue();
+                    $podName = $sheet->getCell('C' . $row)->getValue();
+                    $dv20Excel = $this->parseFloatValue($sheet->getCell('Y' . $row)->getCalculatedValue());
+                    $dv40Excel = $this->parseFloatValue($sheet->getCell('Z' . $row)->getCalculatedValue());
+                    $hc40Excel = $this->parseFloatValue($sheet->getCell('AA' . $row)->getCalculatedValue());
+                    $validityCell = $sheet->getCell('F' . $row)->getValue(); // Fecha fin
+                    $transitTime = $sheet->getCell('E' . $row)->getValue();
+
+                    $origenId = $this->findOrCreatePuerto($polName);
+                    $destinoId = $this->findOrCreatePuerto($podName);
+
+                    if (empty($origenId) || empty($destinoId) || ($dv20Excel === null && $dv40Excel === null && $hc40Excel === null)) {
+                        Log::warning("Fila {$row} en hoja '{$sheetName}' (ONE) omitida por datos incompletos o inválidos (Origen: {$polName}, Destino: {$podName}).");
+                        continue;
+                    }
+
+                    $validityDates = $this->parseValidity($validityCell);
+
+                    Tarifa::create(array_merge($additionalData, [
+                        'origen_id' => $origenId,
+                        'destino_id' => $destinoId,
+                        'proveedor_id' => $proveedorId,
+                        'precio_contenedor_20' => ($dv20Excel !== null) ? $dv20Excel + $sumData['cargo20'] : null,
+                        'precio_contenedor_40' => ($dv40Excel !== null) ? $dv40Excel + $sumData['cargo40'] : null,
+                        'precio_contenedor_h4' => ($hc40Excel !== null) ? $hc40Excel + $sumData['cargoHc'] : null,
+                        'precio_grupage' => ($additionalData['tipo_cont_grup'] === 'Grupaje') ? $sumData['cargoGrup'] : null, // Sumar solo si es grupaje, no hay valor base en este excel
+                        'dias' => is_numeric($transitTime) ? (int)$transitTime : null,
+                        'validez' => $validityDates['validez'],
+                        'efectividad' => $validityDates['efectividad'],
+                    ]));
+                }
+            } else {
+                 Log::warning("Hoja '{$sheetName}' no encontrada en el archivo 'HHM'.");
+            }
+        }
+        Log::info("Parseo de 'HHM' finalizado.");
     }
 
     private function parseGenericFebQuincena($spreadsheet, $additionalData, $sumData)
     {
         Log::info("Parseando formato 'generic_feb_quincena'");
+        $sheetName = 'FLETES'; // Ajustar si es necesario
+        if (!$spreadsheet->sheetExists($sheetName)) throw new \Exception("Hoja '{$sheetName}' no encontrada.");
+        $sheet = $spreadsheet->getSheetByName($sheetName);
 
-        foreach ($spreadsheet->getAllSheets() as $sheet) {
-            $sheetName = $sheet->getTitle();
-            Log::info("Procesando hoja: '{$sheetName}'");
+        $highestRow = $sheet->getHighestRow();
+        $startRow = 5; // Ajustar
 
-            $highestRow = $sheet->getHighestRow();
-            $startRow = 5; // Ajustar si necesario
+        for ($row = $startRow; $row <= $highestRow; $row++) {
+            $polName = $sheet->getCell('A' . $row)->getValue();
+            $podName = $sheet->getCell('B' . $row)->getValue();
+            $navieraName = $sheet->getCell('C' . $row)->getValue();
+            $dv20Excel = $this->parseFloatValue($sheet->getCell('D' . $row)->getCalculatedValue());
+            $dv40Excel = $this->parseFloatValue($sheet->getCell('E' . $row)->getCalculatedValue());
+            $hc40Excel = $this->parseFloatValue($sheet->getCell('F' . $row)->getCalculatedValue());
+            $validityCell = $sheet->getCell('G' . $row)->getValue(); // Formato '15/02/2024 al 29/02/2024'
+            // Grupaje no parece estar en este formato
 
-            for ($row = $startRow; $row <= $highestRow; $row++) {
-                $polName = $sheet->getCell('A' . $row)->getValue();
-                $podName = $sheet->getCell('B' . $row)->getValue();
-                $navieraName = $sheet->getCell('C' . $row)->getValue();
-                $dv20Excel = $this->parseFloatValue($sheet->getCell('D' . $row)->getCalculatedValue());
-                $dv40Excel = $this->parseFloatValue($sheet->getCell('E' . $row)->getCalculatedValue());
-                $hc40Excel = $this->parseFloatValue($sheet->getCell('F' . $row)->getCalculatedValue());
-                $validityCell = $sheet->getCell('G' . $row)->getValue(); // Formato '15/02/2024 al 29/02/2024'
+            $origenId = $this->findOrCreatePuerto($polName);
+            $destinoId = $this->findOrCreatePuerto($podName);
+            $proveedorId = $this->findOrCreateProveedor($navieraName);
 
-                $origenId = $this->findOrCreatePuerto($polName);
-                $destinoId = $this->findOrCreatePuerto($podName);
-                $proveedorId = $this->findOrCreateProveedor($navieraName);
-
-                if (empty($origenId) || empty($destinoId) || empty($proveedorId) || ($dv20Excel === null && $dv40Excel === null && $hc40Excel === null)) {
-                    Log::warning("Fila {$row} en hoja '{$sheetName}' (Generic Feb Quincena) omitida por datos incompletos o inválidos (Origen: {$polName}, Destino: {$podName}, Naviera: {$navieraName}).");
-                    continue;
-                }
-
-                $validityDates = $this->parseValidity($validityCell, 'd/m/Y');
-
-                Tarifa::create(array_merge($additionalData, [
-                    'origen_id' => $origenId,
-                    'destino_id' => $destinoId,
-                    'proveedor_id' => $proveedorId,
-                    'precio_contenedor_20' => ($dv20Excel !== null) ? $dv20Excel + $sumData['cargo20'] : null,
-                    'precio_contenedor_40' => ($dv40Excel !== null) ? $dv40Excel + $sumData['cargo40'] : null,
-                    'precio_contenedor_h4' => ($hc40Excel !== null) ? $hc40Excel + $sumData['cargoHc'] : null,
-                    'precio_grupage' => ($additionalData['tipo_cont_grup'] === 'Grupaje') ? $sumData['cargoGrup'] : null,
-                    'validez' => $validityDates['validez'],
-                    'efectividad' => $validityDates['efectividad'],
-                ]));
+            if (empty($origenId) || empty($destinoId) || empty($proveedorId) || ($dv20Excel === null && $dv40Excel === null && $hc40Excel === null)) {
+                 Log::warning("Fila {$row} en hoja '{$sheet->getTitle()}' (Generic Feb Quincena) omitida por datos incompletos o inválidos (Origen: {$polName}, Destino: {$podName}, Naviera: {$navieraName}).");
+                continue;
             }
-        }
 
+            $validityDates = $this->parseValidity($validityCell, 'd/m/Y');
+
+            Tarifa::create(array_merge($additionalData, [
+                'origen_id' => $origenId,
+                'destino_id' => $destinoId,
+                'proveedor_id' => $proveedorId,
+                'precio_contenedor_20' => ($dv20Excel !== null) ? $dv20Excel + $sumData['cargo20'] : null,
+                'precio_contenedor_40' => ($dv40Excel !== null) ? $dv40Excel + $sumData['cargo40'] : null,
+                'precio_contenedor_h4' => ($hc40Excel !== null) ? $hc40Excel + $sumData['cargoHc'] : null,
+                'precio_grupage' => ($additionalData['tipo_cont_grup'] === 'Grupaje') ? $sumData['cargoGrup'] : null,
+                'validez' => $validityDates['validez'],
+                'efectividad' => $validityDates['efectividad'],
+            ]));
+        }
         Log::info("Parseo de 'generic_feb_quincena' finalizado.");
     }
 
     private function parseGenericFarEastPodEspana($spreadsheet, $additionalData, $sumData)
     {
         Log::info("Parseando formato 'generic_far_east_pod_espana'");
+        $sheet = $spreadsheet->getActiveSheet();
+        $highestRow = $sheet->getHighestRow();
+        $startRow = 3; // Ajustar
 
-        foreach ($spreadsheet->getAllSheets() as $sheet) {
-            $sheetName = $sheet->getTitle();
-            Log::info("Procesando hoja: '{$sheetName}'");
-
-            $highestRow = $sheet->getHighestRow();
-            $startRow = 3; // Ajustar si necesario
-
-            for ($row = $startRow; $row <= $highestRow; $row++) {
-                $polName = $sheet->getCell('B' . $row)->getValue(); // DPOL
-                $podName = $sheet->getCell('C' . $row)->getValue(); // DPOD
-                $navieraName = $sheet->getCell('D' . $row)->getValue(); // CARRIERNAME
-                $validityCell = $sheet->getCell('E' . $row)->getValue(); // VALIDEZ
-                $transitTime = $sheet->getCell('F' . $row)->getValue(); // TT
-                $dv20Excel = $this->parseFloatValue($sheet->getCell('G' . $row)->getCalculatedValue());
-                $dv40Excel = $this->parseFloatValue($sheet->getCell('H' . $row)->getCalculatedValue());
-                $hc40Excel = $this->parseFloatValue($sheet->getCell('I' . $row)->getCalculatedValue());
-                $polCode = $sheet->getCell('R' . $row)->getValue(); // POL (Código)
-                $podCode = $sheet->getCell('S' . $row)->getValue(); // POD (Código)
-                $navieraCode = $sheet->getCell('T' . $row)->getValue(); // CARRIER (Código)
-                $validezInicioExcelRaw = $sheet->getCell('X' . $row)->getValue(); // F_INICIO
-                $validezInicioExcel = null;
-
-                if (is_numeric($validezInicioExcelRaw)) {
-                    try {
-                        $validezInicioExcel = Carbon::instance(\PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($validezInicioExcelRaw));
-                    } catch (\Exception $e) {
-                        Log::warning("Error al convertir F_INICIO a fecha en fila {$row} en hoja '{$sheetName}': " . $e->getMessage());
-                    }
+        for ($row = $startRow; $row <= $highestRow; $row++) {
+            $polName = $sheet->getCell('B' . $row)->getValue(); // DPOL
+            $podName = $sheet->getCell('C' . $row)->getValue(); // DPOD
+            $navieraName = $sheet->getCell('D' . $row)->getValue(); // CARRIERNAME
+            $validityCell = $sheet->getCell('E' . $row)->getValue(); // VALIDEZ
+            $transitTime = $sheet->getCell('F' . $row)->getValue(); // TT
+            $dv20Excel = $this->parseFloatValue($sheet->getCell('G' . $row)->getCalculatedValue()); // 20 DV
+            $dv40Excel = $this->parseFloatValue($sheet->getCell('H' . $row)->getCalculatedValue()); // 40 DV
+            $hc40Excel = $this->parseFloatValue($sheet->getCell('I' . $row)->getCalculatedValue()); // 40 HC
+            $polCode = $sheet->getCell('R' . $row)->getValue(); // POL (Código)
+            $podCode = $sheet->getCell('S' . $row)->getValue(); // POD (Código)
+            $navieraCode = $sheet->getCell('T' . $row)->getValue(); // CARRIER (Código)
+            $validezInicioExcelRaw = $sheet->getCell('X' . $row)->getValue(); // F_INICIO
+            $validezInicioExcel = null;
+            if (is_numeric($validezInicioExcelRaw)) {
+                try {
+                    $validezInicioExcel = Carbon::instance(\PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($validezInicioExcelRaw));
+                } catch (\Exception $e) {
+                    Log::warning("Error al convertir F_INICIO a fecha en fila {$row}: " . $e->getMessage());
                 }
-
-                $origenId = $this->findOrCreatePuerto($polCode ?: $polName);
-                $destinoId = $this->findOrCreatePuerto($podCode ?: $podName);
-                $proveedorId = $this->findOrCreateProveedor($navieraCode ?: $navieraName);
-
-                if (empty($origenId) || empty($destinoId) || empty($proveedorId) || ($dv20Excel === null && $dv40Excel === null && $hc40Excel === null)) {
-                    Log::warning("Fila {$row} en hoja '{$sheetName}' (Far East Pod España) omitida por datos incompletos o inválidos (Origen: {$polName}/{$polCode}, Destino: {$podName}/{$podCode}, Naviera: {$navieraName}/{$navieraCode}).");
-                    continue;
-                }
-
-                $validityDates = $this->parseValidity($validezInicioExcel ?: $validityCell, $validezInicioExcel ? 'F_INICIO' : 'd/m/Y');
-
-                Tarifa::create(array_merge($additionalData, [
-                    'origen_id' => $origenId,
-                    'destino_id' => $destinoId,
-                    'proveedor_id' => $proveedorId,
-                    'precio_contenedor_20' => ($dv20Excel !== null) ? $dv20Excel + $sumData['cargo20'] : null,
-                    'precio_contenedor_40' => ($dv40Excel !== null) ? $dv40Excel + $sumData['cargo40'] : null,
-                    'precio_contenedor_h4' => ($hc40Excel !== null) ? $hc40Excel + $sumData['cargoHc'] : null,
-                    'precio_grupage' => ($additionalData['tipo_cont_grup'] === 'Grupaje') ? $sumData['cargoGrup'] : null,
-                    'dias' => is_numeric($transitTime) ? (int)$transitTime : null,
-                    'validez' => $validityDates['validez'],
-                    'efectividad' => $validityDates['efectividad'],
-                ]));
             }
-        }
+            // Grupaje no parece estar en este formato
 
+            $origenId = $this->findOrCreatePuerto($polCode ?: $polName);
+            $destinoId = $this->findOrCreatePuerto($podCode ?: $podName);
+            $proveedorId = $this->findOrCreateProveedor($navieraCode ?: $navieraName);
+
+            if (empty($origenId) || empty($destinoId) || empty($proveedorId) || ($dv20Excel === null && $dv40Excel === null && $hc40Excel === null)) {
+                 Log::warning("Fila {$row} en hoja '{$sheet->getTitle()}' (Far East Pod España) omitida por datos incompletos o inválidos (Origen: {$polName}/{$polCode}, Destino: {$podName}/{$podCode}, Naviera: {$navieraName}/{$navieraCode}).");
+                continue;
+            }
+
+            // Usar F_INICIO si existe y es válido, si no, parsear VALIDEZ
+            $validityDates = $this->parseValidity($validezInicioExcel ?: $validityCell, $validezInicioExcel ? 'F_INICIO' : 'd/m/Y');
+
+            Tarifa::create(array_merge($additionalData, [
+                'origen_id' => $origenId,
+                'destino_id' => $destinoId,
+                'proveedor_id' => $proveedorId,
+                'precio_contenedor_20' => ($dv20Excel !== null) ? $dv20Excel + $sumData['cargo20'] : null,
+                'precio_contenedor_40' => ($dv40Excel !== null) ? $dv40Excel + $sumData['cargo40'] : null,
+                'precio_contenedor_h4' => ($hc40Excel !== null) ? $hc40Excel + $sumData['cargoHc'] : null,
+                'precio_grupage' => ($additionalData['tipo_cont_grup'] === 'Grupaje') ? $sumData['cargoGrup'] : null,
+                'dias' => is_numeric($transitTime) ? (int)$transitTime : null,
+                'validez' => $validityDates['validez'],
+                'efectividad' => $validityDates['efectividad'],
+            ]));
+        }
         Log::info("Parseo de 'generic_far_east_pod_espana' finalizado.");
     }
 }

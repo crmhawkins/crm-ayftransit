@@ -34,8 +34,8 @@ class TarifaImportController extends Controller
     {
         $request->validate([
             'tipo_mar_area_terr' => 'required|integer|in:1,2,3',
-            'tipo_imp_exp' => 'required|string|in:IMP,EXP',
-            'tipo_cont_grup' => 'required|string|in:Contenedor,Grupaje',
+            'tipo_imp_exp' => 'required|integer|in:1,2',
+            'tipo_cont_grup' => 'required|integer|in:1,2',
             'proveedor' => 'required|string|in:one_med_north_spain,hmm_india,hmm_fe4,generic_feb_quincena,generic_far_east_pod_espana',
             'tarifa_excel' => 'required|file|mimes:xlsx,xls',
             // Validar campos de suma (opcionales, numéricos)
@@ -126,7 +126,11 @@ class TarifaImportController extends Controller
             Log::warning("Puerto no encontrado: '{$trimmedName}'. Se omite o se requiere creación manual.");
             // Opcional: Crear puerto si no existe
             $puerto = Puerto::create(['Nombre' => $trimmedName]);
-            Log::info("Puerto creado: '{$trimmedName}' con ID: {$puerto->id}");
+            if($puerto){
+                Log::info("Puerto creado: '{$trimmedName}' con ID: {$puerto->id}");
+            }else{
+                Log::warning("Puerto no creado: '{$trimmedName}'.");
+            }
             //return null; // O lanzar excepción si es mandatorio que exista
         }
         return $puerto->id;

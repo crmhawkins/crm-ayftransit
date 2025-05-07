@@ -50,8 +50,8 @@
                             <div class="col-md-6">
                                 <select id="tipo_imp_exp" class="form-select @error("tipo_imp_exp") is-invalid @enderror" name="tipo_imp_exp" required>
                                     <option value="" disabled selected>Selecciona el tipo</option>
-                                    <option value="IMP" {{ old("tipo_imp_exp") == "IMP" ? "selected" : "" }}>Importación</option>
-                                    <option value="EXP" {{ old("tipo_imp_exp") == "EXP" ? "selected" : "" }}>Exportación</option>
+                                    <option value="1" {{ old("tipo_imp_exp") == "1" ? "selected" : "" }}>Importación</option>
+                                    <option value="2" {{ old("tipo_imp_exp") == "2" ? "selected" : "" }}>Exportación</option>
                                 </select>
                                 @error("tipo_imp_exp") <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span> @enderror
                             </div>
@@ -62,8 +62,8 @@
                             <div class="col-md-6">
                                 <select id="tipo_cont_grup" class="form-select @error("tipo_cont_grup") is-invalid @enderror" name="tipo_cont_grup" required>
                                     <option value="" disabled selected>Selecciona el tipo</option>
-                                    <option value="Contenedor" {{ old("tipo_cont_grup") == "Contenedor" ? "selected" : "" }}>Contenedor</option>
-                                    <option value="Grupaje" {{ old("tipo_cont_grup") == "Grupaje" ? "selected" : "" }}>Grupaje</option>
+                                    <option value="1" {{ old("tipo_cont_grup") == "1" ? "selected" : "" }}>Contenedor</option>
+                                    <option value="2" {{ old("tipo_cont_grup") == "2" ? "selected" : "" }}>Grupaje</option>
                                 </select>
                                 @error("tipo_cont_grup") <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span> @enderror
                             </div>

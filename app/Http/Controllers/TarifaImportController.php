@@ -363,7 +363,7 @@ class TarifaImportController extends Controller
                 $dv40Excel = $this->parseFloatValue($sheet->getCell('Z' . $row)->getCalculatedValue());
                 $hc40Excel = $this->parseFloatValue($sheet->getCell('AA' . $row)->getCalculatedValue());
                 $validityCell = $sheet->getCell('F' . $row)->getValue(); // Fecha fin
-                $transitTime = $sheet->getCell('E' . $row)->getValue();
+                $effectivityCell = $sheet->getCell('E' . $row)->getValue(); // Fecha fin
 
                 $origenId = $this->findOrCreatePuerto($polName);
                 $destinoId = $this->findOrCreatePuerto($podName);
@@ -373,7 +373,8 @@ class TarifaImportController extends Controller
                     continue;
                 }
 
-                $validityDates = $this->parseValidity($validityCell);
+                $validityDate = Carbon::parse($validityCell)->format('d/m/Y');
+                $effectivityDate = Carbon::parse($effectivityCell)->format('d/m/Y');
 
                 Tarifa::create(array_merge($additionalData, [
                     'origen_id' => $origenId,
@@ -383,9 +384,8 @@ class TarifaImportController extends Controller
                     'precio_contenedor_40' => ($dv40Excel !== null) ? $dv40Excel + $sumData['cargo40'] : null,
                     'precio_contenedor_h4' => ($hc40Excel !== null) ? $hc40Excel + $sumData['cargoHc'] : null,
                     'precio_grupage' => ($additionalData['tipo_cont_grup'] === 'Grupaje') ? $sumData['cargoGrup'] : null,
-                    'dias' => is_numeric($transitTime) ? (int)$transitTime : null,
-                    'validez' => $validityDates['validez'],
-                    'efectividad' => $validityDates['efectividad'],
+                    'validez' => $validityDate,
+                    'efectividad' => $effectivityDate,
                 ]));
             }
         }

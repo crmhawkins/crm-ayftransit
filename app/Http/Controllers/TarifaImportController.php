@@ -346,6 +346,8 @@ class TarifaImportController extends Controller
         $sheetNames = ['ESALG', 'ESBIO', 'ESVGO', 'PTLEI', 'PTLIS'];
         $proveedorId = $this->findOrCreateProveedor('HMM');
 
+        $sheetESALG = $spreadsheet->getSheetByName('ESALG');
+
         foreach ($sheetNames as $sheetName) {
             $sheet = $spreadsheet->getSheetByName($sheetName);
             if ($sheet === null) {
@@ -362,8 +364,8 @@ class TarifaImportController extends Controller
                 $dv20Excel = $this->parseFloatValue($sheet->getCell('Y' . $row)->getCalculatedValue());
                 $dv40Excel = $this->parseFloatValue($sheet->getCell('Z' . $row)->getCalculatedValue());
                 $hc40Excel = $this->parseFloatValue($sheet->getCell('AA' . $row)->getCalculatedValue());
-                $validityCell = $sheet->getCell('F' . $row)->getValue(); // Fecha fin
-                $effectivityCell = $sheet->getCell('E' . $row)->getValue(); // Fecha fin
+                $validityCell = $sheetESALG->getCell('F14')->getValue(); // Fecha fin
+                $effectivityCell = $sheetESALG->getCell('E14')->getValue(); // Fecha fin
 
                 $origenId = $this->findOrCreatePuerto($polName);
                 $destinoId = $this->findOrCreatePuerto($podName);
@@ -372,9 +374,10 @@ class TarifaImportController extends Controller
                     Log::warning("Fila {$row} en hoja '{$sheetName}' (HMM) omitida por datos incompletos o inválidos (Origen: {$polName}, Destino: {$podName}).");
                     continue;
                 }
+                Log::info("Validez: {$validityCell}, Efectividad: {$effectivityCell}");
 
-                $validityDate = Carbon::parse($validityCell)->format('d/m/Y');
-                $effectivityDate = Carbon::parse($effectivityCell)->format('d/m/Y');
+                $validityDate = Carbon::parse($validityCell)->format('Y-m-d');
+                $effectivityDate = Carbon::parse($effectivityCell)->format('Y-m-d');
 
                 Tarifa::create(array_merge($additionalData, [
                     'origen_id' => $origenId,

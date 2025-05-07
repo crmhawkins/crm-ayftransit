@@ -9,6 +9,7 @@ use App\Models\Proveedor; // Asegúrate de que el modelo Proveedor existe y el n
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use PhpOffice\PhpSpreadsheet\Shared\Date;
 use Carbon\Carbon;
 
 class TarifaImportController extends Controller
@@ -364,8 +365,8 @@ class TarifaImportController extends Controller
                 $dv20Excel = $this->parseFloatValue($sheet->getCell('Y' . $row)->getCalculatedValue());
                 $dv40Excel = $this->parseFloatValue($sheet->getCell('Z' . $row)->getCalculatedValue());
                 $hc40Excel = $this->parseFloatValue($sheet->getCell('AA' . $row)->getCalculatedValue());
-                $validityCell = $sheetESALG->getCell('F14')->getValue(); // Fecha fin
-                $effectivityCell = $sheetESALG->getCell('E14')->getValue(); // Fecha fin
+                $validityCell = $sheetESALG->getCell('F14')->getValue();
+                $effectivityCell = $sheetESALG->getCell('E14')->getValue();
 
                 $origenId = $this->findOrCreatePuerto($polName);
                 $destinoId = $this->findOrCreatePuerto($podName);
@@ -376,8 +377,8 @@ class TarifaImportController extends Controller
                 }
                 Log::info("Validez: {$validityCell}, Efectividad: {$effectivityCell}");
 
-                $validityDate = Carbon::parse($validityCell)->format('Y-m-d');
-                $effectivityDate = Carbon::parse($effectivityCell)->format('Y-m-d');
+                $validityDate = Carbon::instance(Date::excelToDateTimeObject($validityCell))->format('Y-m-d');
+                $effectivityDate = Carbon::instance(Date::excelToDateTimeObject($effectivityCell))->format('Y-m-d');
 
                 Tarifa::create(array_merge($additionalData, [
                     'origen_id' => $origenId,

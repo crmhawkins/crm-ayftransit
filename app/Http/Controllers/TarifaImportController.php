@@ -120,19 +120,14 @@ class TarifaImportController extends Controller
         if (empty($puertoName)) return null;
         $trimmedName = trim($puertoName);
         // Intenta buscar por nombre exacto primero (case-insensitive podría ser mejor)
-        $puerto = Puerto::whereRaw('LOWER(name) = ?', [strtolower($trimmedName)])->first();
-
-        // Si no se encuentra por nombre, intenta buscar por código si aplica (ej. 'ESALG')
-        if (!$puerto && strlen($trimmedName) === 5 && preg_match('/^[A-Z]{2}[A-Z0-9]{3}$/', $trimmedName)) {
-           $puerto = Puerto::where('code', $trimmedName)->first(); // Asume que hay un campo 'code'
-        }
+        $puerto = Puerto::whereRaw('LOWER(Nombre) = ?', [strtolower($trimmedName)])->first();
 
         if (!$puerto) {
             Log::warning("Puerto no encontrado: '{$trimmedName}'. Se omite o se requiere creación manual.");
             // Opcional: Crear puerto si no existe
-            // $puerto = Puerto::create(['name' => $trimmedName, /* otros campos necesarios */]);
-            // Log::info("Puerto creado: '{$trimmedName}' con ID: {$puerto->id}");
-            return null; // O lanzar excepción si es mandatorio que exista
+            $puerto = Puerto::create(['Nombre' => $trimmedName]);
+            Log::info("Puerto creado: '{$trimmedName}' con ID: {$puerto->id}");
+            //return null; // O lanzar excepción si es mandatorio que exista
         }
         return $puerto->id;
     }
@@ -151,11 +146,11 @@ class TarifaImportController extends Controller
         // if (!$proveedor && ...) { ... }
 
         if (!$proveedor) {
-            Log::warning("Proveedor no encontrado: '{$trimmedName}'. Se omite o se requiere creación manual.");
+            //Log::warning("Proveedor no encontrado: '{$trimmedName}'. Se omite o se requiere creación manual.");
             // Opcional: Crear proveedor si no existe
-            // $proveedor = Proveedor::create(['nombre' => $trimmedName, /* otros campos */]);
-            // Log::info("Proveedor creado: '{$trimmedName}' con ID: {$proveedor->id}");
-            return null; // O lanzar excepción
+            $proveedor = Proveedor::create(['nombre' => $trimmedName, /* otros campos */]);
+            Log::info("Proveedor creado: '{$trimmedName}' con ID: {$proveedor->id}");
+           // return null; // O lanzar excepción
         }
         return $proveedor->id;
     }

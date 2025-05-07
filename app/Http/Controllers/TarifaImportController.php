@@ -318,8 +318,8 @@ class TarifaImportController extends Controller
             $dv40Excel = $this->parseFloatValue($sheet->getCell('Z' . $row)->getCalculatedValue());
             $hc40Excel = $this->parseFloatValue($sheet->getCell('AA' . $row)->getCalculatedValue());
 
-            $origenId = $this->findOrCreatePuerto($polName);
-            $destinoId = $this->findOrCreatePuerto($podName);
+            $destinoId = $this->findOrCreatePuerto($polName);
+            $origenId = $this->findOrCreatePuerto($podName);
 
             if (empty($origenId) || empty($destinoId) || ($dv20Excel === null && $dv40Excel === null && $hc40Excel === null)) {
                 Log::warning("Fila {$row} en hoja '{$sheet->getTitle()}' (HMM India) omitida por datos incompletos o inválidos (Origen: {$polName}, Destino: {$podName}).");
@@ -368,8 +368,8 @@ class TarifaImportController extends Controller
                 $validityCell = $sheetESALG->getCell('F14')->getValue();
                 $effectivityCell = $sheetESALG->getCell('E14')->getValue();
 
-                $origenId = $this->findOrCreatePuerto($polName);
-                $destinoId = $this->findOrCreatePuerto($podName);
+                $destinoId = $this->findOrCreatePuerto($polName);
+                $origenId = $this->findOrCreatePuerto($podName);
 
                 if (empty($origenId) || empty($destinoId) || ($dv20Excel === null && $dv40Excel === null && $hc40Excel === null)) {
                     Log::warning("Fila {$row} en hoja '{$sheetName}' (HMM) omitida por datos incompletos o inválidos (Origen: {$polName}, Destino: {$podName}).");

@@ -36,8 +36,8 @@
                             <label for="tipo_mar_area_terr" class="col-md-4 col-form-label text-md-end">{{ __("Tipo Tarifa") }}</label>
                             <div class="col-md-6">
                                 <select id="tipo_mar_area_terr" class="form-select @error("tipo_mar_area_terr") is-invalid @enderror" name="tipo_mar_area_terr" required>
-                                    <option value="" disabled selected>Selecciona el tipo</option>
-                                    <option value="1" {{ old("tipo_mar_area_terr") == 1 ? "selected" : "" }}>Marítima</option>
+                                    <option value="" disabled >Selecciona el tipo</option>
+                                    <option value="1" {{ old("tipo_mar_area_terr") == 1 ? "selected" : "" }} selected>Marítima</option>
                                     <option value="2" {{ old("tipo_mar_area_terr") == 2 ? "selected" : "" }}>Aérea</option>
                                     <option value="3" {{ old("tipo_mar_area_terr") == 3 ? "selected" : "" }}>Terrestre</option>
                                 </select>
@@ -61,8 +61,8 @@
                             <label for="tipo_cont_grup" class="col-md-4 col-form-label text-md-end">{{ __("Contenedor/Grupaje") }}</label>
                             <div class="col-md-6">
                                 <select id="tipo_cont_grup" class="form-select @error("tipo_cont_grup") is-invalid @enderror" name="tipo_cont_grup" required>
-                                    <option value="" disabled selected>Selecciona el tipo</option>
-                                    <option value="1" {{ old("tipo_cont_grup") == "1" ? "selected" : "" }}>Contenedor</option>
+                                    <option value="" disabled>Selecciona el tipo</option>
+                                    <option value="1" {{ old("tipo_cont_grup") == "1" ? "selected" : "" }} selected>Contenedor</option>
                                     <option value="2" {{ old("tipo_cont_grup") == "2" ? "selected" : "" }}>Grupaje</option>
                                 </select>
                                 @error("tipo_cont_grup") <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span> @enderror
